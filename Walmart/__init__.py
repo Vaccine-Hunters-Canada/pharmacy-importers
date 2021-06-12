@@ -1,9 +1,6 @@
 import os
 import json
-import time
-import datetime
 import aiohttp
-import logging
 from vhc import VHC
 
 import azure.functions as func
@@ -21,14 +18,14 @@ async def main(mytimer: func.TimerRequest) -> None:
         vhc = VHC(
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG'),
+            org_id=os.environ.get('VHC_ORG_WALMART'),
             session=session
         )
 
         # Create the session and get the session cookie
         await session.get('https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc')
 
-        f = open('importer-walmart/walmart-locations.json')
+        f = open('Walmart/walmart-locations.json')
         location_data = json.load(f)
 
         for location in location_data['locations']:
@@ -50,7 +47,7 @@ async def main(mytimer: func.TimerRequest) -> None:
             if response.status == 200 and data['data'][0]['available']:
                 available = True
 
-            location = {
+            location_data = {
                 'line1': location['address']['address'],
                 'city': location['address']['city'],
                 'province': location['address']['province'],
@@ -64,6 +61,6 @@ async def main(mytimer: func.TimerRequest) -> None:
                 num_available=1 if available else 0,
                 num_total=1 if available else 0,
                 vaccine_type=vaccine_type,
-                location=location,
+                location=location_data,
                 external_key=external_key
             )

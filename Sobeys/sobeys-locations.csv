@@ -1,0 +1,457 @@
+id,name,postal,province,city,address
+a2t5o00000001FtAAI,Sobeys Vaughan Harvey - Pfizer/Moderna,E1C0N3,New Brunswick,Moncton,55 Vaughan Harvey Boulevard
+a2t5o00000001FuAAI,Sobeys Saint John West - Pfizer/Moderna,E2M0C2,New Brunswick,Saint John,1 Plaza Avenue
+a2t5o00000001FvAAI,Sobeys Elmwood Drive - Pfizer/Moderna,E1A9G6,New Brunswick,Moncton,77 Filles de Jesus Avenue
+a2t5o00000001FwAAI,Sobeys Regent - Pfizer/Moderna,E3B3X6,New Brunswick,Fredericton,407 Regent Street
+a2t5o00000001FxAAI,Sobeys Miramichi Road - Pfizer/Moderna,E2V4T4,New Brunswick,Oromocto,375 Miramichi Road
+a2t5o00000001FyAAI,Sobeys Bathurst - Pfizer/Moderna,E2A3A1,New Brunswick,Bathurst,1125 St.  Peter Avenue
+a2t5o00000001FzAAI,Lawtons Saint John Nursing Home Services - Pfizer/Moderna,E2M5J7,New Brunswick,Saint John,107 Catherwood Street  Suite 212
+a2t5o00000001G0AAI,Lawtons Catherwood - Pfizer/Moderna,E2M5J7,New Brunswick,Saint John,107 Catherwood Street
+a2t5o00000001G1AAI,Lawtons Elmwood Drive - Pfizer/Moderna,E1A2X4,New Brunswick,Moncton,565 Elmwood Drive
+a2t5o00000001G2AAI,Lawtons Regent Mall - Pfizer/Moderna,E3C1A2,New Brunswick,Fredericton,1381 Regent Street
+a2t5o00000001G3AAI,Lawtons McAllister Place - Pfizer/Moderna,E2J3W9,New Brunswick,Saint John,519 Westmorland Road
+a2t5o00000001G4AAI,Sobeys Caraquet - Pfizer/Moderna,E1W1B6,New Brunswick,Caraquet,10 Boulevard St. Pierre East
+a2t5o00000001G5AAI,Sobeys Acton,L7J2Y5,Ontario,Acton,372 Queen Street East
+a2t5o00000001G6AAI,Sobeys Ajax,L1T4E4,Ontario,Ajax,260 Kingston Road W
+a2t5o00000001G7AAI,Sobeys Ancaster,L9K1K1,Ontario,Ancaster,977 Golf Links Road
+a2t5o00000001G8AAI,Sobeys Aurora,L4G7J1,Ontario,Aurora,15500 Bayview Avenue
+a2t5o00000001G9AAI,Sobeys Barrie(Molson Park),L4N9H5,Ontario,Barrie,37 Mapleview Drive West
+a2t5o00000001GAAAY,Sobeys Bradford,L3Z3B8,Ontario,Bradford,40 Melbourne Drive
+a2t5o00000001GBAAY,Sobeys Brampton,L6Y0J2,Ontario,Brampton,8975 Chinguacousy Road
+a2t5o00000001GCAAY,FreshCo Mississauga & Financial,L6Y0E3,Ontario,Brampton,Unit 11 - 8405 Financial Drive
+a2t5o00000001GDAAY,FreshCo 50-Cottrelle,L6P2R1,Ontario,Brampton,3998 Cottrelle Boulevard
+a2t5o00000001GEAAY,Sobeys Shellard Lane,N3T1M2,Ontario,Brantford,310 Colborne Street  West
+a2t5o00000001GFAAY,FreshCo Brantford,N3S2E3,Ontario,Brantford,50 Market Street  South
+a2t5o00000001GGAAY,Sobeys Burlington,L7P1X8,Ontario,Burlington,1250 Brant St
+a2t5o00000001GHAAY,FreshCo Cambridge,N1R8L4,Ontario,Cambridge,1 Hespeler Road
+a2t5o00000001GIAAY,Sobeys Chatham,N7M1W3,Ontario,Chatham,215 Park Ave
+a2t5o00000001GJAAY,FreshCo Ninth and Marlborough,K6H0A3,Ontario,Cornwall,525 Ninth St. East
+a2t5o00000001GKAAY,Sobeys Etobicoke,M8Y1H6,Ontario,Etobicoke,125 The Queensway
+a2t5o00000001GLAAY,Safeway Fort Frances,P9A1H3,Ontario,Fort Frances,417 Scott Street
+a2t5o00000001GMAAY,FreshCo Georgetown,L7G4B3,Ontario,Georgetown,325 Guelph Street
+a2t5o00000001GNAAY,Sobeys Gravenhurst,P1P1K8,Ontario,Gravenhurst,225 Edward Street
+a2t5o00000001GOAAY,Sobeys Alcona Beach,L9S4Y8,Ontario,Innisfil,2080 Jans Boulevard
+a2t5o00000001GPAAY,Sobeys Kanata,K2L4H4,Ontario,Kanata,700 Terry Fox Drive
+a2t5o00000001GQAAY,Sobeys March Road,K2K1X7,Ontario,Kanata,840 March Road
+a2t5o00000001GRAAY,FreshCo Princess,K7M3G1,Ontario,Kingston,2327 Princess Street
+a2t5o00000001GSAAY,Sobeys Highland,N2M3C5,Ontario,Kitchener,274 Highland Road West
+a2t5o00000001GTAAY,Sobeys Kitchener,N2E4H9,Ontario,Kitchener,1187 Fischer Hallman Road
+a2t5o00000001GUAAY,Sobeys Ira Needles,N2N0B2,Ontario,Kitchener,235 Ira Needles Blvd
+a2t5o00000001GVAAY,Sobeys Lakeshore,N9K1C7,Ontario,Lakeshore,19 Amy Croft Drive
+a2t5o00000001GWAAY,Sobeys Wonderland,N6H0H9,Ontario,London,661 Wonderland Rd. N
+a2t5o00000001GXAAY,FreshCo Markham,L3P8M1,Ontario,Markham,9580 McCowan Road
+a2t5o00000001GYAAY,Sobeys Milton,L9T8X3,Ontario,Milton,1035 Bronte St South
+a2t5o00000001GZAAY,Sobeys Mississauga,L5M7L9,Ontario,Mississauga,5602 Tenth Line West
+a2t5o00000001GaAAI,FreshCo Lundy's Lane,L2H1T6,Ontario,Niagara Falls,5931 Kalar Road
+a2t5o00000001GbAAI,Sobeys Oakville,L6J4W3,Ontario,Oakville,511 Maple Grove Drive
+a2t5o00000001GcAAI,Sobeys Glen Abbey,L6M3G3,Ontario,Oakville,1500 Upper Middle Road
+a2t5o00000001GdAAI,Sobeys Orangeville,L9W5L1,Ontario,Orangeville,500 Riddell Road
+a2t5o00000001GeAAI,Sobeys Trim/Innes,K4A0G4,Ontario,Orleans,5150 Innes Road
+a2t5o00000001GfAAI,Sobeys Oshawa,L1K2Z5,Ontario,Oshawa,1377 Wilson Road  North
+a2t5o00000001GgAAI,Sobeys Paris,N3L2N9,Ontario,Paris,307 Grand River Street N
+a2t5o00000001GhAAI,Sobeys Peterborough,K9J2A1,Ontario,Peterborough,1200 Lansdowne Street W
+a2t5o00000001GiAAI,FreshCo Leslie & Major MacKenzie,L4S1P5,Ontario,Richmond Hill,1430 Major MacKenzie Drive East  Unit A
+a2t5o00000001GjAAI,Sobeys Jefferson Square,L4E3N6,Ontario,Richmond Hill,11700 Yonge Street
+a2t5o00000001GkAAI,FreshCo Lawrence/Midland,M1P2S1,Ontario,Scarborough,2650 Lawrence Avenue E
+a2t5o00000001GlAAI,FreshCo Gerrard & Victoria,M1N1W8,Ontario,Scarborough,2490 Gerrard St. East
+a2t5o00000001GmAAI,Sobeys Simcoe,N3Y2X3,Ontario,Simcoe,438 Norfolk St
+a2t5o00000001GnAAI,Sobeys Glendale & Merritt,L2T0A1,Ontario,St. Catherines,343 Glendale Ave
+a2t5o00000001GoAAI,Sobeys Stratford -,C1B1L8,Prince Edward Island,Stratford,9 Kinlock Road
+a2t5o00000001GpAAI,Sobeys Vaughan,L4J8W1,Ontario,Thornhill,9200 Bathurst Street
+a2t5o00000001GqAAI,FreshCo 800 Steeles,L4J1A2,Ontario,Thornhill,800 Steeles Ave W
+a2t5o00000001GrAAI,Safeway Court Street,P7A4T8,Ontario,Thunder Bay,70 North Court Street
+a2t5o00000001GsAAI,Safeway Arthur Street,P7E5P7,Ontario,Thunder Bay,115 West Arthur Street
+a2t5o00000001GtAAI,Safeway Dawson Road,P7B6S7,Ontario,Thunder Bay,1015 Dawson Road
+a2t5o00000001GuAAI,Sobeys Rosebury,M6B3H3,Ontario,Toronto,145 Marlee Avenue
+a2t5o00000001GvAAI,Sobeys Belfield Long Term Care,M9W1G1,Ontario,Toronto,124 Belfield Rd. Unit 2
+a2t5o00000001GwAAI,FreshCo Bathurst & Nassau,M5T2S6,Ontario,Toronto,410 Bathurst St
+a2t5o00000001GxAAI,Foodland Tottenham,L0G1W0,Ontario,Tottenham,260 Queen Street North
+a2t5o00000001DyAAI,FreshCo Woodbridge,L4H0A2,Ontario,Vaughan,3737 Major MacKenzie Dr
+a2t5o00000001DzAAI,Sobeys Waterloo,N2T2W1,Ontario,Waterloo,450 Columbia Street W
+a2t5o00000001E0AAI,Sobeys Bridgeport,N2J2J9,Ontario,Waterloo,94 Bridgeport Road E
+a2t5o00000001E1AAI,Sobeys Northfield,N2L0C7,Ontario,Waterloo,640 Parkside Dr
+a2t5o00000001E2AAI,Sobeys Whitby,L1N2L1,Ontario,Whitby,1615 Dundas Street E.
+a2t5o00000001E3AAI,Sobeys Uplands,T1H6T3,Alberta,Lethbridge,327 Bluefox Boulevard N
+a2t5o00000001E4AAI,Sobeys Tuscany Boulevard,T3L2V7,Alberta,Calgary,2020-11300 Tuscany Boulevard NW
+a2t5o00000001E5AAI,Sobeys Bridlewood,T2Y4S6,Alberta,Calgary,100-2335 162 Avenue SW
+a2t5o00000001E7AAI,Safeway Shawnessey,T2Y2Z3,Alberta,Calgary,70 Shawville Boulevard SE
+a2t5o00000001E8AAI,Safeway Beddington,T3K2A8,Alberta,Calgary,8120 Beddington Blvd NW
+a2t5o00000001E9AAI,Safeway West Hills Towne Centre,T3H3C8,Alberta,Calgary,200 Stewart Green SW
+a2t5o00000001EAAAY,Safeway Fairway Plaza,T1K6Z3,Alberta,Lethbridge,2750 Fairway Plaza Road S.
+a2t5o00000001EBAAY,Safeway Bonnie Doon,T6C0Y6,Alberta,Edmonton,#185  8330 - 82 Avenue NW
+a2t5o00000001ECAAY,Safeway Wetaskiwin,T9A2B1,Alberta,Wetaskiwin,3901 - 56 Street
+a2t5o00000001EDAAY,Safeway The Grange,T5T1K8,Alberta,Edmonton,2534 Guardian Road
+a2t5o00000001EEAAY,Safeway Aspen Landing,T3H0N6,Alberta,Calgary,375 Aspen Glen Landing SW
+a2t5o00000001EFAAY,Sobeys Royal Oak,T3G5T4,Alberta,Calgary,125-8888 Country Hills Boulevard NW
+a2t5o00000001EGAAY,Sobeys Okotoks,T1S2E1,Alberta,Okotoks,700 Cornerstone  201 Southridge Drive
+a2t5o00000001EHAAY,Sobeys Country Hills,T3K5H2,Alberta,Calgary,200-500 Country Hills Boulevard NE
+a2t5o00000001EIAAY,Sobeys Millrise,T2Y5G7,Alberta,Calgary,2000-150 Millrise  Boulevard SW
+a2t5o00000001EJAAY,Sobeys Village Mall,T4N4C6,Alberta,Red Deer,200-6380 50 Ave
+a2t5o00000001EKAAY,Sobeys Beaumaris,T5X6C3,Alberta,Edmonton,15367 Castledowns Road NW
+a2t5o00000001ELAAY,Sobeys Mill Woods,T6L7G5,Alberta,Edmonton,5011 23 Avenue NW
+a2t5o00000001EMAAY,Sobeys Nottingham,T8A6G3,Alberta,Sherwood Park,688 Wye Road
+a2t5o00000001ENAAY,Sobeys Beaumont,T4X1T8,Alberta,Beaumont,5802 - 50th Street
+a2t5o00000001EOAAY,Sobeys Nolan Hill,T3R0J3,Alberta,Calgary,700 Nolan Hill Blvd NW
+a2t5o00000001EPAAY,Sobeys Mahogany,T3M2P8,Alberta,Calgary,1200  7 Mahogany Plaza SE
+a2t5o00000001EQAAY,Safeway Medicine Hat Mall,T1B2R4,Alberta,Medicine Hat,3292 Dunmore Road SE
+a2t5o00000001ERAAY,Safeway Northgate,T2A7R4,Alberta,Calgary,399 - 36 Street NE
+a2t5o00000001ESAAY,IGA Banff,T1L1B4,Alberta,Banff,318 Marten Street (BOX 1450)
+a2t5o00000001ETAAY,Safeway Westbrook Mall,T3C1S2,Alberta,Calgary,1200 - 37 Street SW
+a2t5o00000001EUAAY,Safeway Downtown,T2R0E6,Alberta,Calgary,813 - 11 Avenue SW
+a2t5o00000001EVAAY,Safeway Market Mall,T3A0E2,Alberta,Calgary,3625 Shaganappi Trail NW
+a2t5o00000001EWAAY,Safeway Mission,T2S2H6,Alberta,Calgary,524 Elbow Drive SW
+a2t5o00000001EXAAY,Safeway Beacon Heights,T2E2S6,Alberta,Calgary,#20  1818 Centre Street NE
+a2t5o00000001EYAAY,Safeway Kensington,V5B1S2,British Columbia,Burnaby,6564 East Hastings Street
+a2t5o00000001EZAAY,Safeway Ogden,T2C2N5,Alberta,Calgary,7740 - 18 Street SE
+a2t5o00000001EaAAI,Safeway Woodbine Square,T2W4N7,Alberta,Calgary,2525 Woodview Drive SW
+a2t5o00000001EbAAI,Safeway Tower Lane Mall,T4B1E1,Alberta,Airdrie,505 Main Street
+a2t5o00000001EcAAI,Safeway Castleridge,T3J3J8,Alberta,Calgary,33 Castleridge Boulevard NE
+a2t5o00000001EdAAI,Safeway Crowfoot,T3G2L5,Alberta,Calgary,99 Crowfoot Crescent NW
+a2t5o00000001EeAAI,Safeway Meadowlark,T5R5W9,Alberta,Edmonton,8720 - 156 Street
+a2t5o00000001EfAAI,Sobeys Forest Lawn,T2A0V7,Alberta,Calgary,5101 17th Avenue SE
+a2t5o00000001EgAAI,Sobeys Namao Center,T5Z3L1,Alberta,Edmonton,9611-167 Ave NW
+a2t5o00000001EhAAI,Sobeys St. Albert,T8N5J9,Alberta,St. Albert,392 St. Albert Road
+a2t5o00000001EiAAI,Sobeys Gaetz South,T4R2K1,Alberta,Red Deer,2110 50 Avenue
+a2t5o00000001EjAAI,Sobeys Lewis Estates,T5T4K5,Alberta,Edmonton,1030 Webber Greens Drive NW
+a2t5o00000001EkAAI,FreshCo Tamarack,T6T0Y2,Alberta,Edmonton,2355 - 17 Street NW
+a2t5o00000001ElAAI,Sobeys Cranston,T3M0S9,Alberta,Calgary,356 Cranston Rd SE Unit 3000
+a2t5o00000001EmAAI,Sobeys Silverado,T2X0T9,Alberta,Calgary,704 - 19369 Sheriff King St. S.W.
+a2t5o00000001EnAAI,Sobeys Southbrook,T6W1S4,Alberta,Edmonton,1109 James Mowatt Trail
+a2t5o00000001EoAAI,Sobeys Airdrie,T4B0V7,Alberta,Airdrie,100  65 MacKenzie Way SW
+a2t5o00000001EpAAI,Sobeys Hollick Kenyon,T5Y0L2,Alberta,Edmonton,5119-167 Avenue NW
+a2t5o00000001EqAAI,Sobeys Walker,T6X1X2,Alberta,Edmonton,5309 Ellerslie Road S.W.
+a2t5o00000001ErAAI,Safeway Whitehorn,T1Y6J2,Alberta,Calgary,3550 32 Avenue NE
+a2t5o00000001EsAAI,Safeway SouthCentre,T2J6S1,Alberta,Calgary,11011 Bonaventure Drive SE
+a2t5o00000001EtAAI,Safeway Glenmore Landing,T2V5A8,Alberta,Calgary,1600 - 90 Avenue SW
+a2t5o00000001EuAAI,Safeway Dalhousie Station,T3A5R8,Alberta,Calgary,5005 Dalhousie Drive NW
+a2t5o00000001EvAAI,Safeway Leduc,T9E6N7,Alberta,Leduc,6112 - 50 Street
+a2t5o00000001EwAAI,Safeway Riverbend Square,T6R2E3,Alberta,Edmonton,576 Riverbend Square NW
+a2t5o00000001ExAAI,Safeway Gateway,T8N5T8,Alberta,St. Albert,300 - 2 Hebert Road
+a2t5o00000001EyAAI,Safeway Inglewood,T8N5Z9,Alberta,St. Albert,395 St. Albert Trail
+a2t5o00000001EzAAI,Safeway Coliseum,T5B0S1,Alberta,Edmonton,8118 - 118 Avenue NW
+a2t5o00000001F0AAI,Safeway Oliver,T5K2S5,Alberta,Edmonton,11410 - 104 Avenue NW
+a2t5o00000001F2AAI,Safeway Wye Road,T8A4N5,Alberta,Sherwood Park,985 Fir Street
+a2t5o00000001F3AAI,Safeway Port O'Call Mall,T4N3Z6,Alberta,Red Deer,4408 50th Avenue
+a2t5o00000001F4AAI,Safeway Manning Crossing,T5A5A1,Alberta,Edmonton,500 Manning Crossing NW
+a2t5o00000001F5AAI,Safeway Terra Losa,T5T5L5,Alberta,Edmonton,9710 - 170 Street NW
+a2t5o00000001F6AAI,Safeway Cornerstone,T4V4T1,Alberta,Camrose,200  6800 - 48 Avenue
+a2t5o00000001F7AAI,Safeway Stony Plain,T7Z1L1,Alberta,Stony Plain,4202 South Park Drive
+a2t5o00000001F8AAI,Safeway Callingwood,T5T4J5,Alberta,Edmonton,600  6655 - 178 Street NW
+a2t5o00000001F9AAI,Safeway South View,T8V6H7,Alberta,Grande Prairie,8100 - 100 Street
+a2t5o00000001FAAAY,Safeway Pallisades Square,T5L4Y8,Alberta,Edmonton,12950 - 137 Avenue NW
+a2t5o00000001FBAAY,Safeway Westmount Centre,T5M3L7,Alberta,Edmonton,601  111 Ave and Groat Road
+a2t5o00000001FCAAY,Safeway Northgate Centre,T5E5R8,Alberta,Edmonton,200  9499 - 137 Avenue NW
+a2t5o00000001FDAAY,Safeway Capilano Shopping Centre,T6A0A1,Alberta,Edmonton,5821 Terrace Road NW
+a2t5o00000001FEAAY,Safeway Southgate,T6H4M6,Alberta,Edmonton,100A  5015 - 111 Street NW
+a2t5o00000001FFAAY,Safeway Jasper Gates,T5P4W1,Alberta,Edmonton,15007 Stony Plain Road NW
+a2t5o00000001FGAAY,Safeway Windermere Safeway,T6W0L9,Alberta,Edmonton,5110 Windermere Blvd
+a2t5o00000001FHAAY,Safeway Downtown,V1Y6P4,British Columbia,Kelowna,697 Bernard Avenue
+a2t5o00000001FIAAY,Safeway Millbourne Mall,T6K3L6,Alberta,Edmonton,38 Ave. & Millwoods Road
+a2t5o00000001FJAAY,Safeway Saddle Ridge,T3J0H5,Alberta,Calgary,850 Saddletowne Circle NE
+a2t5o00000001FKAAY,Safeway Garrison Woods,T2T6E3,Alberta,Calgary,2425 - 34 Avenue SW
+a2t5o00000001FLAAY,Safeway North Hill Center,T2N1M7,Alberta,Calgary,#1846 1632 - 14 Avenue NW
+a2t5o00000001FMAAY,Safeway Cochrane,T4C2A5,Alberta,Cochrane,304 - 5 Avenue West
+a2t5o00000001FNAAY,Safeway Division Avenue,T1A2J9,Alberta,Medicine Hat,615 Division Avenue South
+a2t5o00000001FOAAY,Safeway Montgomery,T3B0N3,Alberta,Calgary,5048 16 Avenue NW
+a2t5o00000001FPAAY,Safeway Okotoks,T1S1B3,Alberta,Okotoks,610 Big Rock Lane (Box 1380)
+a2t5o00000001FQAAY,Safeway Fort Saskatchewan,T8L4P4,Alberta,Fort Saskatchewan,9450 - 86 Avenue
+a2t5o00000001FRAAY,Safeway Garneau,T6G0S8,Alberta,Edmonton,10930 - 82 Avenue NW
+a2t5o00000001FSAAY,Safeway Brooks,T1R0W3,Alberta,Brooks,550 Cassils Road West
+a2t5o00000001FTAAY,Safeway Spruce Grove,T7X1R2,Alberta,Spruce Grove,94 Mcleod Avenue
+a2t5o00000001FUAAY,Safeway Thorncliffe,T2K1B3,Alberta,Calgary,5607 - 4 Street NW
+a2t5o00000001FVAAY,Safeway Canmore,T1W1P4,Alberta,Canmore,1200 Railway Avenue
+a2t5o00000001FWAAY,Safeway West Lethbridge,T1J4T3,Alberta,Lethbridge,1  550 University Drive W.
+a2t5o00000001FXAAY,Safeway Heritage,T6J5E5,Alberta,Edmonton,2304 - 109 Street NW
+a2t5o00000001FYAAY,Safeway Lloydminster Mall,T9V0A7,Alberta,Lloydminster,5211 - 44 Street
+a2t5o00000001FZAAY,Safeway Sherwood Park Mall,T8A3H9,Alberta,Sherwood Park,2020 Sherwood Drive
+a2t5o00000001FaAAI,Safeway Abbotsfield Mall,T5W0Z3,Alberta,Edmonton,3210 - 118 Avenue NW
+a2t5o00000001FbAAI,Safeway South Trail Crossing,T2Z3V8,Alberta,Calgary,#100  4915 - 130 Avenue SE
+a2t5o00000001FcAAI,Safeway Glamorgan,T3E6L6,Alberta,Calgary,3737 - 37 Street SW
+a2t5o00000001FdAAI,Safeway Chestermere Station,T1X1V2,Alberta,Chestermere,100  135 Chestermere Station Way
+a2t5o00000001FeAAI,Lawtons Brunswick Square - Pfizer/Moderna,E2L4W3,New Brunswick,Saint John,39 King Street
+a2t5o00000001FfAAI,Lawtons Brookside Mall - Pfizer/Moderna,E3A8V4,New Brunswick,Fredericton,435 Brookside Drive  Unit 5
+a2t5o00000001FgAAI,Lawtons Sussex - Pfizer/Moderna,E4E3E1,New Brunswick,Sussex,138 Main Street  Suite 8
+a2t5o00000001FhAAI,Lawtons Moncton Nursing Home - Pfizer/Moderna,E1C2R4,New Brunswick,Moncton,800 Mountain Road
+a2t5o00000001FiAAI,Lawtons Mapleton - Pfizer/Moderna,E1C7W8,New Brunswick,Moncton,40 Mapleton Road
+a2t5o00000001FjAAI,Sobeys Saint John - Pfizer/Moderna,E2K2Z9,New Brunswick,Saint John,149 Lansdowne Avenue
+a2t5o00000001FkAAI,Sobeys Moncton Mall - Pfizer/Moderna,E1C2T8,New Brunswick,Moncton,1380 Mountain Road
+a2t5o00000001FlAAI,Sobeys Brookside Mall - Pfizer/Moderna,E3A8V4,New Brunswick,Fredericton,463 Brookside Drive
+a2t5o00000001FmAAI,Sobeys Uptown - Pfizer/Moderna,E3B5C7,New Brunswick,Fredericton,1180 Prospect St
+a2t5o00000001FnAAI,Sobeys Rothesay - Pfizer/Moderna,E2E2R1,New Brunswick,Rothesay,140 Hampton Road
+a2t5o00000001FoAAI,Sobeys East Point - Pfizer/Moderna,E2J0H4,New Brunswick,Saint John,40 East Point Way
+a2t5o00000001FpAAI,Sobeys Champlain Mall - Pfizer/Moderna,E1A4X5,New Brunswick,Dieppe,477 Paul Street
+a2t5o00000001FqAAI,Sobeys Miramichi - Pfizer/Moderna,E1V6W6,New Brunswick,Miramichi,2485 King George Highway
+a2t5o00000001FrAAI,Sobeys Riverview - Pfizer/Moderna,E1B0J6,New Brunswick,Riverview,1160 Findlay Blvd
+a2t5o00000001FsAAI,Sobeys Shediac - Pfizer/Moderna,E4P2A5,New Brunswick,Shediac,183 Main Street
+a2t5o00000001KJAAY,Lawtons Glace Bay,B1A3C6,Nova Scotia,Glace Bay,290 Commercial Street
+a2t5o00000001KKAAY,Lawtons Scotia Square,B3J1N9,Nova Scotia,Halifax,5201 Duke Street
+a2t5o00000001KLAAY,Lawtons Musquodoboit,B0J2L0,Nova Scotia,Musquodoboit Harbour,8003 7 Highway
+a2t5o00000001KMAAY,Lawtons Sydney,B1P1K7,Nova Scotia,Sydney,540 George Street
+a2t5o00000001KNAAY,Lawtons Northwood Terrace NHS,B3K3S5,Nova Scotia,Halifax,2615 Northwood Terrace
+a2t5o00000001KOAAY,Lawtons Sheet Harbour,B0J3B0,Nova Scotia,Sheet Harbour,22624 7 Highway
+a2t5o00000001KPAAY,Lawtons Gladstone,B3K5R3,Nova Scotia,Halifax,6155 North Street
+a2t5o00000001KQAAY,Lawtons Yarmouth,B5A2T5,Nova Scotia,Yarmouth,76 Starrs Road
+a2t5o00000001KRAAY,Lawtons Duffus Street,B3K2M5,Nova Scotia,Halifax,5515 Duffus Street
+a2t5o00000001KSAAY,Sobeys Pictou,B0K1H0,Nova Scotia,Pictou,239 West River Road  PO Box 879
+a2t5o00000001KTAAY,Sobeys Spryfield,B3P1M2,Nova Scotia,Halifax,279 Herring Cove Road
+a2t5o00000001KUAAY,Sobeys Barrington Passage,B0W1G0,Nova Scotia,Barrington Passage,3552 Highway 3
+a2t5o00000001KVAAY,Sobeys Glace Bay,B1A4W5,Nova Scotia,Glace Bay,144 Reserve Street
+a2t5o00000001KWAAY,Sobeys Timberlea,B3T1L5,Nova Scotia,Timberlea,65 Marketway Lane
+a2t5o00000001KXAAY,Sobeys Aberdeen Mall,B2H3S2,Nova Scotia,New Glasgow,610 East River Road
+a2t5o00000001KYAAY,Sobeys North Sydney,B2A3R7,Nova Scotia,North Sydney,116 King Street
+a2t5o00000001KZAAY,Sobeys Windsor Street,B3K5C7,Nova Scotia,Halifax,2651 Windsor Street
+a2t5o00000001KaAAI,Sobeys Queen Street,B3H2R9,Nova Scotia,Halifax,1120 Queen Street
+a2t5o00000001KbAAI,Sobeys Bedford,B4A1A9,Nova Scotia,Bedford,955 Bedford Highway
+a2t5o00000001KcAAI,Sobeys Truro,B2N1L2,Nova Scotia,Truro,68 Robie Street
+a2t5o00000001KdAAI,Sobeys Downsview,B4E1R7,Nova Scotia,Lower Sackville,752 Sackville Drive
+a2t5o00000001KeAAI,Sobeys Windsor,B0N2T0,Nova Scotia,Windsor,50 Empire Lane  PO Box 2229
+a2t5o00000001KfAAI,Sobeys Tantallon,B3Z4R3,Nova Scotia,Upper Tantallon,3650 Hammonds Plains Road
+a2t5o00000001KgAAI,Sobeys Digby,B0V1A0,Nova Scotia,Digby,110 Warwick Street  PO Box 937
+a2t5o00000001KhAAI,Sobeys Bedford South,B3M0G2,Nova Scotia,Bedford,55 Peakview Way
+a2t5o00000001KiAAI,Sobeys Sydney,B1P5K6,Nova Scotia,Sydney,272B Prince Street
+a2t5o00000001KjAAI,Sobeys Amherst Centre Mall,B4H4H4,Nova Scotia,Amherst,140 South Albion Street
+a2t5o00000001KkAAI,Sobeys Fall River,B2T1J5,Nova Scotia,Fall River,3290 Highway 2
+a2t5o00000001KlAAI,Sobeys Greenwood,B0P1R0,Nova Scotia,Kingston,720 Central Avenue  PO Box 70
+a2t5o00000001KmAAI,Sobeys New Minas,B4N4A9,Nova Scotia,New Minas,9256 Commercial Street
+a2t5o00000001KnAAI,Sobeys Russell Lake,B2W6L4,Nova Scotia,Dartmouth,268 Baker Drive
+a2t5o00000001KoAAI,Sobeys Tacoma,B2W3E5,Nova Scotia,Dartmouth,60 Tacoma Drive
+a2t5o00000001KpAAI,Sobeys Penhorn,B2Y4B1,Nova Scotia,Dartmouth,551 Portland St
+a2t5o00000001KqAAI,Sobeys First Lake Drive,B4C3E4,Nova Scotia,Lower Sackville,80 First Lake Drive
+a2t5o00000001KrAAI,Sobeys Wyse Road,B3A1M9,Nova Scotia,Dartmouth,210 Wyse Road
+a2t5o00000001KsAAI,Lawtons Mill Cove Nursing Home Services,B4A1A9,Nova Scotia,Bedford,967 Bedford Highway  Suite 100
+a2t5o00000001KtAAI,Lawtons Kentville,B4N1K7,Nova Scotia,Kentville,363 Main Street
+a2t5o00000001KuAAI,Lawtons New Minas,B4N0E4,Nova Scotia,New Minas,20 Silver Fox Avenue
+a2t5o00000001KvAAI,Lawtons Amherst,B4H3G5,Nova Scotia,Amherst,2 Lawrence Street  Suite 101
+a2t5o00000001KwAAI,Lawtons East River Road,B2H3S3,Nova Scotia,New Glasgow,810 East River Road
+a2t5o00000001KxAAI,Lawtons Bridgewater,B4V2V6,Nova Scotia,Bridgewater,26 North Street
+a2t5o00000001KyAAI,Lawtons Bedford South,B3M0G2,Nova Scotia,Bedford,27 Peakview Way
+a2t5o00000001KzAAI,Lawtons Lower Sackville,B4C2S4,Nova Scotia,Lower Sackville,665 Sackville Dr
+a2t5o00000001L0AAI,Lawtons Porters Lake,B3E1J8,Nova Scotia,Porters Lake,5228 7 Highway  Unit 17
+a2t5o00000001L1AAI,Lawtons East River Road LTC,B2H3S3,Nova Scotia,New Glasgow,810 East River Road  Unit 200
+a2t5o00000001L2AAI,Lawtons Russell Lake,B2W6L4,Nova Scotia,Dartmouth,240 Baker Drive
+a2t5o00000001L3AAI,Lawtons Spryfield,B3R2H9,Nova Scotia,Halifax,16 Dentith Road  Unit A10
+a2t5o00000001L4AAI,Lawtons Kings Road,B1S1A1,Nova Scotia,Sydney,196 Kings Road
+a2t5o00000001L5AAI,Lawtons Halifax Shopping Centre,B3L2H8,Nova Scotia,Halifax,7001 Mumford Road
+a2t5o00000001L6AAI,Lawtons New Waterford,B1H1Z2,Nova Scotia,New Waterford,3415 Plummer Avenue
+a2t5o00000001L7AAI,Lawtons Kelligrews,A1X7L5,Newfoundland and Labrador,Conception Bay South,645 Conception Bay Highway  Suite 102
+a2t5o00000001L8AAI,Lawtons Avalon Mall,A1B1W3,Newfoundland and Labrador,St. John's,48 Kenmount Road
+a2t5o00000001L9AAI,Lawtons Campbell Avenue,A1E2Z3,Newfoundland and Labrador,St. John's,37 Campbell Avenue
+a2t5o00000001LAAAY,Lawtons Wedgewood,A1A2M7,Newfoundland and Labrador,St. John's,12 Gleneyre Street
+a2t5o00000001LBAAY,Sobeys Yarmouth,B5A2T5,Nova Scotia,Yarmouth,76 Starrs Road
+a2t5o00000001LCAAY,Sobeys Panavista,B2W5M5,Nova Scotia,Dartmouth,612 Main Street  7 Highway
+a2t5o00000001LDAAY,Sobeys Sydney River,B1S1P4,Nova Scotia,Sydney River,95 Keltic Drive
+a2t5o00000001LEAAY,Sobeys Clayton Park,B3M3Y7,Nova Scotia,Halifax,287 Lacewood Drive
+a2t5o00000001LFAAY,Sobeys New Glasgow,B2H2K1,Nova Scotia,New Glasgow,38 George Street
+a2t5o00000001LGAAY,Lawtons Sydney Rehab Equipment Centre,B1P5X9,Nova Scotia,Sydney,124 Pitt Street
+a2t5o00000001LHAAY,Lawtons Lawtons Cape Breton NHS,B1P1G7,Nova Scotia,Sydney,185 Bentinck Street  Suite 202
+a2t5o00000001LIAAY,Lawtons Mill Cove,B4A1A9,Nova Scotia,Bedford,965 Bedford Highway
+a2t5o00000001LJAAY,Sobeys Truro Prince Street,B2N1H7,Nova Scotia,Truro,985 Prince Street
+a2t5o00000001LKAAY,Lawtons Truro,B2N5A4,Nova Scotia,Truro,316 Willow Street
+a2t5o00000001LLAAY,Sobeys Montague,C0A1R0,Prince Edward Island,Montague,76-87 Main Street Po Box 310
+a2t5o00000001LMAAY,Lawtons Friendly's Charlottetown,C1A9M5,Prince Edward Island,Charlottetown,220 Water Street
+a2t5o00000001LNAAY,Sobeys Summerside,C1N4P7,Prince Edward Island,Summerside,475 Granville Street
+a2t5o00000001LOAAY,Sobeys University Avenue,C1A4N6,Prince Edward Island,Charlottetown,400 University Avenue
+a2t5o00000001LPAAY,Lawtons Westville,B0K2A0,Nova Scotia,Westville,1886 Main Street
+a2t5o00000001LQAAY,Sobeys Halifax Shop Annex - Travel Wellness Clinic,B3L4P1,Nova Scotia,Halifax,6960 Mumford Road
+a2t5o00000001LRAAY,Lawtons Westphal,B2X1R5,Nova Scotia,Dartmouth,90 Main Street
+a2t5o00000001LSAAY,Lawtons Cobequid Road,B4C2N1,Nova Scotia,Lower Sackville,157-159 Cobequid Road
+a2t5o00000001LTAAY,Sobeys Topsail Road,A1E2C3,Newfoundland and Labrador,St. John's,470 Topsail Road
+a2t5o00000001LUAAY,Lawtons Deer Lake,A8A1J4,Newfoundland and Labrador,Deer Lake,4 Farm Road
+a2t5o00000001LVAAY,Lawtons Springdale,A0J1T0,Newfoundland and Labrador,Springdale,190 Main Street  PO Box 640
+a2t5o00000001LWAAY,Lawtons Gander,A1V1H6,Newfoundland and Labrador,Gander,177 Elizabeth Drive
+a2t5o00000001LXAAY,Sobeys Conception Bay,A1X7A3,Newfoundland and Labrador,Conception Bay South,350 Conception Bay Hwy
+a2t5o00000001LYAAY,Lawtons Topsail Road,A1E2C2,Newfoundland and Labrador,St. John's,496 Topsail Road
+a2t5o00000001LZAAY,Lawtons Clarke's Beach,A0A1W0,Newfoundland and Labrador,Clarke's Beach,123 Conception Bay Highway  PO Box 550
+a2t5o00000001LaAAI,Lawtons Downtown Pharmacy,A2H4B8,Newfoundland and Labrador,Corner Brook,3 Herald Avenue
+a2t5o00000001LbAAI,Sobeys Mt. Pearl,A1N4Y1,Newfoundland and Labrador,Mount Pearl,50 Old Placentia Road
+a2t5o00000001LcAAI,Sobeys Merrymeeting Road,A1C2V5,Newfoundland and Labrador,St. John's,8 Merrymeeting Road
+a2t5o00000001LdAAI,FoodLand Bay Roberts,AOA1G0,Newfoundland and Labrador,Bay Roberts,Beaver Plaza  PO Box 730
+a2t5o00000001LeAAI,FoodLand Grand Bank,A0E1W0,Newfoundland and Labrador,Grand Bank,Highway Route 220
+a2t5o00000001LfAAI,Lawtons Charlottetown,C1A1L2,Prince Edward Island,Charlottetown,199 Grafton Street
+a2t5o00000001LgAAI,Sobeys West Royalty,C1A0C9,Prince Edward Island,Charlottetown,39 Babineau Avenue
+a2t5o00000001LhAAI,Sobeys Mount Bernard Avenue,A2H6Y5,Newfoundland and Labrador,Corner Brook,1 Mount Bernard Avenue
+a2t5o00000001LiAAI,Lawtons Paradise,A1L1P6,Newfoundland and Labrador,Paradise,1386 Topsail Road
+a2t5o00000001LjAAI,Lawtons Elizabeth Avenue,A1A1W6,Newfoundland and Labrador,St. John's,11 Elizabeth Avenue
+a2t5o00000001LkAAI,Lawtons Corner Brook,A2H5M8,Newfoundland and Labrador,Corner Brook,P.O Box 130  137 O'Connell Drive
+a2t5o00000001LlAAI,Lawtons Trepassey,A0A4B0,Newfoundland and Labrador,Trepassey,80 Nurse Abernethy Clinic
+a2t5o00000001LmAAI,Lawtons Sherwood Centre,C1A5P7,Prince Edward Island,Charlottetown,161 St. Peter's Road
+a2t5o00000001LnAAI,Lawtons Montague,C0A1R0,Prince Edward Island,Montague,407 MacIntyre Ave  PO Box 670
+a2t5o00000001LoAAI,FreshCo Kildonan Crossing,R2C5C6,Manitoba,Winnipeg,500-1615 Regent Ave W
+a2t5o00000001LpAAI,FreshCo Jefferson,R2P1W1,Manitoba,Winnipeg,920 Jefferson Avenue
+a2t5o00000001LqAAI,Safeway Sargent,R3E0A1,Manitoba,Winnipeg,600 Sargent Ave.
+a2t5o00000001LrAAI,Safeway Niakwa Village,R2M0Y5,Manitoba,Winnipeg,2 Alpine Avenue
+a2t5o00000001LsAAI,Safeway Pembina & McGillivray,R3T2B6,Manitoba,Winnipeg,1319 Pembina Highway
+a2t5o00000001LtAAI,Safeway River East Plaza,R2G1N4,Manitoba,Winnipeg,1441 Henderson Hwy.
+a2t5o00000001LuAAI,Safeway Ness & Madison,R3J3X3,Manitoba,Winnipeg,1612 Ness Avenue
+a2t5o00000001LvAAI,FreshCo Sargent,R3E0A1,Manitoba,Winnipeg,600 Sargent Ave.
+a2t5o00000001LwAAI,Safeway Mountain & McGregor,R2W1L2,Manitoba,Winnipeg,594 Mountain At McGregor
+a2t5o00000001LxAAI,Lawtons Tantallon,B3Z1E2,Nova Scotia,Upper Tantallon,5110 St Margaret's Bay Rd  Suite 101
+a2t5o00000001LyAAI,Sobeys Sobeys 2761 Central-Fill,B4B1B4,Nova Scotia,Hammonds Plains,2-1220 Hammonds Plains Rd
+a2t5o00000001LzAAI,FoodLand St. Peters,B0E3B0,Nova Scotia,St. Peters,10004 Grenville Street   PO Box 39
+a2t5o00000001M0AAI,Lawtons Centennial Square,A1N2C3,Newfoundland and Labrador,Mount Pearl,279 - 8 Centennial Square
+a2t5o00000001M1AAI,Lawtons Lewisporte,A0G3A0,Newfoundland and Labrador,Lewisporte,486 Main Street W.
+a2t5o00000001M2AAI,Lawtons Placentia,A0B2Y0,Newfoundland and Labrador,Placentia,29-34 Prince William Drive
+a2t5o00000001M3AAI,Sobeys Torbay,A1A4E1,Newfoundland and Labrador,St. John's,360 Torbay Road
+a2t5o00000001M4AAI,Sobeys Ropewalk Lane,A1E4P1,Newfoundland and Labrador,St. John's,65 Ropewalk Lane
+a2t5o00000001M5AAI,Sobeys Grand Falls,A2A1X3,Newfoundland and Labrador,Grand Falls,21 Cromer Avenue
+a2t5o00000001M6AAI,Sobeys Kenmount,A1B5C8,Newfoundland and Labrador,St. John's,45 Kelsey Drive
+a2t5o00000001M7AAI,Sobeys Howley Estates,A1A1W4,Newfoundland and Labrador,St. John's,10 Elizabeth Avenue East
+a2t5o00000001M8AAI,Sobeys Marystown,A0E2M0,Newfoundland and Labrador,Marystown,1 - 23 Columbia Drive   PO BOX 397
+a2t5o00000001M9AAI,Lawtons Summerside,C1N4P7,Prince Edward Island,Summerside,475 Granville Street
+a2t5o00000001MAAAY,FreshCo Pembina & McGillivray,R3T2B6,Manitoba,Winnipeg,1319 Pembina Highway
+a2t5o00000001MBAAY,Safeway Selkirk,R1AOY7,Manitoba,Selkirk,318 Manitoba Avenue
+a2t5o00000001MCAAY,Sobeys Rochdale,S4X4P7,Saskatchewan,Regina,4101 Rochdale Boulevard
+a2t5o00000001MDAAY,FreshCo Blundell & No 2,V7C1H8,British Columbia,Richmond,6140 Blundell Road
+a2t5o00000001MEAAY,FreshCo No 3 & Williams,V7A4R6,British Columbia,Richmond,10151 No. 3 Road
+a2t5o00000001MFAAY,FreshCo Chalo 138 St & 72 Ave,V3W7T9,British Columbia,Surrey,7165 138 Street
+a2t5o00000001MGAAY,FreshCo Mission,V2V1A5,British Columbia,Mission,32520 Lougheed Highway
+a2t5o00000001MHAAY,Sobeys St Anne's,R2M5S1,Manitoba,Winnipeg,1939 Bishop Grandin Boulevard
+a2t5o00000001MIAAY,Sobeys Reenders,R2C5K5,Manitoba,Winnipeg,#7 Reenders Drive
+a2t5o00000001MJAAY,Sobeys St. Vital,R2N3Y7,Manitoba,Winnipeg,1500 Dakota Street
+a2t5o00000001MKAAY,Sobeys Steinbach,R5G1T7,Manitoba,Steinbach,1-178 PTH 12N ClearSpring Centre box 3089
+a2t5o00000001MLAAY,Sobeys Kenaston,R3P2M6,Manitoba,Winnipeg,1660 Kenaston Boulevard
+a2t5o00000001MMAAY,Safeway Surrey Centre,V3T2W6,British Columbia,Surrey,10355 King George Hwy
+a2t5o00000001MNAAY,Safeway West Broadway,V6K2G5,British Columbia,Vancouver,2733 West Broadway
+a2t5o00000001MOAAY,Safeway Sunshine Hills,V4E3G3,British Columbia,North Delta,6401 - 120 Street
+a2t5o00000001MPAAY,Safeway Westview Mall,V7N3X4,British Columbia,North Vancouver,#780  2601 Westview Drive
+a2t5o00000001MQAAY,Safeway Robson,V6G1E2,British Columbia,Vancouver,1766 Robson Street
+a2t5o00000001MRAAY,Safeway Shaughnessy Station,V3C6K5,British Columbia,Port Coquitlam,1100  2850 Shaughnessy Street
+a2t5o00000001MSAAY,Safeway Ocean Park,V4A1N5,British Columbia,Surrey,12825 - 16 Avenue
+a2t5o00000001MTAAY,Safeway King Edward Mall,V5Z2E2,British Columbia,Vancouver,990 King Edward Avenue West
+a2t5o00000001MUAAY,Safeway West 4th & Vine,V6K1P2,British Columbia,Vancouver,2315 West 4 Avenue
+a2t5o00000001MVAAY,Safeway Terrace,V8G1R3,British Columbia,Terrace,4655 Lakelse Avenue
+a2t5o00000001MWAAY,Safeway Nelson,V1L3X8,British Columbia,Nelson,211 Anderson
+a2t5o00000001MXAAY,Safeway Lynn Valley,V7J1S1,British Columbia,North Vancouver,1170 East 27 Street
+a2t5o00000001MYAAY,Safeway Smithers,V0J2N0,British Columbia,Smithers,3664 Highway 16 (Box 459)
+a2t5o00000001MZAAY,Safeway Penticton Plaza,V2A5E9,British Columbia,Penticton,801  1301 Main Street
+a2t5o00000001MaAAI,Safeway Parkgate Village,V7H2Y4,British Columbia,North Vancouver,1175 Mt. Seymour Road
+a2t5o00000001MbAAI,Lawtons NL Wholesle Division,A1N4T5,Newfoundland and Labrador,Mount Pearl,1 Home Street  Donovan's Industrial Park
+a2t5o00000001McAAI,Lawtons NS Wholesale Division,B3B1R9,Nova Scotia,Dartmouth,81 Thornhill Drive
+a2t5o00000001MdAAI,Sobeys Preston,S7N4V2,Saskatchewan,Saskatoon,1739 Preston Avenue North
+a2t5o00000001MeAAI,FreshCo Regent Park,S4R4A8,Saskatchewan,Regina,3859 Sherwood Drive
+a2t5o00000001MfAAI,FreshCo Confederation,S7L4R6,Saskatchewan,Saskatoon,300 Confederation Drive
+a2t5o00000001MgAAI,FreshCo 33rd Street,S7L0V4,Saskatchewan,Saskatoon,302 - 33 Street West
+a2t5o00000001MhAAI,FreshCo Market Mall,S7J2G1,Saskatchewan,Saskatoon,2325 Preston Avenue
+a2t5o00000001MiAAI,Sobeys Northdale,R2K2M2,Manitoba,Winnipeg,965 Henderson Highway
+a2t5o00000001MjAAI,Sobeys Birds Hill,R2E1G9,Manitoba,East St. Paul,3156 Birds Hill Rd.  PO Box 38108
+a2t5o00000001MkAAI,Sobeys Rivergrove,R2V4W3,Manitoba,Winnipeg,2575 Main Street
+a2t5o00000001MlAAI,Sobeys Kildonan,R3W0H1,Manitoba,Winnipeg,50 Kildonan Green Drive
+a2t5o00000001MmAAI,Sobeys Varsity,S7H0T3,Saskatchewan,Saskatoon,1550 8th Street East
+a2t5o00000001MnAAI,Safeway 13th Avenue,S4T1N8,Saskatchewan,Regina,2931 - 13 Avenue
+a2t5o00000001MoAAI,Safeway Moose Jaw,S6H1K9,Saskatchewan,Moose Jaw,200 - 1 Avenue North West
+a2t5o00000001MpAAI,Safeway Victoria Square,S4N6E4,Saskatchewan,Regina,2223 Victoria Avenue East
+a2t5o00000001MqAAI,Sobeys Stonebridge Sobeys,S7T0V1,Saskatchewan,Saskatoon,3100 Preston Ave. S.
+a2t5o00000001MrAAI,Sobeys Estevan,S4A2B4,Saskatchewan,Estevan,440 King Street
+a2t5o00000001MsAAI,Safeway Arbutus,V6L0B9,British Columbia,Vancouver,2101 Lahb Ave (Off Arbutus Street)
+a2t5o00000001MtAAI,Safeway Austin Heights,V3K2P2,British Columbia,Coquitlam,1033 Austin Ave
+a2t5o00000001MuAAI,Safeway Davie Street,V6G1V9,British Columbia,Vancouver,1611 Davie Street
+a2t5o00000001MvAAI,Safeway Central Fill Facility and Compounding Centre,V3S6K3,British Columbia,Surrey,105  19515 - 56th Ave
+a2t5o00000001MwAAI,ThriftyFoods James Bay,V8V4T4,British Columbia,Victoria,475 Simcoe Street
+a2t5o00000001MxAAI,Safeway River Avenue,R3L0C9,Manitoba,Winnipeg,499 River Avenue
+a2t5o00000001MyAAI,Sobeys Pembina,R3T6E4,Manitoba,Winnipeg,2850 Pembina Highway
+a2t5o00000001MzAAI,Sobeys Unicity,R3K2G6,Manitoba,Winnipeg,3635 Portage Avenue
+a2t5o00000001N0AAI,Sobeys Brandon South,R7A5C5,Manitoba,Brandon,1570 18th Street
+a2t5o00000001N1AAI,Sobeys Grant Park,R3M3Z4,Manitoba,Winnipeg,1150 Taylor Avenue
+a2t5o00000001N2AAI,FreshCo Chalo 120 St & 72 Ave,V3W3M9,British Columbia,Surrey,7450 120 Street
+a2t5o00000001N3AAI,FreshCo Aldergrove,V4W3N5,British Columbia,Aldergrove,27566 Fraser Highway
+a2t5o00000001N4AAI,FreshCo Chilliwack,V2P2N9,British Columbia,Chilliwack,45858 Yale Road
+a2t5o00000001N5AAI,FreshCo Maple Ridge,V2X2P6,British Columbia,Maple Ridge,300  20201 Lougheed Hwy
+a2t5o00000001N6AAI,FreshCo Clearbrook Town Square,V2T4W1,British Columbia,Abbotsford,100  32500 S. Fraser Way
+a2t5o00000001N7AAI,Safeway Caulfeild Village,V7W3C7,British Columbia,West Vancouver,5385 Headland Drive
+a2t5o00000001N8AAI,Safeway Burnaby Heights,V5C2K2,British Columbia,Burnaby,4440 Hastings Street
+a2t5o00000001N9AAI,Safeway Fraser Crossing,V3A4G7,British Columbia,Langley,20871 Fraser Highway
+a2t5o00000001NAAAY,Safeway Penninsula Village,V4A2H9,British Columbia,Surrey,700  15355 - 24 Avenue
+a2t5o00000001NBAAY,ThriftyFoods Duncan,V9L6X2,British Columbia,Duncan,2755 Beverly Street
+a2t5o00000001NCAAY,ThriftyFoods Morgan Crossing,V3S2L5,British Columbia,Surrey,102-15745 Croydon Drive
+a2t5o00000001NDAAY,ThriftyFoods Crown Isle,V9N0A9,British Columbia,Courtenay,123 - 444 Lerwick Road
+a2t5o00000001NEAAY,ThriftyFoods Belmont,V9B0W9,British Columbia,Langford,3011 Merchant Way
+a2t5o00000001NFAAY,ThriftyFoods Courtenay,V9N2K6,British Columbia,Courtenay,1551 Cliffe Avenue
+a2t5o00000001NGAAY,Safeway Marion & Braemar,R2HOT8,Manitoba,Winnipeg,285 Marion At Braemar
+a2t5o00000001NHAAY,Safeway Osborne & Kylemore,R3L2B7,Manitoba,Winnipeg,655 Osborne At Kylemore
+a2t5o00000001NIAAY,Safeway Pembina Village,R3T5S9,Manitoba,Winnipeg,2155 Pembina Highway
+a2t5o00000001NJAAY,Safeway Tyndall Square,R2R0Z5,Manitoba,Winnipeg,850 Keewatin Street
+a2t5o00000001NKAAY,Safeway Tuxedo,R3P0N5,Manitoba,Winnipeg,2025 Corydon At Edgeland
+a2t5o00000001NLAAY,FreshCo Williams Lake,V2G1M5,British Columbia,Williams Lake,451 Oliver Street
+a2t5o00000001NMAAY,FreshCo Sahali,V2C1L5,British Columbia,Kamloops,945 West Columbia
+a2t5o00000001NNAAY,FreshCo Dilworth Centre,V1X4H9,British Columbia,Kelowna,500  2339 Hwy 97 North
+a2t5o00000001NOAAY,FreshCo Downtown,V1T2E3,British Columbia,Vernon,3417 - 30 Avenue
+a2t5o00000001NPAAY,FreshCo Powell River,V8A2A1,British Columbia,Powell River,7040 Barnet Street
+a2t5o00000001NQAAY,Safeway Broadway & Commercial,V5N1W3,British Columbia,Vancouver,1780 East Broadway
+a2t5o00000001NRAAY,Safeway Seafair,V7C1V2,British Columbia,Richmond,8671 No. 1 Road
+a2t5o00000001NSAAY,Safeway Sardis,V2R1A2,British Columbia,Chilliwack,45610 Luckakuck Way
+a2t5o00000001NTAAY,Safeway Castlegar,V1N2W6,British Columbia,Castlegar,1721 Columbia Avenue
+a2t5o00000001NUAAY,Safeway Dawson Creek,V1G3R4,British Columbia,Dawson Creek,11200  11216 - 8 Street
+a2t5o00000001NVAAY,Safeway Fort St. John,V1J3X3,British Columbia,Fort St. John,9123 - 100 Street
+a2t5o00000001NWAAY,Safeway Cranbrook Mall,V1C1A8,British Columbia,Cranbrook,1200 Baker Street
+a2t5o00000001NXAAY,Safeway Marpole,V6P4Z9,British Columbia,Vancouver,8475 Granville St
+a2t5o00000001NYAAY,Safeway Burquitlam,V3J3X5,British Columbia,Coquitlam,580 Clarke Road
+a2t5o00000001NZAAY,Safeway Crestview,R3K2G7,Manitoba,Winnipeg,3393 Portage Avenue
+a2t5o00000001NaAAI,Safeway Charleswood Centre,R3R3C2,Manitoba,Winnipeg,3900 Grant Avenue
+a2t5o00000001NbAAI,FreshCo Niakwa Village,R2M0Y5,Manitoba,Winnipeg,2 Alpine Avenue
+a2t5o00000001NcAAI,Safeway Kildare,R2C0P8,Manitoba,Winnipeg,654 Kildare Avenue East
+a2t5o00000001NdAAI,Safeway Lindenridge,R3P2M4,Manitoba,Winnipeg,1625 Kenaston Boulevard
+a2t5o00000001NeAAI,Safeway Corral Centre,R7A7S1,Manitoba,Brandon,921 - 18 Street North
+a2t5o00000001NfAAI,Safeway City Centre Mall,R8N0M2,Manitoba,Thompson,300 Mystery Lake Road
+a2t5o00000001NgAAI,Safeway Fortune,V2B2L2,British Columbia,Kamloops,750 Fortune Drive
+a2t5o00000001NhAAI,Safeway McBride,V3L2B8,British Columbia,New Westminster,800 McBride Boulevard
+a2t5o00000001NiAAI,Safeway Willowbrook Mall,V2Y1A2,British Columbia,Langley,6153 - 200 Street
+a2t5o00000001NjAAI,Safeway Vernon Square Mall,V1T9H1,British Columbia,Vernon,4300 - 32 Street
+a2t5o00000001NkAAI,Safeway Fleetwood,V3R4E4,British Columbia,Surrey,8860 - 152 Street
+a2t5o00000001NlAAI,ThriftyFoods Parksville,V9P2H1,British Columbia,Parksville,280 East Island Highway
+a2t5o00000001NmAAI,ThriftyFoods Cloverdale,V8X1G8,British Columbia,Victoria,3475 Quadra Street
+a2t5o00000001NnAAI,ThriftyFoods Longwood Station,V9T6L8,British Columbia,Nanaimo,5801 Turner Road
+a2t5o00000001NoAAI,ThriftyFoods Campbell River,V9W5T5,British Columbia,Campbell River,1400 Ironwood Road
+a2t5o00000001NpAAI,ThriftyFoods Port Moody,V3H0E7,British Columbia,Port Moody,170 Brew Street
+a2t5o00000001NqAAI,Safeway Lawson Heights,S7K5S6,Saskatchewan,Saskatoon,1-134 Primrose Drive
+a2t5o00000001NrAAI,Safeway University Heights,S7S0A5,Saskatchewan,Saskatoon,1860 McOrmond Drive
+a2t5o00000001NsAAI,Safeway Southland Mall,S4S6H7,Saskatchewan,Regina,3015 Gordon Road
+a2t5o00000001NtAAI,Safeway South Hill Mall,S6V5V5,Saskatchewan,Prince Albert,2995 - 2 Avenue West
+a2t5o00000001NuAAI,Safeway Northgate Mall,S4R3C3,Saskatchewan,Regina,353 Albert Street North
+a2t5o00000001NvAAI,Safeway Trail,V1R1M3,British Columbia,Trail,1599 - 2 Avenue
+a2t5o00000001NwAAI,Safeway Quesnel,V2J2M7,British Columbia,Quesnel,445 Reid Street
+a2t5o00000001NxAAI,Safeway Prince Rupert,V8J1G5,British Columbia,Prince Rupert,200 - 2 Avenue West
+a2t5o00000001NyAAI,Safeway New Westminster Station,V3M0G3,British Columbia,New Westminster,220  800 Carnarvon Street .
+a2t5o00000001K4AAI,Safeway Kensington,T2N1V9,Alberta,Calgary,410 - 10 Street NW
+a2t5o00000001K5AAI,Safeway Northgate,T8V4A9,Alberta,Grande Prairie,9925 - 114 Avenue
+a2t5o00000001K6AAI,Safeway Downtown,T9H2J8,Alberta,Fort McMurray,9601 Franklin Avenue
+a2t5o00000001K7AAI,Sobeys Stratford Ontario,N5A5T8,Ontario,Stratford,581 Huron St  Unit #1
+a2t5o00000001K9AAI,Lawtons Portland Street,B2Y1H4,Nova Scotia,Dartmouth,46 Portland Street
+a2t5o00000001KAAAY,Lawtons Antigonish,B2G2E3,Nova Scotia,Antigonish,133 Church Street
+a2t5o00000001KBAAY,Lawtons Bayers Road,B3L2C2,Nova Scotia,Halifax,7071 Bayers Road
+a2t5o00000001KCAAY,Lawtons Lord Nelson,B3J1G9,Nova Scotia,Halifax,5665 Spring Garden Road
+a2t5o00000001KDAAY,Lawtons Windsor,B0N2T0,Nova Scotia,Windsor,25 Wentworth Road PO Box 790
+a2t5o00000001KEAAY,Lawtons Primrose Street,B3A4C5,Nova Scotia,Dartmouth,6 Primrose Street  Suite 110
+a2t5o00000001KFAAY,Lawtons Cole Harbour Road,B2V1E6,Nova Scotia,Dartmouth,950 Cole Harbour Road
+a2t5o00000001KGAAY,Lawtons Clayton Park,B3M3Y7,Nova Scotia,Halifax,287 Lacewood Drive
+a2t5o00000001KHAAY,Lawtons Spring Garden Road,B3H1Y6,Nova Scotia,Halifax,5991 Spring Garden Road  Suite 100
+a2t5o00000001KIAAY,Lawtons Shelburne,B0T1W0,Nova Scotia,Shelburne,115 King Street
+a2t5o00000001NzAAI,Safeway Collingwood,V5R5L4,British Columbia,Vancouver,3410 Kingsway Street
+a2t5o00000001XMAAY,Sobeys Vaughan Harvey -,E1C0N3,New Brunswick,Moncton,55 Vaughan Harvey Boulevard
+a2t5o00000001XNAAY,Sobeys Saint John West -,E2M0C2,New Brunswick,Saint John,1 Plaza Avenue
+a2t5o00000001XOAAY,Sobeys Elmwood Drive -,E1A9G6,New Brunswick,Moncton,77 Filles de Jesus Avenue
+a2t5o00000001XPAAY,Sobeys Regent -,E3B3X6,New Brunswick,Fredericton,407 Regent Street
+a2t5o00000001XQAAY,Sobeys Miramichi Road -,E2V4T4,New Brunswick,Oromocto,375 Miramichi Road
+a2t5o00000001XRAAY,Sobeys Bathurst -,E2A3A1,New Brunswick,Bathurst,1125 St.  Peter Avenue
+a2t5o00000001XSAAY,Lawtons Saint John Nursing Home Services -,E2M5J7,New Brunswick,Saint John,107 Catherwood Street  Suite 212
+a2t5o00000001XTAAY,Lawtons Catherwood -,E2M5J7,New Brunswick,Saint John,107 Catherwood Street
+a2t5o00000001XUAAY,Lawtons Elmwood Drive -,E1A2X4,New Brunswick,Moncton,565 Elmwood Drive
+a2t5o00000001XVAAY,Lawtons Regent Mall -,E3C1A2,New Brunswick,Fredericton,1381 Regent Street
+a2t5o00000001XWAAY,Lawtons McAllister Place -,E2J3W9,New Brunswick,Saint John,519 Westmorland Road
+a2t5o00000001XXAAY,Sobeys Caraquet -,E1W1B6,New Brunswick,Caraquet,10 Boulevard St. Pierre East
+a2t5o00000001XYAAY,Lawtons Brunswick Square -,E2L4W3,New Brunswick,Saint John,39 King Street
+a2t5o00000001XZAAY,Lawtons Brookside Mall -,E3A8V4,New Brunswick,Fredericton,435 Brookside Drive  Unit 5
+a2t5o00000001XaAAI,Lawtons Sussex -,E4E3E1,New Brunswick,Sussex,138 Main Street  Suite 8
+a2t5o00000001XbAAI,Lawtons Moncton Nursing Home -,E1C2R4,New Brunswick,Moncton,800 Mountain Road
+a2t5o00000001XcAAI,Lawtons Mapleton -,E1C7W8,New Brunswick,Moncton,40 Mapleton Road
+a2t5o00000001XdAAI,Sobeys Saint John -,E2K2Z9,New Brunswick,Saint John,149 Lansdowne Avenue
+a2t5o00000001XeAAI,Sobeys Moncton Mall -,E1C2T8,New Brunswick,Moncton,1380 Mountain Road
+a2t5o00000001XfAAI,Sobeys Brookside Mall -,E3A8V4,New Brunswick,Fredericton,463 Brookside Drive
+a2t5o00000001XgAAI,Sobeys Uptown -,E3B5C7,New Brunswick,Fredericton,1180 Prospect St
+a2t5o00000001XhAAI,Sobeys Rothesay -,E2E2R1,New Brunswick,Rothesay,140 Hampton Road
+a2t5o00000001XiAAI,Sobeys East Point -,E2J0H4,New Brunswick,Saint John,40 East Point Way
+a2t5o00000001XjAAI,Sobeys Champlain Mall -,E1A4X5,New Brunswick,Dieppe,477 Paul Street
+a2t5o00000001XkAAI,Sobeys Miramichi -,E1V6W6,New Brunswick,Miramichi,2485 King George Highway
+a2t5o00000001XlAAI,Sobeys Riverview -,E1B0J6,New Brunswick,Riverview,1160 Findlay Blvd
+a2t5o00000001XmAAI,Sobeys Shediac -,E4P2A5,New Brunswick,Shediac,183 Main Street
+a2t5o00000001oKAAQ,Sobeys Stratford - Moderna,C1B1L8,Prince Edward Island,Stratford,9 Kinlock Road
+a2t5o00000001slAAA,Sobeys Legacy,T2X4K8,Alberta,Calgary,#100  200 Hartell Way S.E
