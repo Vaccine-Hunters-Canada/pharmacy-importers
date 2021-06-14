@@ -26,7 +26,7 @@ async def main(mytimer: func.TimerRequest) -> None:
             if not location.get('postal'):
                 continue
 
-            url = f'https://pharmaconnect.ca/Appointment/{location["id"]}/Slots?serviceType=ImmunizationCovid'
+            url = f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
             html = await session.get(url)
             page = BeautifulSoup(await html.text(), 'html.parser')
             dates = page.findAll('div', class_='b-days-selection appointment-availability__days-item')
