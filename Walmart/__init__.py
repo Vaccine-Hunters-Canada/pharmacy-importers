@@ -19,7 +19,8 @@ async def main(mytimer: func.TimerRequest) -> None:
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_WALMART'),
-            session=session
+            session=session,
+            discord_url=os.environ.get('DISCORD_WEBHOOK')
         )
 
         # Create the session and get the session cookie
@@ -28,6 +29,7 @@ async def main(mytimer: func.TimerRequest) -> None:
         f = open('Walmart/walmart-locations.json')
         location_data = json.load(f)
 
+        notifications = []
         for location in location_data['locations']:
             vaccine_type = 3
             location_id = location['loc_id']
@@ -64,3 +66,11 @@ async def main(mytimer: func.TimerRequest) -> None:
                 location=location_data,
                 external_key=external_key
             )
+
+            if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
+                notifications.append({
+                    'name': location['name'],
+                    'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                })
+        
+        await vhc.notify_discord('Walmart Pharmacies', notifications)

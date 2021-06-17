@@ -18,9 +18,11 @@ async def main(mytimer: func.TimerRequest) -> None:
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_TELUS_HEALTH'),
-            session=session
+            session=session,
+            discord_url=os.environ.get('DISCORD_WEBHOOK')
         )
 
+        notifications = []
         for location in telus_locations:
 
             if not location.get('postal'):
@@ -48,3 +50,11 @@ async def main(mytimer: func.TimerRequest) -> None:
                 location=location_data,
                 external_key=location['id']
             )
+
+            if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
+                notifications.append({
+                    'name': location['name'],
+                    'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
+                })
+        
+        await vhc.notify_discord('Telus Health Pharmacies', notifications)

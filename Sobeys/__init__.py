@@ -21,6 +21,7 @@ async def main(mytimer: func.TimerRequest) -> None:
             session=session
         )
 
+        notifications = []
         for location in sobeys_locations:
             today = datetime.datetime.utcnow()
             one_week = today + datetime.timedelta(days=7)
@@ -61,3 +62,12 @@ async def main(mytimer: func.TimerRequest) -> None:
                 location=location_data,
                 external_key=location['id']
             )
+
+            if availability and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
+                notifications.append({
+                    'name': location['name'],
+                    'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                })
+        
+        await vhc.notify_discord('Sobeys Pharmacies', notifications)
+            
