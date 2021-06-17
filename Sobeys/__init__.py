@@ -18,7 +18,8 @@ async def main(mytimer: func.TimerRequest) -> None:
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_SOBEYS'),
-            session=session
+            session=session,
+            discord_url=os.environ.get('DISCORD_WEBHOOK')
         )
 
         notifications = []
