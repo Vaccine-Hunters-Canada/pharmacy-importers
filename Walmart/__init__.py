@@ -78,7 +78,7 @@ async def main(mytimer: func.TimerRequest) -> None:
 
             if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
                 notifications.append({
-                    'name': location_data['name'],
+                    'name': f'({", ".join(tags)}) - {location_data["name"]}',
                     'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
                 })
         
