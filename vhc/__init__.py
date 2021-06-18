@@ -44,7 +44,7 @@ class VHC:
                 'active': 1,
                 'url': location.get('url'),
                 'tagsL': '',
-                'tagsA': vaccine_name,
+                'tagsA': ','.join(location['tags']) if 'tags' in location else vaccine_name,
                 'externalKey': external_key,
                 'date': f'{datetime.datetime.utcnow().date()}T00:00:00+00:00'
             }

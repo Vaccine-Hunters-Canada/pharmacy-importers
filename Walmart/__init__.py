@@ -5,6 +5,11 @@ from vhc import VHC
 
 import azure.functions as func
 
+vaccines = {
+    'Pfizer': { 'type': 4, 'form': 5393 },
+    'Moderna': { 'type': 3, 'form': 5395 },
+    'AstraZeneca': { 'type': 5, 'form': 5398 }
+}
 
 async def main(mytimer: func.TimerRequest) -> None:
 
@@ -31,24 +36,25 @@ async def main(mytimer: func.TimerRequest) -> None:
 
         notifications = []
         for location in location_data['locations']:
-            vaccine_type = 3
             location_id = location['loc_id']
             location_name = location['loc_name']
             external_key = f'walmart-{location_id}'
 
-            # Moderna
-            response = await session.get(f'https://portal.healthmyself.net/walmarton/guest/booking/5395/schedules?locId={location_id}')
-            if response.status != 200:
-                # Pfizer
-                vaccine_type = 4
-                response = await session.get(f'https://portal.healthmyself.net/walmarton/guest/booking/5393/schedules?locId={location_id}')
-            
-            data = await response.json()
+            tags = []
             available = False
+            vaccine_type = 1
 
-            if response.status == 200 and data['data'][0]['available']:
-                available = True
-
+            for type in vaccines:
+                vaccine = vaccines[type]
+                form = vaccine.get('form')
+                response = await session.get(f'https://portal.healthmyself.net/walmarton/guest/booking/{form}/schedules?locId={location_id}')
+                if response.status == 200:
+                    data = await response.json()
+                    if data['data'][0]['available']:
+                        tags.append(type)
+                        available = True
+                        vaccine_type = vaccine.get('type')
+            
             location_data = {
                 'line1': location['address']['address'],
                 'city': location['address']['city'],
@@ -58,6 +64,9 @@ async def main(mytimer: func.TimerRequest) -> None:
                 'phone': location['address']['phone'],
                 'url': 'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc',
             }
+
+            if len(tags) > 0:
+                location_data['tags'] = tags
 
             await vhc.add_availability(
                 num_available=1 if available else 0,
@@ -69,7 +78,7 @@ async def main(mytimer: func.TimerRequest) -> None:
 
             if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
                 notifications.append({
-                    'name': location['name'],
+                    'name': location_data['name'],
                     'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
                 })
         
