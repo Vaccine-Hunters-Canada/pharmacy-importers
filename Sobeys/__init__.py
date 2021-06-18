@@ -2,17 +2,24 @@ import os
 import csv
 import aiohttp
 import datetime
+import logging
 from vhc import VHC
 
 import azure.functions as func
 
-VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAwb3VBQUEiLCJhM3A1bzAwMDAwMDAwdjJBQUEiLCJhM3A1bzAwMDAwMDAwdjdBQUEiLCJhM3A1bzAwMDAwMDAwVzdBQUkiLCJhM3A1bzAwMDAwMDAwVzJBQUkiLCJhM3A1bzAwMDAwMDAwVzNBQUkiLCJhM3A1bzAwMDAwMDAwVzVBQUkiLCJhM3A1bzAwMDAwMDAwV1dBQVkiLCJhM3A1bzAwMDAwMDAwZjRBQUEiLCJhM3A1bzAwMDAwMDAwZk9BQVEiLCJhM3A1bzAwMDAwMDAwZllBQVEiLCJhM3A1bzAwMDAwMDAwZ2xBQUEiLCJhM3A1bzAwMDAwMDAwbnJBQUEiLCJhM3A1bzAwMDAwMDAwb3pBQUEiLCJhM3A1bzAwMDAwMDAwcVJBQVEiLCJhM3A1bzAwMDAwMDAwZkpBQVEiLCJhM3A1bzAwMDAwMDAwcDRBQUEiXQ=='
+VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
 async def main(mytimer: func.TimerRequest) -> None:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
 
-    async with aiohttp.ClientSession() as session:
+    headers = {
+        'origin': 'https://www.pharmacyappointments.ca',
+        'referer': 'https://www.pharmacyappointments.ca/',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'
+    }
+
+    async with aiohttp.ClientSession(headers=headers) as session:
 
         vhc = VHC(
             base_url=os.environ.get('BASE_URL'),
@@ -32,7 +39,8 @@ async def main(mytimer: func.TimerRequest) -> None:
                 'startDate': str(today.date()),
                 'endDate': str(one_week.date()),
                 'url': 'https://www.pharmacyappointments.ca/appointment-select',
-                'vaccineData': VACCINE_DATA
+                'vaccineData': VACCINE_DATA,
+                'timeZone': 'America/New_York'
             }
 
             availabilities = await session.post(
@@ -46,6 +54,9 @@ async def main(mytimer: func.TimerRequest) -> None:
                 for day in body['availability']:
                     if day['available'] == True:
                         availability = True
+            else:
+                logging.info(availabilities.status)
+                logging.info(await availabilities.text())
             
             location_data = {
                 'line1': location['address'],
@@ -67,7 +78,7 @@ async def main(mytimer: func.TimerRequest) -> None:
             if availability and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
                 notifications.append({
                     'name': location['name'],
-                    'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                    'url': f'https://www.pharmacyappointments.ca/appointment-select'
                 })
         
         await vhc.notify_discord('Sobeys Pharmacies', notifications)
