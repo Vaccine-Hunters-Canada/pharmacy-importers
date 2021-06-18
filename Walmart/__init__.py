@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import aiohttp
 from vhc import VHC
@@ -34,11 +35,16 @@ async def main(mytimer: func.TimerRequest) -> None:
         f = open('Walmart/walmart-locations.json')
         location_data = json.load(f)
 
+        regex = re.compile(r'^(.+)(\([Moderna,Pfizer,AstraZeneca].+\))$', re.IGNORECASE)
+
         notifications = []
         for location in location_data['locations']:
             location_id = location['loc_id']
-            location_name = location['loc_name']
+            location_name = location['loc_name'].strip()
             external_key = f'walmart-{location_id}'
+
+            if regex.search(location_name):
+                location_name = regex.sub(r'\1', location_name).strip()
 
             tags = []
             available = False
@@ -78,7 +84,7 @@ async def main(mytimer: func.TimerRequest) -> None:
 
             if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
                 notifications.append({
-                    'name': f'({", ".join(tags)}) - {location_data["name"]}',
+                    'name': f'({", ".join(tags)}) - {location_name}',
                     'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
                 })
         
