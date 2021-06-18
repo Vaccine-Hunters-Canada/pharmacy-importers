@@ -48,12 +48,19 @@ async def main(mytimer: func.TimerRequest) -> None:
                 json=data
             )
 
+            vaccine_type = 1
             availability = False
             if availabilities.status == 200:
                 body = await availabilities.json()
                 for day in body['availability']:
                     if day['available'] == True:
                         availability = True
+                        if "ZENECA" in location['name'].upper():
+                            vaccine_type = 5
+                        elif "PFIZER" in location['name'].upper():
+                            vaccine_type = 4
+                        elif "MODERNA" in location['name'].upper():
+                            vaccine_type = 3
             else:
                 logging.info(availabilities.status)
                 logging.info(await availabilities.text())
@@ -70,7 +77,7 @@ async def main(mytimer: func.TimerRequest) -> None:
             await vhc.add_availability(
                 num_available=1 if availability else 0,
                 num_total=1 if availability else 0,
-                vaccine_type=1,
+                vaccine_type=vaccine_type,
                 location=location_data,
                 external_key=location['id']
             )
