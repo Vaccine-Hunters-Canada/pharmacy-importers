@@ -94,7 +94,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 if not state.get(location["id"]) and location_data["province"].upper() in ["ON", "ONTARIO"]:
                     notifications.append({
                         'name': name,
-                        'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                        'url': f'https://www.pharmacyappointments.ca/appointment-select'
                     })
         
         await vhc.notify_discord('Sobeys Pharmacies', notifications)
