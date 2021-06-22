@@ -1,5 +1,6 @@
 import os
 import csv
+import json
 import aiohttp
 import datetime
 import logging
@@ -9,7 +10,7 @@ import azure.functions as func
 
 VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
-async def main(mytimer: func.TimerRequest) -> None:
+async def main(mytimer: func.TimerRequest, stateblob) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
 
@@ -19,6 +20,11 @@ async def main(mytimer: func.TimerRequest) -> None:
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'
     }
 
+    state = {}
+    newstate = {}
+    if stateblob:
+        state = json.load(stateblob)
+
     async with aiohttp.ClientSession(headers=headers) as session:
 
         vhc = VHC(
@@ -26,7 +32,7 @@ async def main(mytimer: func.TimerRequest) -> None:
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_SOBEYS'),
             session=session,
-            discord_url=os.environ.get('DISCORD_WEBHOOK')
+            discord_url=os.environ.get('DISCORD_PHARMACY_ON')
         )
 
         notifications = []
@@ -61,16 +67,16 @@ async def main(mytimer: func.TimerRequest) -> None:
                             vaccine_type = 4
                         elif "MODERNA" in location['name'].upper():
                             vaccine_type = 3
-            else:
-                logging.info(availabilities.status)
-                logging.info(await availabilities.text())
+            # else:
+            #     logging.info(availabilities.status)
+            #     logging.info(await availabilities.text())
             
             location_data = {
-                'line1': location['address'],
-                'city': location['city'],
-                'province': location['province'],
+                'line1': location['address'].strip(),
+                'city': location['city'].strip(),
+                'province': location['province'].strip(),
                 'postcode': ''.join(location['postal'].split()),
-                'name': location['name'],
+                'name': location['name'].strip(),
                 'url': 'https://www.pharmacyappointments.ca/appointment-select',
             }
 
@@ -82,11 +88,16 @@ async def main(mytimer: func.TimerRequest) -> None:
                 external_key=location['id']
             )
 
-            if availability and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
-                notifications.append({
-                    'name': location['name'],
-                    'url': f'https://www.pharmacyappointments.ca/appointment-select'
-                })
+            if availability:
+                name = f'{location["name"]} - ({location_data["city"]}, {location_data["province"]})'
+                newstate[location["id"]] = name
+                if not state.get(location["id"]) and location_data["province"].upper() in ["ON", "ONTARIO"]:
+                    notifications.append({
+                        'name': name,
+                        'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                    })
         
         await vhc.notify_discord('Sobeys Pharmacies', notifications)
+
+        return json.dumps(newstate)
             
