@@ -8,8 +8,8 @@ from vhc import VHC
 import azure.functions as func
 
 vaccines = {
-    'Pfizer': { 'type': 4, 'form': 5393 },
-    'Moderna': { 'type': 3, 'form': 5395 },
+    'Pfizer': { 'type': 4, 'form': 5394 },
+    'Moderna': { 'type': 3, 'form': 5396 },
     'AstraZeneca': { 'type': 5, 'form': 5398 }
 }
 
@@ -74,7 +74,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 'postcode': ''.join(location['address']['postal'].split()),
                 'name': f'Walmart {location_name}',
                 'phone': location['address']['phone'].strip(),
-                'url': 'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc',
+                'url': 'https://portal.healthmyself.net/walmarton/forms/Dpd',
             }
 
             if len(tags) > 0:
@@ -94,7 +94,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
                     notifications.append({
                         'name': name,
-                        'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                        'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
                     })
         
         await vhc.notify_discord('Walmart Pharmacies', notifications)

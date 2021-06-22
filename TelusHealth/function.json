@@ -6,6 +6,20 @@
       "type": "timerTrigger",
       "direction": "in",
       "schedule": "0 */13 * * * *"
+    },
+    {
+      "name": "stateblob",
+      "type": "blob",
+      "dataType": "string",
+      "path": "state/telus.json",
+      "direction": "in"
+    },
+    {
+      "name": "$return",
+      "type": "blob",
+      "dataType": "string",
+      "path": "state/telus.json",
+      "direction": "out"
     }
   ]
 }

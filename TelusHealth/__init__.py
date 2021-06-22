@@ -1,5 +1,6 @@
 import os
 import csv
+import json
 import aiohttp
 import datetime
 from vhc import VHC
@@ -8,9 +9,14 @@ from bs4 import BeautifulSoup
 import azure.functions as func
 
 
-async def main(mytimer: func.TimerRequest) -> None:
+async def main(mytimer: func.TimerRequest, stateblob) -> str:
     telus_csv = open('TelusHealth/telus-health-locations.csv')
     telus_locations = csv.DictReader(telus_csv)
+
+    state = {}
+    newstate = {}
+    # if stateblob:
+    #     state = json.load(stateblob)
 
     async with aiohttp.ClientSession() as session:
 
@@ -35,11 +41,11 @@ async def main(mytimer: func.TimerRequest) -> None:
             available = bool(dates)
 
             location_data = {
-                'line1': location['address'],
-                'province': location['province'],
+                'line1': location['address'].replace('<br>', ' ').strip(),
+                'province': location['province'].strip(),
                 'postcode': ''.join(location['postal'].split()),
-                'name': location['name'],
-                'phone': location['phone'],
+                'name': location['name'].strip(),
+                'phone': location['phone'].strip(),
                 'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid',
             }
 
@@ -51,10 +57,15 @@ async def main(mytimer: func.TimerRequest) -> None:
                 external_key=location['id']
             )
 
-            if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
-                notifications.append({
-                    'name': location['name'],
-                    'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
-                })
+            if available:
+                name = f'{location_data["name"]} \n ({location_data["line1"]}) \n'
+                newstate[location["id"]] = name
+                if not state.get(location["id"]) and location_data["province"].upper() in ["ON", "ONTARIO"]:
+                    notifications.append({
+                        'name': name,
+                        'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
+                    })
         
         await vhc.notify_discord('Telus Health Pharmacies', notifications)
+
+        return json.dumps(newstate)
