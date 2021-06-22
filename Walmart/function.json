@@ -6,6 +6,20 @@
       "type": "timerTrigger",
       "direction": "in",
       "schedule": "0 */17 * * * *"
+    },
+    {
+      "name": "stateblob",
+      "type": "blob",
+      "dataType": "string",
+      "path": "state/walmart.json",
+      "direction": "in"
+    },
+    {
+      "name": "$return",
+      "type": "blob",
+      "dataType": "string",
+      "path": "state/walmart.json",
+      "direction": "out"
     }
   ]
 }

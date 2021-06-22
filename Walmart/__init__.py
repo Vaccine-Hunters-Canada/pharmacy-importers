@@ -2,6 +2,7 @@ import os
 import re
 import json
 import aiohttp
+import logging
 from vhc import VHC
 
 import azure.functions as func
@@ -12,7 +13,13 @@ vaccines = {
     'AstraZeneca': { 'type': 5, 'form': 5398 }
 }
 
-async def main(mytimer: func.TimerRequest) -> None:
+async def main(mytimer: func.TimerRequest, stateblob) -> str:
+
+    state = {}
+    newstate = {}
+    if stateblob:
+        state = json.load(stateblob)
+    logging.info(f'State: {state}')
 
     headers = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36',
@@ -62,12 +69,12 @@ async def main(mytimer: func.TimerRequest) -> None:
                         vaccine_type = vaccine.get('type')
             
             location_data = {
-                'line1': location['address']['address'],
-                'city': location['address']['city'],
-                'province': location['address']['province'],
+                'line1': location['address']['address'].strip(),
+                'city': location['address']['city'].strip(),
+                'province': location['address']['province'].strip(),
                 'postcode': ''.join(location['address']['postal'].split()),
                 'name': f'Walmart {location_name}',
-                'phone': location['address']['phone'],
+                'phone': location['address']['phone'].strip(),
                 'url': 'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc',
             }
 
@@ -82,10 +89,15 @@ async def main(mytimer: func.TimerRequest) -> None:
                 external_key=external_key
             )
 
-            if available and location_data['postcode'][0:2].upper() in ['K1', 'K2']:
-                notifications.append({
-                    'name': f'({", ".join(tags)}) - {location_name}',
-                    'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
-                })
+            if available:
+                name = f'({", ".join(tags)}) - {location_name} - ({location_data["city"]}, {location_data["province"]})'
+                newstate[external_key] = name
+                if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
+                    notifications.append({
+                        'name': name,
+                        'url': f'https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc'
+                    })
         
         await vhc.notify_discord('Walmart Pharmacies', notifications)
+
+        return json.dumps(newstate)
