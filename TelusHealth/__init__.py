@@ -15,8 +15,8 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
     state = {}
     newstate = {}
-    # if stateblob:
-    #     state = json.load(stateblob)
+    if stateblob:
+        state = json.load(stateblob)
 
     async with aiohttp.ClientSession() as session:
 
