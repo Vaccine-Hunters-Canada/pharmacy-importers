@@ -24,11 +24,13 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_TELUS_HEALTH'),
-            session=session,
-            discord_url=os.environ.get('DISCORD_PHARMACY_ON')
+            session=session
         )
 
-        notifications = []
+        notifications = {
+            'ON': [],
+            'AB': []
+        }
         for location in telus_locations:
 
             if not location.get('postal'):
@@ -60,12 +62,19 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             if available:
                 name = f'{location_data["name"]} \n ({location_data["line1"]}) \n'
                 newstate[location["id"]] = name
-                if not state.get(location["id"]) and location_data["province"].upper() in ["ON", "ONTARIO"]:
-                    notifications.append({
-                        'name': name,
-                        'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
-                    })
+                if not state.get(location["id"]):
+                    if location_data["province"].upper() in ["ON", "ONTARIO"]:
+                        notifications['ON'].append({
+                            'name': name,
+                            'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
+                        })
+                    elif location_data["province"].upper() in ["AB", "ALBERTA"]:
+                        notifications['AB'].append({
+                            'name': name,
+                            'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
+                        })
         
-        await vhc.notify_discord('Telus Health Pharmacies', notifications)
+        await vhc.notify_discord('Telus Health Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))
+        await vhc.notify_discord('Telus Health Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
 
         return json.dumps(newstate)

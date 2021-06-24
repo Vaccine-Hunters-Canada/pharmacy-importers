@@ -12,11 +12,10 @@ class VHC:
         5: 'AstraZeneca'
     }
 
-    def __init__(self, base_url, api_key, org_id, session, discord_url):
+    def __init__(self, base_url, api_key, org_id, session):
         self.BASE_URL = base_url
         self.API_KEY = f'Bearer {api_key}'
         self.VHC_ORG = org_id
-        self.DISCORD_URL = discord_url
         self.session = session
         logging.debug({
             'BASE_URL': self.BASE_URL,
@@ -65,8 +64,8 @@ class VHC:
                 logging.info(f'Unavailable - {vaccine_name: <11} - {location["name"]}')
 
 
-    async def notify_discord(self, title, availabilities):
-        if not self.DISCORD_URL or len(availabilities) == 0:
+    async def notify_discord(self, title, availabilities, discord_url):
+        if not discord_url or len(availabilities) == 0:
             return
 
         logging.info(f'Notifying Discord with {len(availabilities)} availabilities')
@@ -87,6 +86,6 @@ class VHC:
         }
 
         response = await self.session.post(
-            url=self.DISCORD_URL, 
+            url=discord_url, 
             json=discord
         )

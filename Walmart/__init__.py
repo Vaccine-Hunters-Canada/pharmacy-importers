@@ -31,8 +31,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_WALMART'),
-            session=session,
-            discord_url=os.environ.get('DISCORD_PHARMACY_ON')
+            session=session
         )
 
         # Create the session and get the session cookie
@@ -97,6 +96,6 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                         'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
                     })
         
-        await vhc.notify_discord('Walmart Pharmacies', notifications)
+        await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
 
         return json.dumps(newstate)

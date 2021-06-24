@@ -31,11 +31,13 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_SOBEYS'),
-            session=session,
-            discord_url=os.environ.get('DISCORD_PHARMACY_ON')
+            session=session
         )
 
-        notifications = []
+        notifications = {
+            'ON': [],
+            'AB': []
+        }
         for location in sobeys_locations:
             today = datetime.datetime.utcnow()
             one_week = today + datetime.timedelta(days=7)
@@ -91,13 +93,20 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             if availability:
                 name = f'{location["name"]} - ({location_data["city"]}, {location_data["province"]})'
                 newstate[location["id"]] = name
-                if not state.get(location["id"]) and location_data["province"].upper() in ["ON", "ONTARIO"]:
-                    notifications.append({
-                        'name': name,
-                        'url': f'https://www.pharmacyappointments.ca/'
-                    })
+                if not state.get(location["id"]):
+                    if location_data["province"].upper() in ["ON", "ONTARIO"]:
+                        notifications['ON'].append({
+                            'name': name,
+                            'url': f'https://www.pharmacyappointments.ca/'
+                        })
+                    elif location_data["province"].upper() in ["AB", "ALBERTA"]:
+                        notifications['AB'].append({
+                            'name': name,
+                            'url': f'https://www.pharmacyappointments.ca/'
+                        })
         
-        await vhc.notify_discord('Sobeys Pharmacies', notifications)
+        await vhc.notify_discord('Sobeys Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))
+        await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
 
         return json.dumps(newstate)
             
