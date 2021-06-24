@@ -25,7 +25,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             api_key=os.environ.get('API_KEY'),
             org_id=os.environ.get('VHC_ORG_TELUS_HEALTH'),
             session=session,
-            discord_url=os.environ.get('DISCORD_WEBHOOK')
+            discord_url=os.environ.get('DISCORD_PHARMACY_ON')
         )
 
         notifications = []
