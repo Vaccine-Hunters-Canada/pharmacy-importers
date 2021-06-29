@@ -48,7 +48,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 'postcode': ''.join(location['postal'].split()),
                 'name': location['name'].strip(),
                 'phone': location['phone'].strip(),
-                'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid',
+                'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}',
             }
 
             await vhc.add_availability(
@@ -66,12 +66,12 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                     if location_data["province"].upper() in ["ON", "ONTARIO"]:
                         notifications['ON'].append({
                             'name': name,
-                            'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
+                            'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}'
                         })
                     elif location_data["province"].upper() in ["AB", "ALBERTA"]:
                         notifications['AB'].append({
                             'name': name,
-                            'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}/Book/ImmunizationCovid'
+                            'url': f'https://pharmaconnect.ca/Appointment/{location["id"]}'
                         })
         
         await vhc.notify_discord('Telus Health Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))

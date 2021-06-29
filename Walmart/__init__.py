@@ -8,9 +8,9 @@ from vhc import VHC
 import azure.functions as func
 
 vaccines = {
+    'AstraZeneca': { 'type': 5, 'form': 5398 },
     'Pfizer': { 'type': 4, 'form': 5394 },
-    'Moderna': { 'type': 3, 'form': 5396 },
-    'AstraZeneca': { 'type': 5, 'form': 5398 }
+    'Moderna': { 'type': 3, 'form': 5396 }
 }
 
 async def main(mytimer: func.TimerRequest, stateblob) -> str:
