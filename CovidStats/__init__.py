@@ -8,7 +8,7 @@ import azure.functions as func
 
 
 def main(mytimer: func.TimerRequest) -> None:
-    yesterday_date = (datetime.now() - timedelta(3)).strftime('%Y-%m-%d')
+    yesterday_date = (datetime.now() - timedelta(1)).strftime('%Y-%m-%d')
     yesterday_date_string = '{:%B %d, %Y}'.format(datetime.now() - timedelta(1))
 
     is_weekend = False
