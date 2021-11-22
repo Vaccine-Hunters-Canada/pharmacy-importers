@@ -10,7 +10,8 @@ import azure.functions as func
 vaccines = {
     'AstraZeneca': { 'type': 5, 'form': 5398 },
     'Pfizer': { 'type': 4, 'form': 5394 },
-    'Moderna': { 'type': 3, 'form': 5396 }
+    'Moderna': { 'type': 3, 'form': 5396 },
+    'Pfizer (5 - 11)': { 'type': 4, 'form': 6460 },
 }
 
 async def main(mytimer: func.TimerRequest, stateblob) -> str:
