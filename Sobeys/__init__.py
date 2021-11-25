@@ -1,4 +1,5 @@
 import os
+import re
 import csv
 import json
 import aiohttp
@@ -13,6 +14,8 @@ VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 async def main(mytimer: func.TimerRequest, stateblob) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
+
+    p = re.compile(r'^(.+)\s-\s([A|P|M].+)$')
 
     headers = {
         'origin': 'https://www.pharmacyappointments.ca',
@@ -73,12 +76,17 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             #     logging.info(availabilities.status)
             #     logging.info(await availabilities.text())
             
+            location_name = location['name'].strip()
+            m = p.match(location_name)
+            if m:
+                location_name = m.group(1)
+
             location_data = {
                 'line1': location['address'].strip(),
                 'city': location['city'].strip(),
                 'province': location['province'].strip(),
                 'postcode': ''.join(location['postal'].split()),
-                'name': location['name'].strip(),
+                'name': location_name,
                 'url': 'https://www.pharmacyappointments.ca/appointment-select',
             }
 
@@ -90,23 +98,23 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 external_key=location['id']
             )
 
-            if availability:
-                name = f'{location["name"]} - ({location_data["city"]}, {location_data["province"]})'
-                newstate[location["id"]] = name
-                if not state.get(location["id"]):
-                    if location_data["province"].upper() in ["ON", "ONTARIO"]:
-                        notifications['ON'].append({
-                            'name': name,
-                            'url': f'https://www.pharmacyappointments.ca/'
-                        })
-                    elif location_data["province"].upper() in ["AB", "ALBERTA"]:
-                        notifications['AB'].append({
-                            'name': name,
-                            'url': f'https://www.pharmacyappointments.ca/'
-                        })
+        #     if availability:
+        #         name = f'{location["name"]} - ({location_data["city"]}, {location_data["province"]})'
+        #         newstate[location["id"]] = name
+        #         if not state.get(location["id"]):
+        #             if location_data["province"].upper() in ["ON", "ONTARIO"]:
+        #                 notifications['ON'].append({
+        #                     'name': name,
+        #                     'url': f'https://www.pharmacyappointments.ca/'
+        #                 })
+        #             elif location_data["province"].upper() in ["AB", "ALBERTA"]:
+        #                 notifications['AB'].append({
+        #                     'name': name,
+        #                     'url': f'https://www.pharmacyappointments.ca/'
+        #                 })
         
-        await vhc.notify_discord('Sobeys Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))
-        await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
+        # await vhc.notify_discord('Sobeys Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))
+        # await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
 
         return json.dumps(newstate)
             
