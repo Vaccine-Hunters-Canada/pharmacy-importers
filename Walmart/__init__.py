@@ -8,11 +8,13 @@ from vhc import VHC
 import azure.functions as func
 
 vaccines = {
-    'AstraZeneca': { 'type': 5, 'form': 5398 },
-    'Pfizer': { 'type': 4, 'form': 5394 },
-    'Moderna': { 'type': 3, 'form': 5396 },
-    'Pfizer (5 - 11)': { 'type': 4, 'form': 6460 },
+    'Pfizer 2nd Dose': { 'type': 4, 'form': 5394, 'tags': [ '12+ Year Olds', 'Pfizer', '2nd Dose', '3rd Dose' ] },
+    'Moderna 2nd Dose': { 'type': 3, 'form': 5396, 'tags': [ '12+ Year Olds', 'Moderna', '2nd Dose', '3rd Dose' ] },
+    'Pfizer 5-11 1st Dose': { 'type': 4, 'form': 6460, 'tags': [ '5-11 Year Olds', 'Pfizer', '1st Dose' ] },
+    'AstraZeneca 2nd Dose': { 'type': 5, 'form': 5398, 'tags': [ '12+ Year Olds', 'AstraZeneca', '2nd Dose', '3rd Dose' ] },
 }
+
+location_availability = {}
 
 async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
@@ -43,7 +45,6 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
         regex = re.compile(r'^(.+)(\([Moderna,Pfizer,AstraZeneca].+\))$', re.IGNORECASE)
 
-        notifications = []
         for location in location_data['locations']:
             location_id = location['loc_id']
             location_name = location['loc_name'].strip()
@@ -58,12 +59,13 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
             for type in vaccines:
                 vaccine = vaccines[type]
+                logging.info(f'Getting {location_name} - {type} ...')
                 form = vaccine.get('form')
                 response = await session.get(f'https://portal.healthmyself.net/walmarton/guest/booking/{form}/schedules?locId={location_id}')
                 if response.status == 200:
                     data = await response.json()
                     if data['data'][0]['available']:
-                        tags.append(type)
+                        tags.extend(vaccine.get('tags', []))
                         available = True
                         vaccine_type = vaccine.get('type')
             
@@ -75,28 +77,39 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 'name': f'Walmart {location_name}',
                 'phone': location['address']['phone'].strip(),
                 'url': 'https://portal.healthmyself.net/walmarton/forms/Dpd',
+                'available': available,
+                'type': vaccine_type,
+                'tags': tags
             }
 
-            if len(tags) > 0:
-                location_data['tags'] = tags
+            if external_key in location_availability:
+                location_availability[external_key]['tags'] = location_availability[external_key]['tags'].extend(x for x in tags if x not in location_availability[external_key]['tags'])
+            else:
+                location_availability[external_key] = location_data
+
+            total_tags = ', '.join(location_availability[external_key]['tags'])
+            logging.info(f'Tags: {total_tags}')
+
+        for lid in location_availability:
+            loc = location_availability[lid]
 
             await vhc.add_availability(
-                num_available=1 if available else 0,
-                num_total=1 if available else 0,
-                vaccine_type=vaccine_type,
-                location=location_data,
-                external_key=external_key
+                num_available=1 if loc.get('available', False) else 0,
+                num_total=1 if loc.get('available', False) else 0,
+                vaccine_type=loc.get('type', 4),
+                location=loc,
+                external_key=lid
             )
 
-            if available:
-                name = f'({", ".join(tags)}) - {location_name} - ({location_data["city"]}, {location_data["province"]})'
-                newstate[external_key] = name
-                if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
-                    notifications.append({
-                        'name': name,
-                        'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
-                    })
+        #     if available:
+        #         name = f'({", ".join(tags)}) - {location_name} - ({location_data["city"]}, {location_data["province"]})'
+        #         newstate[external_key] = name
+        #         if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
+        #             notifications.append({
+        #                 'name': name,
+        #                 'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
+        #             })
         
-        await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
+        # await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
 
         return json.dumps(newstate)
