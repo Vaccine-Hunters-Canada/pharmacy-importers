@@ -59,6 +59,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 json=data
             )
 
+            tags = []
             vaccine_type = 1
             availability = False
             if availabilities.status == 200:
@@ -68,18 +69,26 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                         availability = True
                         if "ZENECA" in location['name'].upper():
                             vaccine_type = 5
+                            tags.append('AstraZeneca')
                         elif "PFIZER" in location['name'].upper():
                             vaccine_type = 4
+                            tags.append('Pfizer')
                         elif "MODERNA" in location['name'].upper():
                             vaccine_type = 3
+                            tags.append('Moderna')
+                        
+                        if "PEDI" in location['name'].upper() and "5-11" in location['name'].upper():
+                            tags.extend(['5-11 Year Olds', '1st Dose'])
+                        else:
+                            tags.extend(['12+ Year Olds', '2nd Dose', '3rd Dose'])
             # else:
             #     logging.info(availabilities.status)
             #     logging.info(await availabilities.text())
             
             location_name = location['name'].strip()
-            m = p.match(location_name)
-            if m:
-                location_name = m.group(1)
+            # m = p.match(location_name)
+            # if m:
+            #     location_name = m.group(1)
 
             location_data = {
                 'line1': location['address'].strip(),
@@ -88,6 +97,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 'postcode': ''.join(location['postal'].split()),
                 'name': location_name,
                 'url': 'https://www.pharmacyappointments.ca/appointment-select',
+                'tags': list(dict.fromkeys(tags))
             }
 
             await vhc.add_availability(
