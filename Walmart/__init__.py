@@ -108,8 +108,8 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             if loc.get('available', False):
                 t = loc.get('tags', [])
                 name = f'({", ".join(t)}) - {loc["name"]} - ({loc["city"]}, {loc["province"]})'
-                newstate[external_key] = name
-                if not state.get(external_key) and loc["province"].upper() in ["ON", "ONTARIO"]:
+                newstate[lid] = name
+                if not state.get(lid) and loc["province"].upper() in ["ON", "ONTARIO"]:
                     notifications.append({
                         'name': name,
                         'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
