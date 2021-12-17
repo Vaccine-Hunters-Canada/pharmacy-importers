@@ -108,23 +108,23 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 external_key=location['id']
             )
 
-        #     if availability:
-        #         name = f'{location["name"]} - ({location_data["city"]}, {location_data["province"]})'
-        #         newstate[location["id"]] = name
-        #         if not state.get(location["id"]):
-        #             if location_data["province"].upper() in ["ON", "ONTARIO"]:
-        #                 notifications['ON'].append({
-        #                     'name': name,
-        #                     'url': f'https://www.pharmacyappointments.ca/'
-        #                 })
-        #             elif location_data["province"].upper() in ["AB", "ALBERTA"]:
-        #                 notifications['AB'].append({
-        #                     'name': name,
-        #                     'url': f'https://www.pharmacyappointments.ca/'
-        #                 })
+            if availability:
+                name = f'{location["name"]} - ({location_data["city"]}, {location_data["province"]})'
+                newstate[location["id"]] = name
+                if not state.get(location["id"]):
+                    if location_data["province"].upper() in ["ON", "ONTARIO"]:
+                        notifications['ON'].append({
+                            'name': name,
+                            'url': f'https://www.pharmacyappointments.ca/'
+                        })
+                    elif location_data["province"].upper() in ["AB", "ALBERTA"]:
+                        notifications['AB'].append({
+                            'name': name,
+                            'url': f'https://www.pharmacyappointments.ca/'
+                        })
         
-        # await vhc.notify_discord('Sobeys Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))
-        # await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
+        await vhc.notify_discord('Sobeys Pharmacies', notifications['ON'], os.environ.get('DISCORD_PHARMACY_ON'))
+        await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
 
         return json.dumps(newstate)
             
