@@ -24,7 +24,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
         state = json.load(stateblob)
 
     notifications = []
-    
+
     headers = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36',
         'authority': 'portal.healthmyself.net',
@@ -104,9 +104,9 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             )
 
             if loc.get('available', False):
-                name = f'({", ".join(tags)}) - {location_name} - ({location_data["city"]}, {location_data["province"]})'
+                name = f'({", ".join(tags)}) - {loc["name"]} - ({loc["city"]}, {loc["province"]})'
                 newstate[external_key] = name
-                if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
+                if not state.get(external_key) and loc["province"].upper() in ["ON", "ONTARIO"]:
                     notifications.append({
                         'name': name,
                         'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
