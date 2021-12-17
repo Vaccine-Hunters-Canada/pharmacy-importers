@@ -23,6 +23,8 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
     if stateblob:
         state = json.load(stateblob)
 
+    notifications = []
+    
     headers = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36',
         'authority': 'portal.healthmyself.net',
@@ -101,15 +103,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 external_key=lid
             )
 
-        #     if available:
-        #         name = f'({", ".join(tags)}) - {location_name} - ({location_data["city"]}, {location_data["province"]})'
-        #         newstate[external_key] = name
-        #         if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
-        #             notifications.append({
-        #                 'name': name,
-        #                 'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
-        #             })
+            if loc.get('available', False):
+                name = f'({", ".join(tags)}) - {location_name} - ({location_data["city"]}, {location_data["province"]})'
+                newstate[external_key] = name
+                if not state.get(external_key) and location_data["province"].upper() in ["ON", "ONTARIO"]:
+                    notifications.append({
+                        'name': name,
+                        'url': f'https://portal.healthmyself.net/walmarton/forms/Dpd'
+                    })
         
-        # await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
+        await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
 
         return json.dumps(newstate)
