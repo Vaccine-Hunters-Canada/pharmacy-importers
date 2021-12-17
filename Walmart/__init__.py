@@ -85,9 +85,11 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             }
 
             if external_key in location_availability:
-                location_availability[external_key]['tags'] = location_availability[external_key]['tags'].extend(x for x in tags if x not in location_availability[external_key]['tags'])
+                location_availability[external_key]['tags'] = location_availability[external_key]['tags'].extend(tags)
             else:
                 location_availability[external_key] = location_data
+
+            location_availability[external_key]['tags'] = list(dict.fromkeys(location_availability[external_key]['tags']))
 
             total_tags = ', '.join(location_availability[external_key]['tags'])
             logging.info(f'Tags: {total_tags}')
@@ -104,7 +106,8 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             )
 
             if loc.get('available', False):
-                name = f'({", ".join(tags)}) - {loc["name"]} - ({loc["city"]}, {loc["province"]})'
+                t = loc.get('tags', [])
+                name = f'({", ".join(t)}) - {loc["name"]} - ({loc["city"]}, {loc["province"]})'
                 newstate[external_key] = name
                 if not state.get(external_key) and loc["province"].upper() in ["ON", "ONTARIO"]:
                     notifications.append({
