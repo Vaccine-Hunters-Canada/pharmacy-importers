@@ -8,42 +8,42 @@ VACCINES = {
     "Pfizer 1st Dose": {
         "type": 4,
         "appointment_type_name": "COVID-19 Vaccine (Pfizer Dose 1)",
-        "tags": ["12+ Year Olds", "Pfizer", "1st Dose"],
+        "tags": set(["12+ Year Olds", "Pfizer", "1st Dose"]),
     },
     "Pfizer 2nd Dose": {
         "type": 4,
         "appointment_type_name": "COVID-19 Vaccine (Pfizer Dose 2)",
-        "tags": ["12+ Year Olds", "Pfizer", "2nd Dose"],
+        "tags": set(["12+ Year Olds", "Pfizer", "2nd Dose"]),
     },
     "Pfizer 3rd Dose": {
         "type": 4,
         "appointment_type_name": "COVID-19 Vaccine (Pfizer Dose 3 or Booster Dose)",
-        "tags": ["12+ Year Olds", "Pfizer", "3rd Dose"],
+        "tags": set(["12+ Year Olds", "Pfizer", "3rd Dose"]),
     },
     "Pfizer 5-11 1st Dose": {
         "type": 4,
         "appointment_type_name": "COVID-19 Vaccine (Pfizer Pediatric Dose 1)",
-        "tags": ["5-11 Year Olds", "Pfizer", "1st Dose"],
+        "tags": set(["5-11 Year Olds", "Pfizer", "1st Dose"]),
     },
     "Pfizer 5-11 2nd Dose": {
         "type": 4,
         "appointment_type_name": "COVID-19 Vaccine (Pfizer Pediatric Dose 2)",
-        "tags": ["5-11 Year Olds", "Pfizer", "2nd Dose"],
+        "tags": set(["5-11 Year Olds", "Pfizer", "2nd Dose"]),
     },
     "Moderna 1st Dose": {
         "type": 3,
         "appointment_type_name": "COVID-19 Vaccine (Moderna Dose 1)",
-        "tags": ["12+ Year Olds", "Moderna", "1st Dose"],
+        "tags": set(["12+ Year Olds", "Moderna", "1st Dose"]),
     },
     "Moderna 2nd Dose": {
         "type": 3,
         "appointment_type_name": "COVID-19 Vaccine (Moderna Dose 2)",
-        "tags": ["12+ Year Olds", "Moderna", "2nd Dose"],
+        "tags": set(["12+ Year Olds", "Moderna", "2nd Dose"]),
     },
     "Moderna 3rd Dose": {
         "type": 3,
         "appointment_type_name": "COVID-19 Vaccine (Moderna Dose 3 or Booster Dose)",
-        "tags": ["12+ Year Olds", "Moderna", "3rd Dose"],
+        "tags": set(["12+ Year Olds", "Moderna", "3rd Dose"]),
     },
 }
 
@@ -133,7 +133,7 @@ class SDMPharmacy:
         self.pharmacy = pharmacy
         self.vaccine_type = 3
         self.available = False
-        self.tags = []
+        self.tags = set()
 
     @property
     def external_key(self):
@@ -186,7 +186,7 @@ class SDMPharmacy:
             "url": self.website,
             "available": self.available,
             "type": self.vaccine_type,
-            "tags": self.tags,
+            "tags": list(self.tags),
         }
 
 
@@ -220,7 +220,7 @@ async def main():
 
                 # Update it with values from this data
                 pharmacy.available |= SDMPharmacy.is_available(pharmacy_data)
-                pharmacy.tags.extend(vaccine_data["tags"])
+                pharmacy.tags.update(vaccine_data["tags"])
                 pharmacy.vaccine_type = vaccine_data["type"]
 
         for external_key, pharmacy in pharmacies.items():
