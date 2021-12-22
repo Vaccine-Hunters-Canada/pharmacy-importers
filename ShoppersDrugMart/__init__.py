@@ -47,7 +47,7 @@ VACCINES = {
     },
 }
 
-ENTERPRISE= "SDM"
+ENTERPRISE = "SDM"
 TENANT_ID = "edfbb1a3-aca2-4ee4-bbbb-9237237736c4"
 URL = "https://gql.medscheck.medmeapp.com/graphql"
 HEADERS = {
@@ -68,8 +68,6 @@ HEADERS = {
     "accept-language": "en-US,en;q=0.9",
 }
 
-def slugify(s: str) -> str:
-    return s.replace(" ", "_")
 
 async def get_available_pharmacies(session, appointment_type_name):
     query = """
@@ -101,16 +99,95 @@ async def get_available_pharmacies(session, appointment_type_name):
       }
     """
     variables = {
-      "appointmentTypeName": appointment_type_name,
-      "enterpriseName": ENTERPRISE,
+        "appointmentTypeName": appointment_type_name,
+        "enterpriseName": ENTERPRISE,
     }
     response = await session.post(URL, json={"query": query, "variables": variables})
     try:
         body = await response.json()
         return body["data"]["publicGetEnterprisePharmacies"]
     except (json.decoder.JSONDecodeError, KeyError, IndexError):
-        logging.error(f"Failed to fetch data for appointment type '{appointment_type_name}'")
+        logging.error(
+            f"Failed to fetch data for appointment type '{appointment_type_name}'"
+        )
         return []
+
+
+class SDMPharmacy:
+    """
+    Represents a single instance of a Shoppers Drug Mart pharmacy
+    Provides methods for accessing data within the GraphQL response that was received
+    """
+
+    @staticmethod
+    def get_external_key(pharmacy):
+        """External key to uniquely reprsent the pharmacy in our system"""
+        return f"shoppersdrugmart-{pharmacy['storeNo']}"
+
+    @staticmethod
+    def is_available(pharmacy):
+        """Is the pharmacy currently accepting appointments?"""
+        return not pharmacy["appointmentTypes"][0]["isWaitlisted"]
+
+    def __init__(self, pharmacy):
+        self.pharmacy = pharmacy
+        self.vaccine_type = 3
+        self.available = False
+        self.tags = []
+
+    @property
+    def external_key(self):
+        return SDMPharmacy.get_external_key(self.pharmacy)
+
+    @property
+    def name(self):
+        return self.pharmacy["name"]
+
+    @property
+    def address(self):
+        return f"{self.pharmacy['pharmacyAddress']['streetNumber']} {self.pharmacy['pharmacyAddress']['streetName']}"
+
+    @property
+    def city(self):
+        return self.pharmacy["pharmacyAddress"]["city"]
+
+    @property
+    def province(self):
+        return self.pharmacy["pharmacyAddress"]["province"]
+
+    @property
+    def postal_code(self):
+        return self.pharmacy["pharmacyAddress"]["postalCode"].replace(" ", "")
+
+    @property
+    def phone(self):
+        return self.pharmacy["pharmacyContact"]["phone"]
+
+    @property
+    def website(self):
+        return f"https://shoppersdrugmart.medmeapp.com/{self.pharmacy['storeNo']}/schedule/"
+
+    @property
+    def num_available(self):
+        return 1 if self.available else 0
+
+    @property
+    def num_total(self):
+        return 1 if self.available else 0
+
+    def to_location(self):
+        return {
+            "line1": self.address,
+            "city": self.city,
+            "province": self.province,
+            "postcode": self.postal_code,
+            "name": self.name,
+            "phone": self.phone,
+            "url": self.website,
+            "available": self.available,
+            "type": self.vaccine_type,
+            "tags": self.tags,
+        }
 
 
 async def main():
@@ -123,28 +200,34 @@ async def main():
             session=session,
         )
 
-        for vaccine_name, vaccine_data in VACCINES.items():
-            pharmacies = await get_available_pharmacies(session, vaccine_data["appointment_type_name"])
-            for pharmacy in pharmacies:
-                external_key = f"shoppersdrugmart-{pharmacy['storeNo']}-{slugify(vaccine_name)}"
-                available = not pharmacy["appointmentTypes"][0]["isWaitlisted"]
-                location = {
-                    "line1": f"{pharmacy['pharmacyAddress']['streetNumber']} {pharmacy['pharmacyAddress']['streetName']}",
-                    "city": pharmacy["pharmacyAddress"]["city"],
-                    "province": pharmacy["pharmacyAddress"]["province"],
-                    "postcode": pharmacy["pharmacyAddress"]["postalCode"].replace(" ", ""),
-                    "name": pharmacy["name"],
-                    "phone": pharmacy["pharmacyContact"]["phone"],
-                    "url": f"https://shoppersdrugmart.medmeapp.com/{pharmacy['storeNo']}/schedule/{pharmacy['appointmentTypes'][0]['id']}",
-                    "available": available,
-                    "type": vaccine_data["type"],
-                    "tags": vaccine_data["tags"]
-                }
+        # Generate a lookup of external ID to Shoppers Drug Mart pharmacy
+        # As we see each pharmacy, add it to the lookup if it isn't yet there
+        # Then, update its tags and availability
+        pharmacies: dict[str, SDMPharmacy] = {}
 
-                await vhc.add_availability(
-                    num_available=1 if available else 0,
-                    num_total=1 if available else 0,
-                    vaccine_type=vaccine_data["type"],
-                    location=location,
-                    external_key=external_key,
-                )
+        for vaccine_data in VACCINES.values():
+            for pharmacy_data in await get_available_pharmacies(
+                session, vaccine_data["appointment_type_name"]
+            ):
+                external_key = SDMPharmacy.get_external_key(pharmacy_data)
+
+                # Get or create the SDMPharmacy instance
+                if external_key in pharmacies:
+                    pharmacy = pharmacies[external_key]
+                else:
+                    pharmacy = SDMPharmacy(pharmacy_data)
+                    pharmacies[external_key] = pharmacy
+
+                # Update it with values from this data
+                pharmacy.available |= SDMPharmacy.is_available(pharmacy_data)
+                pharmacy.tags.extend(vaccine_data["tags"])
+                pharmacy.vaccine_type = vaccine_data["type"]
+
+        for external_key, pharmacy in pharmacies.items():
+            await vhc.add_availability(
+                num_available=pharmacy.num_available,
+                num_total=pharmacy.num_total,
+                vaccine_type=pharmacy.vaccine_type,
+                location=pharmacy.to_location(),
+                external_key=pharmacy.external_key,
+            )
