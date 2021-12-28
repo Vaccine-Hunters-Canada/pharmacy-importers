@@ -1,6 +1,7 @@
 #import os
 #import re
-#import csv
+import csv
+from os import name
 #import json
 import aiohttp
 import datetime
@@ -14,14 +15,19 @@ import pytz
 
 async def main():
 #async def main(mytimer: func.TimerRequest, stateblob) -> str:
-    id = 'AGA35VEWK3SLXFOR'
+    #id = 'AGA35VEWK3SLXFOR'
+
+    pharmacies_csv = open('Calendly/pharmacies.csv')
+    pharmacies_locations = csv.DictReader(pharmacies_csv)
+
+    #print(pharmacies_locations)
 
     headers = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'
     }
 
     start_date = datetime.datetime.now(pytz.timezone("America/New_York")) # Get current time in Eastern time
-    print(start_date)
+    #print(start_date)
     end_date = start_date + datetime.timedelta(days=60) # Use approximately 2 months
 
     async with aiohttp.ClientSession(headers=headers) as session:
@@ -32,41 +38,52 @@ async def main():
         #    session=session
         #)
 
-        availabilities = await session.get(
-            f'https://calendly.com/api/booking/event_types/{id}/calendar/range?timezone=America%2FNew_York&diagnostics=false&range_start=2021-12-26&range_end=2022-02-20'
-        )
+        for location in pharmacies_locations:
+            address = location['address']
+            city = location['city']
+            province = location['province']
+            postcode = location['postcode']
+            id = location['id']
+            url = location['url']
+            name = location['name']
 
-        if availabilities.status == 200:
-            body = await availabilities.json()
+            availabilities = await session.get(
+                f'https://calendly.com/api/booking/event_types/{id}/calendar/range?timezone=America%2FNew_York&diagnostics=false&range_start=2021-12-26&range_end=2022-02-20'
+            )
 
-            #print(body)
+            if availabilities.status == 200:
+                body = await availabilities.json()
 
-            vaccine_type = 1
-            availability = False
+                #print(body)
 
-            days = body['days']
+                vaccine_type = 1
+                availability = False
 
-            for day in days:
-                if day['status'] == 'available':
-                    availability = True
+                days = body['days']
 
-            location_data = {
-                'line1': "test",
-                'city': "test",
-                'province': "test",
-                'postcode': "test",
-                'name': "test",
-                'url': "test",
-                'tags': "test"
-            }
+                for day in days:
+                    if day['status'] == 'available':
+                        availability = True
 
-            # await vhc.add_availability(
-            #     num_available=1 if availability else 0,
-            #     num_total=1 if availability else 0,
-            #     vaccine_type=vaccine_type,
-            #     location=location_data,
-            #     external_key="test"
-            # )
+                location_data = {
+                    'line1': address,
+                    'city': city,
+                    'province': province,
+                    'postcode': postcode,
+                    'name': name,
+                    'url': url,
+                    'tags': ""
+                }
+
+                print(location_data)
+
+                # await vhc.add_availability(
+                #     num_available=1 if availability else 0,
+                #     num_total=1 if availability else 0,
+                #     vaccine_type=vaccine_type,
+                #     location=location_data,
+                #     external_key="test"
+                # )
 
 if __name__ == '__main__':
     if sys.version_info[0] == 3 and sys.version_info[1] >= 8 and sys.platform.startswith('win'):
