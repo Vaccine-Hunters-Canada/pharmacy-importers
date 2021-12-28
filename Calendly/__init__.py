@@ -7,6 +7,7 @@ import datetime
 #import logging
 import asyncio
 import sys
+import pytz
 #from vhc import VHC
 
 #import azure.functions as func
@@ -19,7 +20,8 @@ async def main():
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'
     }
 
-    start_date = datetime.datetime.utcnow()
+    start_date = datetime.datetime.now(pytz.timezone("America/New_York")) # Get current time in Eastern time
+    print(start_date)
     end_date = start_date + datetime.timedelta(days=60) # Use approximately 2 months
 
     async with aiohttp.ClientSession(headers=headers) as session:
