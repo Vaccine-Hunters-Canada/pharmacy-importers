@@ -103,33 +103,31 @@ appointmentsubtypes = ('Immunization - COVID',
 
 # Detect if subtype is in blacklist (e.g. COVID-19 test or flu shot)
 def detectblacklist(text):
-    blacklist = ('flu', 'influenza', 'antigen', 'pcr',
-                'test', 'screening', 'symptomatic')
+    blacklist = (r'\bflu\b', r'\binfluenza\b', r'\bantigen\b', r'\bpcr\b',
+                r'\btest\b', r'\bscreening\b', r'\bsymptomatic\b')
     for x in blacklist:
-        if x in text:
+        if re.search(x, text, re.IGNORECASE):
             return True
     return False
 
 # Detect text from vaccine type
 def detectvaccine(text):
     tags = []
-    if 'pfizer' in text.lower():
+    if re.search(r'\bpfizer\b', text, re.IGNORECASE):
         tags.append("Pfizer")
-    if 'moderna' in text.lower():
+    if re.search(r'\bmoderna\b', text, re.IGNORECASE):
         tags.append("Moderna")
-    if 'astrazeneca' in text.lower() or 'astra zeneca' in text.lower():
+    if re.search(r'\bastrazeneca\b', text, re.IGNORECASE) or re.search(r'\bastra zeneca\b', text, re.IGNORECASE):
         tags.append("AstraZeneca")
-    if '1st dose' in text.lower() or 'dose 1' in text.lower() or 'first' in text.lower():
+    if re.search(r'\b1st dose\b', text, re.IGNORECASE) or re.search(r'\bdose 1\b', text, re.IGNORECASE):
         tags.append("1st Dose")
-    if '2nd dose' in text.lower() or 'dose 2' in text.lower() or 'second' in text.lower():
+    if re.search(r'\b2nd dose\b', text, re.IGNORECASE) or re.search(r'\bdose 2\b', text, re.IGNORECASE):
         tags.append("2nd Dose")
-    if '3rd dose' in text.lower() or 'dose 3' in text.lower() or 'booster' in text.lower():
+    if re.search(r'\b3rd dose\b', text, re.IGNORECASE) or re.search(r'\bdose 3\b', text, re.IGNORECASE) or re.search(r'\bbooster\b', text, re.IGNORECASE):
         tags.append("3rd Dose")
-    if '5-11' in text.lower() or 'pediatric' in text.lower() or 'paediatric' in text.lower():
+    if re.search(r'\b5-11\b', text, re.IGNORECASE) or re.search(r'\bpediatric\b', text, re.IGNORECASE) or re.search(r'\bpaediatric\b', text, re.IGNORECASE):
         tags.append("Ages 5-11")
-        if "Pfizer" not in tags:
-            tags.append("Pfizer") # All pediatric doses in Canada are Pfizer
-    if '12+' in text.lower() or '12 yrs' in text.lower() or '12 and up' in text.lower():
+    if re.search(r'\b12\+\b', text, re.IGNORECASE) or re.search(r'\b12 yrs\b', text, re.IGNORECASE) or re.search(r'\b12 and up\b', text, re.IGNORECASE):
         tags.append("Ages 12+")
     return tags
 
