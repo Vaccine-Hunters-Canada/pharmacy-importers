@@ -50,26 +50,30 @@ VACCINES = {
 class MedMeAppInterface:
     TENANT_ID = "edfbb1a3-aca2-4ee4-bbbb-9237237736c4"
     URL = "https://gql.medscheck.medmeapp.com/graphql"
-    HEADERS = {
-        "authority": "gql.medscheck.medmeapp.com",
-        "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
-        "sec-ch-ua-mobile": "?0",
-        "authorization": "",
-        "content-type": "application/json",
-        "accept": "*/*",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
-        "x-tenantid": TENANT_ID,
-        "sec-ch-ua-platform": '"macOS"',
-        "origin": "https://shoppersdrugmart.medmeapp.com",
-        "referer": "https://shoppersdrugmart.medmeapp.com/",
-        "sec-fetch-site": "same-site",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-dest": "empty",
-        "accept-language": "en-US,en;q=0.9",
-    }
 
-    def enterprise(self):
-        return "SDM"
+    def __init__(self, enterprise_name, subdomain, org_id):
+        self.enterprise_name = enterprise_name
+        self.subdomain = subdomain
+        self.org_id = org_id
+
+    def headers(self):
+        return {
+            "authority": "gql.medscheck.medmeapp.com",
+            "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
+            "sec-ch-ua-mobile": "?0",
+            "authorization": "",
+            "content-type": "application/json",
+            "accept": "*/*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+            "x-tenantid": self.TENANT_ID,
+            "sec-ch-ua-platform": '"macOS"',
+            "origin": f"https://{self.subdomain}.medmeapp.com",
+            "referer": f"https://{self.subdomain}.medmeapp.com/",
+            "sec-fetch-site": "same-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "accept-language": "en-US,en;q=0.9",
+        }
 
     async def get_available_pharmacies(self, session, appointment_type_name):
         query = """
@@ -102,7 +106,7 @@ class MedMeAppInterface:
         """
         variables = {
             "appointmentTypeName": appointment_type_name,
-            "enterpriseName": self.enterprise(),
+            "enterpriseName": self.enterprise_name,
         }
         response = await session.post(self.URL, json={"query": query, "variables": variables})
         try:
@@ -115,32 +119,32 @@ class MedMeAppInterface:
             return []
 
     async def update_availabilities(self):
-        async with aiohttp.ClientSession(headers=self.HEADERS) as session:
+        async with aiohttp.ClientSession(headers=self.headers()) as session:
             vhc = VHC(
                 base_url=os.environ.get("BASE_URL"),
                 api_key=os.environ.get("API_KEY"),
-                org_id=os.environ.get("VHC_ORG_SHOPPERS_DRUG_MART"),
+                org_id=self.org_id,
                 session=session,
             )
 
-            # Generate a lookup of external ID to Shoppers Drug Mart pharmacy
+            # Generate a lookup of external ID to pharmacy
             # As we see each pharmacy, add it to the lookup if it isn't yet there
             # Then, update its tags and availability
-            pharmacies: dict[str, SDMPharmacy] = {}
+            pharmacies: dict[str, Pharmacy] = {}
 
             for vaccine_data in VACCINES.values():
                 for pharmacy_data in await self.get_available_pharmacies(session, vaccine_data["appointment_type_name"]):
-                    external_key = SDMPharmacy.get_external_key(pharmacy_data)
+                    pharmacy = Pharmacy(self.subdomain, pharmacy_data)
 
-                    # Get or create the SDMPharmacy instance
-                    if external_key in pharmacies:
-                        pharmacy = pharmacies[external_key]
+                    # If the pharmacy doesn't exist in the mapping yet, add it
+                    # If it does exist, use the existing object instead
+                    if pharmacy.external_key in pharmacies:
+                        pharmacy = pharmacies[pharmacy.external_key]
                     else:
-                        pharmacy = SDMPharmacy(pharmacy_data)
-                        pharmacies[external_key] = pharmacy
+                        pharmacies[pharmacy.external_key] = pharmacy
 
                     # Update it with values from this data
-                    pharmacy.available |= SDMPharmacy.is_available(pharmacy_data)
+                    pharmacy.available |= Pharmacy.is_available(pharmacy_data)
                     pharmacy.tags.update(vaccine_data["tags"])
                     pharmacy.vaccine_type = vaccine_data["type"]
 
@@ -150,26 +154,22 @@ class MedMeAppInterface:
                     num_total=pharmacy.num_total,
                     vaccine_type=pharmacy.vaccine_type,
                     location=pharmacy.to_location(),
-                    external_key=pharmacy.external_key,
+                    external_key=external_key,
                 )
 
-class SDMPharmacy:
+class Pharmacy:
     """
-    Represents a single instance of a Shoppers Drug Mart pharmacy
+    Represents a single instance of a pharmacy
     Provides methods for accessing data within the GraphQL response that was received
     """
-
-    @staticmethod
-    def get_external_key(pharmacy):
-        """External key to uniquely reprsent the pharmacy in our system"""
-        return f"shoppersdrugmart-{pharmacy['storeNo']}"
 
     @staticmethod
     def is_available(pharmacy):
         """Is the pharmacy currently accepting appointments?"""
         return not pharmacy["appointmentTypes"][0]["isWaitlisted"]
 
-    def __init__(self, pharmacy):
+    def __init__(self, subdomain, pharmacy):
+        self.subdomain = subdomain
         self.pharmacy = pharmacy
         self.vaccine_type = 3
         self.available = False
@@ -177,7 +177,7 @@ class SDMPharmacy:
 
     @property
     def external_key(self):
-        return SDMPharmacy.get_external_key(self.pharmacy)
+        return f"{self.subdomain}-{self.store_number}"
 
     @property
     def name(self):
@@ -205,7 +205,11 @@ class SDMPharmacy:
 
     @property
     def website(self):
-        return f"https://shoppersdrugmart.medmeapp.com/{self.pharmacy['storeNo']}/schedule/"
+        return f"https://{self.subdomain}.medmeapp.com/{self.store_number}/schedule/"
+
+    @property
+    def store_number(self):
+        return self.pharmacy['storeNo']
 
     @property
     def num_available(self):
@@ -231,4 +235,8 @@ class SDMPharmacy:
 
 
 async def main():
-    await MedMeAppInterface().update_availabilities()
+    await MedMeAppInterface(
+        "SDM",
+        "shoppersdrugmart",
+        os.environ.get("VHC_ORG_SHOPPERS_DRUG_MART")
+    ).update_availabilities()
