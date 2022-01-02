@@ -8,15 +8,12 @@ import datetime
 #import logging
 import asyncio
 import sys
-import pytz
 #from vhc import VHC
 
 #import azure.functions as func
 
 async def main():
 #async def main(mytimer: func.TimerRequest, stateblob) -> str:
-    #id = 'AGA35VEWK3SLXFOR'
-
     pharmacies_csv = open('Calendly/pharmacies.csv')
     pharmacies_locations = csv.DictReader(pharmacies_csv)
 
@@ -26,9 +23,13 @@ async def main():
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36'
     }
 
-    start_date = datetime.datetime.now(pytz.timezone("America/New_York")) # Get current time in Eastern time
-    #print(start_date)
+    #start_date = datetime.datetime.now(pytz.timezone("America/New_York")) # Get current time in Eastern time
+    start_date = datetime.datetime.utcnow()
+    print(start_date)
     end_date = start_date + datetime.timedelta(days=60) # Use approximately 2 months
+
+    start_date_formatted = start_date.strftime('%Y-%m-%d')
+    end_date_formatted = end_date.strftime('%Y-%m-%d')
 
     async with aiohttp.ClientSession(headers=headers) as session:
         #vhc = VHC(
@@ -48,7 +49,7 @@ async def main():
             name = location['name']
 
             availabilities = await session.get(
-                f'https://calendly.com/api/booking/event_types/{id}/calendar/range?timezone=America%2FNew_York&diagnostics=false&range_start=2021-12-26&range_end=2022-02-20'
+                f'https://calendly.com/api/booking/event_types/{id}/calendar/range?timezone=UTC&diagnostics=false&range_start={start_date_formatted}&range_end={end_date_formatted}'
             )
 
             if availabilities.status == 200:
@@ -56,7 +57,7 @@ async def main():
 
                 #print(body)
 
-                vaccine_type = 1
+                vaccine_type = 1 # Unknown vaccine type
                 availability = False
 
                 days = body['days']
@@ -76,13 +77,14 @@ async def main():
                 }
 
                 print(location_data)
+                print(availability)
 
                 # await vhc.add_availability(
                 #     num_available=1 if availability else 0,
                 #     num_total=1 if availability else 0,
                 #     vaccine_type=vaccine_type,
                 #     location=location_data,
-                #     external_key="test"
+                #     external_key=location['id']
                 # )
 
 if __name__ == '__main__':
