@@ -52,7 +52,7 @@ async def main():
         site_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(test_id)
         query = """
             \"query {
-                cRetailerWithSetting (data:{slug:\\\"{w533}\\\"}) { 
+                cRetailerWithSetting (data:{slug:\\\"w533\\\"}) { 
                     success,
                     error,
                     data { 
