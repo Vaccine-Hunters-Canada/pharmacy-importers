@@ -190,8 +190,6 @@ async def main():
                             continue
 
                         bookable_day_times = await getSlots(retailer_id, bookable_day_datetime, service['id'])
-                        
-                        # print(bookable_day_times)
 
                         # There are multiple start and end times in a given day sometimes
                         start_times = bookable_day_times['workTimes'][0]['startTimes'].split(",")
@@ -203,7 +201,7 @@ async def main():
                             continue
 
                         current_event = bookable_day_times['events'].pop(0)
-                        # print(bookable_day_times)
+                        
                         for i in range(len(start_times)):
                             current_start_time = start_times[i]
                             current_end_times = end_times[i]
@@ -247,10 +245,6 @@ async def main():
                                         
                                 else:
                                     if (past_event_end_datetime != current_event_start_datetime):
-                                        # print(past_event_end_datetime)
-                                        # print(past_event)
-                                        # print(current_event_start_datetime)
-                                        # print(current_event)
                                         num_available += 1
                                     
                                     # Need to capture event where there are availabilities at the end of the day ( pastEndTime  > endTime - vaccine_duration )
@@ -259,8 +253,6 @@ async def main():
                                 past_event_start_datetime = current_event_start_datetime
                                 past_event_end_datetime = current_event_end_datetime
 
-                                # print(bookable_day_times)
-                                # print(vaccine_duration)
                                 if len(bookable_day_times['events']) == 0:
                                     break
                                 current_event = bookable_day_times['events'].pop(0)
