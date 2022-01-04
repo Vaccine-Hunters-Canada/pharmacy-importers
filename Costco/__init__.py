@@ -165,7 +165,7 @@ async def main():
                     # bookingMode = 6 - Hidden from user-facing site
                     # mainPageMode = 0 - Accepting Bookable Appointments
                     # mainPageMode = 2 - Accepting Waitlist Signups
-                    if (service['bookingMode'] == 0 and service['mainPageMode'] == 0 and "covid" in service['name'].lower()):
+                    if (service['bookingMode'] == 0 and service['mainPageMode'] == 0 and "covid" in service['name'].lower() and "vaccin" in service['name'].lower()):
                         pharmacy.covid_services.append(service)
                         # print(service)
 
@@ -264,7 +264,7 @@ async def main():
                                 
                         # print(num_available)
                         if num_available > 0:
-                            print(pharmacy.name + " has appointments on " + bookable_day + " starting at " + current_start_time + " and ending at " + current_end_times)
+                            print(pharmacy.name + " has appointments on " + bookable_day + " starting at " + current_start_time + " and ending at " + current_end_times + " for service " + service['name'])
 
 
 loop = asyncio.get_event_loop()
