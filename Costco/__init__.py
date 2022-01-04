@@ -175,16 +175,47 @@ async def main():
             )
             return []
         
-        # Start by calling it for today. This will give us information, including the bookable days, which we can then pass through to this function again.
         for service in pharmacy.covid_services:
+            # Start by calling it for today. This will give us information, including the bookable days, which we can then pass through to this function again.
             today_bookable_times = await getSlots(retailer_id, datetime.now(), service['id'])
             bookable_days = today_bookable_times['bookableDays']
             
             vaccine_duration = service['duration']
             
             if (len(bookable_days) != 0 and today_bookable_times['isAvailable'] == True):
-                print("Hello")
-            
+                for bookable_day in bookable_days:
+                    bookable_day_datetime = datetime.strptime(bookable_day, "%Y-%m-%d")
+                    # Make sure bookable date is not in the past.
+                    if datetime.now() > bookable_day_datetime:
+                        continue
+
+                    bookable_day_times = await getSlots(retailer_id, bookable_day_datetime, service['id'])
+                    
+                    # There are multiple start and end times in a given day sometimes
+                    start_times = bookable_day_times['workTimes'][0]['startTimes'].split(",")
+                    end_times = bookable_day_times['workTimes'][0]['endTimes'].split(",")
+
+                    # print(bookable_day_times['events'])
+                    num_available = 0
+                    current_event = bookable_day_times['events'].pop(0)
+
+                    for i in range(len(start_times)):
+                        current_start_time = start_times[i]
+                        current_end_times = end_times[i]
+                        current_start_datetime = datetime.strptime(bookable_day + " " + current_start_time, "%Y-%m-%d %H:%M:%S")
+                        current_end_datetime = datetime.strptime(bookable_day + " " + current_end_times, "%Y-%m-%d %H:%M:%S")
+
+                        formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                        print("------")
+                        print(current_start_time)
+                        print(formatted_current_end_time)
+                        current_event_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+
+
+                        while (current_event and current_start_datetime > current_event_datetime):
+                            print("Start time is after current_event..")
+                            break
+                    
 
 
 loop = asyncio.get_event_loop()
