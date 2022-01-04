@@ -195,7 +195,6 @@ async def main():
                     start_times = bookable_day_times['workTimes'][0]['startTimes'].split(",")
                     end_times = bookable_day_times['workTimes'][0]['endTimes'].split(",")
 
-                    # print(bookable_day_times['events'])
                     num_available = 0
                     current_event = bookable_day_times['events'].pop(0)
 
@@ -206,15 +205,18 @@ async def main():
                         current_end_datetime = datetime.strptime(bookable_day + " " + current_end_times, "%Y-%m-%d %H:%M:%S")
 
                         formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                        current_event_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+
+                        # Make sure the current appointment is after the start time we are looking at
+                        while (current_event and current_start_datetime > current_event_datetime):
+                            current_event = bookable_day_times['events'].pop(0)
+                            formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                            current_event_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                        
+
                         print("------")
                         print(current_start_time)
                         print(formatted_current_end_time)
-                        current_event_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
-
-
-                        while (current_event and current_start_datetime > current_event_datetime):
-                            print("Start time is after current_event..")
-                            break
                     
 
 
