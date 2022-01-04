@@ -129,103 +129,140 @@ async def main():
                 )
                 return []
 
-        # for pharmacy in pharmacies:
-            # retailer_id = pharmacy.retailer_id
-        retailer_id = 135
+        for pharmacy in pharmacies:
+            retailer_id = pharmacy.retailer_id
+            # retailer_id = 135
 
-        appointments_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(retailer_id)
-        query = ("""
-            query { 
-                onlineBookableAppointmentTypes (data:{retailerId:%s}) { 
-                    success,
-                    error,
-                    data {  
-                        services { 
-                            id,
-                            name,
-                            duration,
-                            bookingMode,
-                            description,
-                            intakeFormType,
-                            mainPageMode 
+            appointments_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(retailer_id)
+            query = ("""
+                query { 
+                    onlineBookableAppointmentTypes (data:{retailerId:%s}) { 
+                        success,
+                        error,
+                        data {  
+                            services { 
+                                id,
+                                name,
+                                duration,
+                                bookingMode,
+                                description,
+                                intakeFormType,
+                                mainPageMode 
+                            } 
                         } 
-                    } 
+                    }
                 }
-            }
-        """ % retailer_id)
-        
-        response = await session.post(appointments_url, json={"query": query})
-        try:
-            body = await response.json()
-            available_services = body['data']['onlineBookableAppointmentTypes']['data']['services']
-
-            for service in available_services:
-                # This isn't super clear from the API, but I was able to derive the following:
-                # bookingMode = 0 - Shows up on the site
-                # bookingMode = 6 - Hidden from user-facing site
-                # mainPageMode = 0 - Accepting Bookable Appointments
-                # mainPageMode = 2 - Accepting Waitlist Signups
-                if (service['bookingMode'] == 0 and service['mainPageMode'] == 0 and "covid" in service['name'].lower()):
-                    pharmacy.covid_services.append(service)
-                    # print(service)
-
-        except (json.decoder.JSONDecodeError, KeyError, IndexError):
-            logging.error(
-                "Failed to fetch data"
-            )
-            return []
-        
-        for service in pharmacy.covid_services:
-            # Start by calling it for today. This will give us information, including the bookable days, which we can then pass through to this function again.
-            today_bookable_times = await getSlots(retailer_id, datetime.now(), service['id'])
-            bookable_days = today_bookable_times['bookableDays']
+            """ % retailer_id)
             
-            vaccine_duration = service['duration']
+            response = await session.post(appointments_url, json={"query": query})
+            try:
+                body = await response.json()
+                available_services = body['data']['onlineBookableAppointmentTypes']['data']['services']
+
+                for service in available_services:
+                    # This isn't super clear from the API, but I was able to derive the following:
+                    # bookingMode = 0 - Shows up on the site
+                    # bookingMode = 6 - Hidden from user-facing site
+                    # mainPageMode = 0 - Accepting Bookable Appointments
+                    # mainPageMode = 2 - Accepting Waitlist Signups
+                    if (service['bookingMode'] == 0 and service['mainPageMode'] == 0 and "covid" in service['name'].lower()):
+                        pharmacy.covid_services.append(service)
+                        # print(service)
+
+            except (json.decoder.JSONDecodeError, KeyError, IndexError):
+                logging.error(
+                    "Failed to fetch data"
+                )
+                return []
             
-            if (len(bookable_days) != 0 and today_bookable_times['isAvailable'] == True):
-                for bookable_day in bookable_days:
-                    bookable_day_datetime = datetime.strptime(bookable_day, "%Y-%m-%d")
-                    # Make sure bookable date is not in the past.
-                    if datetime.now() > bookable_day_datetime:
-                        continue
+            for service in pharmacy.covid_services:
+                # Start by calling it for today. This will give us information, including the bookable days, which we can then pass through to this function again.
+                today_bookable_times = await getSlots(retailer_id, datetime.now(), service['id'])
+                bookable_days = today_bookable_times['bookableDays']
+                
+                vaccine_duration = service['duration']
+                
+                if (len(bookable_days) != 0 and today_bookable_times['isAvailable'] == True):
+                    for bookable_day in bookable_days:
+                        bookable_day_datetime = datetime.strptime(bookable_day, "%Y-%m-%d")
+                        # Make sure bookable date is not in the past.
+                        if datetime.now() > bookable_day_datetime:
+                            continue
 
-                    bookable_day_times = await getSlots(retailer_id, bookable_day_datetime, service['id'])
-                    
-                    # print(bookable_day_times)
+                        bookable_day_times = await getSlots(retailer_id, bookable_day_datetime, service['id'])
+                        
+                        # print(bookable_day_times)
 
-                    # There are multiple start and end times in a given day sometimes
-                    start_times = bookable_day_times['workTimes'][0]['startTimes'].split(",")
-                    end_times = bookable_day_times['workTimes'][0]['endTimes'].split(",")
+                        # There are multiple start and end times in a given day sometimes
+                        start_times = bookable_day_times['workTimes'][0]['startTimes'].split(",")
+                        end_times = bookable_day_times['workTimes'][0]['endTimes'].split(",")
 
-                    num_available = 0
-                    current_event = bookable_day_times['events'].pop(0)
+                        num_available = 0
+                        
+                        if len(bookable_day_times['events']) == 0:
+                            continue
 
-                    for i in range(len(start_times)):
-                        current_start_time = start_times[i]
-                        current_end_times = end_times[i]
-                        current_start_datetime = datetime.strptime(bookable_day + " " + current_start_time, "%Y-%m-%d %H:%M:%S")
-                        current_end_datetime = datetime.strptime(bookable_day + " " + current_end_times, "%Y-%m-%d %H:%M:%S")
+                        current_event = bookable_day_times['events'].pop(0)
+                        # print(bookable_day_times)
+                        for i in range(len(start_times)):
+                            current_start_time = start_times[i]
+                            current_end_times = end_times[i]
+                            current_start_datetime = datetime.strptime(bookable_day + " " + current_start_time, "%Y-%m-%d %H:%M:%S")
+                            current_end_datetime = datetime.strptime(bookable_day + " " + current_end_times, "%Y-%m-%d %H:%M:%S")
 
-                        # I know this is a bit of a gross way to get the right format, but it works...
-                        formatted_current_end_time = (current_event['endTime'].split("+"))[0]
-                        current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
-                    
-                        # Make sure the current appointment is after the start time we are looking at
-                        while (current_event and current_start_datetime > current_event_end_datetime):
-                            current_event = bookable_day_times['events'].pop(0)
+                            # I know this is a bit of a gross way to get the right format, but it works...
                             formatted_current_end_time = (current_event['endTime'].split("+"))[0]
                             current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
                         
-                        formatted_current_start_time = (current_event['startTime'].split("+"))[0]
-                        current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
+                            # Make sure the current appointment is after the start time we are looking at
+                            while (current_event and current_start_datetime > current_event_end_datetime):
+                                if len(bookable_day_times['events']) == 0:
+                                    break
+                                current_event = bookable_day_times['events'].pop(0)
+                                formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                                current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                            
+                            formatted_current_start_time = (current_event['startTime'].split("+"))[0]
+                            current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
 
-                        past_event = None
-                        past_event_start_datetime = None
-                        past_event_end_datetime = None
+                            past_event = None
+                            past_event_start_datetime = None
+                            past_event_end_datetime = None
 
-                        while (current_event_end_datetime < current_end_datetime):
-                            # Not sure why, but occassionally two duplicates come through, so need to trap this and move on
-                            if past_event_start_datetime == current_event_start_datetime:
+                            while (current_event_end_datetime < current_end_datetime):
+                                # Not sure why, but occassionally two duplicates come through, so need to trap this and move on
+                                if past_event_start_datetime == current_event_start_datetime:
+                                    current_event = bookable_day_times['events'].pop(0)
+
+                                    formatted_current_start_time = (current_event['startTime'].split("+"))[0]
+                                    current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
+                                    formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                                    current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                                    
+                                    continue
+                                if past_event == None:
+                                    # If this is the first booked appointment, and there is no past events, that means there is an appointment before it
+                                    if current_event_start_datetime != current_start_datetime:
+                                        num_available += 1
+                                        
+                                else:
+                                    if (past_event_end_datetime != current_event_start_datetime):
+                                        # print(past_event_end_datetime)
+                                        # print(past_event)
+                                        # print(current_event_start_datetime)
+                                        # print(current_event)
+                                        num_available += 1
+                                    
+                                    # Need to capture event where there are availabilities at the end of the day ( pastEndTime  > endTime - vaccine_duration )
+
+                                past_event = current_event
+                                past_event_start_datetime = current_event_start_datetime
+                                past_event_end_datetime = current_event_end_datetime
+
+                                # print(bookable_day_times)
+                                # print(vaccine_duration)
+                                if len(bookable_day_times['events']) == 0:
+                                    break
                                 current_event = bookable_day_times['events'].pop(0)
 
                                 formatted_current_start_time = (current_event['startTime'].split("+"))[0]
@@ -233,32 +270,9 @@ async def main():
                                 formatted_current_end_time = (current_event['endTime'].split("+"))[0]
                                 current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
                                 
-                                continue
-                            if past_event == None:
-                                # If this is the first booked appointment, and there is no past events, that means there is an appointment before it
-                                if current_event_start_datetime != current_start_datetime:
-                                    num_available += 1
-                                    
-                            else:
-                                if (past_event_end_datetime != current_event_start_datetime):
-                                    # print(past_event_end_datetime)
-                                    # print(past_event)
-                                    # print(current_event_start_datetime)
-                                    # print(current_event)
-                                    num_available += 1
-
-                            past_event = current_event
-                            past_event_start_datetime = current_event_start_datetime
-                            past_event_end_datetime = current_event_end_datetime
-
-                            current_event = bookable_day_times['events'].pop(0)
-
-                            formatted_current_start_time = (current_event['startTime'].split("+"))[0]
-                            current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
-                            formatted_current_end_time = (current_event['endTime'].split("+"))[0]
-                            current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
-                            
-                    print(num_available)
+                        # print(num_available)
+                        if num_available > 0:
+                            print(pharmacy.name + " has appointments on " + bookable_day + " starting at " + current_start_time + " and ending at " + current_end_times)
 
 
 loop = asyncio.get_event_loop()
