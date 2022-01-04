@@ -191,6 +191,8 @@ async def main():
 
                     bookable_day_times = await getSlots(retailer_id, bookable_day_datetime, service['id'])
                     
+                    # print(bookable_day_times)
+
                     # There are multiple start and end times in a given day sometimes
                     start_times = bookable_day_times['workTimes'][0]['startTimes'].split(",")
                     end_times = bookable_day_times['workTimes'][0]['endTimes'].split(",")
@@ -204,20 +206,59 @@ async def main():
                         current_start_datetime = datetime.strptime(bookable_day + " " + current_start_time, "%Y-%m-%d %H:%M:%S")
                         current_end_datetime = datetime.strptime(bookable_day + " " + current_end_times, "%Y-%m-%d %H:%M:%S")
 
+                        # I know this is a bit of a gross way to get the right format, but it works...
                         formatted_current_end_time = (current_event['endTime'].split("+"))[0]
-                        current_event_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
-
+                        current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                    
                         # Make sure the current appointment is after the start time we are looking at
-                        while (current_event and current_start_datetime > current_event_datetime):
+                        while (current_event and current_start_datetime > current_event_end_datetime):
                             current_event = bookable_day_times['events'].pop(0)
                             formatted_current_end_time = (current_event['endTime'].split("+"))[0]
-                            current_event_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                            current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
                         
+                        formatted_current_start_time = (current_event['startTime'].split("+"))[0]
+                        current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
 
-                        print("------")
-                        print(current_start_time)
-                        print(formatted_current_end_time)
-                    
+                        past_event = None
+                        past_event_start_datetime = None
+                        past_event_end_datetime = None
+
+                        while (current_event_end_datetime < current_end_datetime):
+                            # Not sure why, but occassionally two duplicates come through, so need to trap this and move on
+                            if past_event_start_datetime == current_event_start_datetime:
+                                current_event = bookable_day_times['events'].pop(0)
+
+                                formatted_current_start_time = (current_event['startTime'].split("+"))[0]
+                                current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
+                                formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                                current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                                
+                                continue
+                            if past_event == None:
+                                # If this is the first booked appointment, and there is no past events, that means there is an appointment before it
+                                if current_event_start_datetime != current_start_datetime:
+                                    num_available += 1
+                                    
+                            else:
+                                if (past_event_end_datetime != current_event_start_datetime):
+                                    # print(past_event_end_datetime)
+                                    # print(past_event)
+                                    # print(current_event_start_datetime)
+                                    # print(current_event)
+                                    num_available += 1
+
+                            past_event = current_event
+                            past_event_start_datetime = current_event_start_datetime
+                            past_event_end_datetime = current_event_end_datetime
+
+                            current_event = bookable_day_times['events'].pop(0)
+
+                            formatted_current_start_time = (current_event['startTime'].split("+"))[0]
+                            current_event_start_datetime = datetime.strptime(formatted_current_start_time, "%a %b %d %Y %H:%M:%S %Z")
+                            formatted_current_end_time = (current_event['endTime'].split("+"))[0]
+                            current_event_end_datetime = datetime.strptime(formatted_current_end_time, "%a %b %d %Y %H:%M:%S %Z")
+                            
+                    print(num_available)
 
 
 loop = asyncio.get_event_loop()
