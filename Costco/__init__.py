@@ -5,6 +5,7 @@ import aiohttp
 import asyncio
 import logging
 from urllib.request import Request, urlopen
+from datetime import datetime, timedelta
 # from vhc import VHC
 
 
@@ -42,8 +43,44 @@ HEADERS = {
 }
 
 
-def getSlots(retailer_id, covid_service_id):
-    return True
+async def getSlots(retailer_id, start_date, covid_service_id):
+    async with aiohttp.ClientSession(headers=HEADERS) as session:
+        next_day = start_date + timedelta(days=1)
+        formattedStartDate = start_date.strftime("%y-%m-%d")
+        formattedNextDay = next_day.strftime("%y-%m-%d")
+        slots_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(retailer_id)
+        query = ("""
+            query { 
+                searchBookableWorkTimes (data:{retailerId:%s,startDate:\"20%s 04:00:00\",endDate:\"20%s 03:59:59\",serviceId:%s}) { 
+                    workTimes { 
+                        id,
+                        startTimes,
+                        endTimes,
+                        startDate,
+                        endDate 
+                    }, 
+                    events { 
+                        id,
+                        startTime,
+                        endTime 
+                    },
+                    bookableDays,
+                    nextAvailableDate,
+                    isAvailable 
+                }
+            }
+        """ % (retailer_id, formattedStartDate, formattedNextDay, covid_service_id))
+
+        response = await session.post(slots_url, json={"query": query})
+        try:
+            body = await response.json()
+
+            return body['data']['searchBookableWorkTimes']
+        except (json.decoder.JSONDecodeError, KeyError, IndexError):
+            logging.error(
+                "Failed to fetch data"
+            )
+            return False
 
 async def main():
     async with aiohttp.ClientSession(headers=HEADERS) as session:
@@ -92,50 +129,62 @@ async def main():
                 )
                 return []
 
-        for pharmacy in pharmacies:
-            retailer_id = pharmacy.retailer_id
-            # retailer_id = 135
+        # for pharmacy in pharmacies:
+            # retailer_id = pharmacy.retailer_id
+        retailer_id = 135
 
-            appointments_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(retailer_id)
-            query = ("""
-                query { 
-                    onlineBookableAppointmentTypes (data:{retailerId:%s}) { 
-                        success,
-                        error,
-                        data {  
-                            services { 
-                                id,
-                                name,
-                                duration,
-                                bookingMode,
-                                description,
-                                intakeFormType,
-                                mainPageMode 
-                            } 
+        appointments_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(retailer_id)
+        query = ("""
+            query { 
+                onlineBookableAppointmentTypes (data:{retailerId:%s}) { 
+                    success,
+                    error,
+                    data {  
+                        services { 
+                            id,
+                            name,
+                            duration,
+                            bookingMode,
+                            description,
+                            intakeFormType,
+                            mainPageMode 
                         } 
-                    }
+                    } 
                 }
-            """ % retailer_id)
+            }
+        """ % retailer_id)
+        
+        response = await session.post(appointments_url, json={"query": query})
+        try:
+            body = await response.json()
+            available_services = body['data']['onlineBookableAppointmentTypes']['data']['services']
+
+            for service in available_services:
+                # This isn't super clear from the API, but I was able to derive the following:
+                # bookingMode = 0 - Shows up on the site
+                # bookingMode = 6 - Hidden from user-facing site
+                # mainPageMode = 0 - Accepting Bookable Appointments
+                # mainPageMode = 2 - Accepting Waitlist Signups
+                if (service['bookingMode'] == 0 and service['mainPageMode'] == 0 and "covid" in service['name'].lower()):
+                    pharmacy.covid_services.append(service)
+                    # print(service)
+
+        except (json.decoder.JSONDecodeError, KeyError, IndexError):
+            logging.error(
+                "Failed to fetch data"
+            )
+            return []
+        
+        # Start by calling it for today. This will give us information, including the bookable days, which we can then pass through to this function again.
+        for service in pharmacy.covid_services:
+            today_bookable_times = await getSlots(retailer_id, datetime.now(), service['id'])
+            bookable_days = today_bookable_times['bookableDays']
             
-            response = await session.post(appointments_url, json={"query": query})
-            try:
-                body = await response.json()
-                available_services = body['data']['onlineBookableAppointmentTypes']['data']['services']
-
-                for service in available_services:
-                    # This isn't super clear from the API, but I was able to derive the following:
-                    # bookingMode = 0 - Shows up on the site
-                    # bookingMode = 6 - Hidden from user-facing site
-                    # mainPageMode = 0 - Accepting Bookable Appointments
-                    # mainPageMode = 2 - Accepting Waitlist Signups
-                    if (service['bookingMode'] == 0 and service['mainPageMode'] == 0 and "covid" in service['name'].lower()):
-                        pharmacy.covid_services.append(service)
-
-            except (json.decoder.JSONDecodeError, KeyError, IndexError):
-                logging.error(
-                    "Failed to fetch data"
-                )
-                return []
+            vaccine_duration = service['duration']
+            
+            if (len(bookable_days) != 0 and today_bookable_times['isAvailable'] == True):
+                print("Hello")
+            
 
 
 loop = asyncio.get_event_loop()
