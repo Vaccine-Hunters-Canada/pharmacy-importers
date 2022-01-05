@@ -2,7 +2,6 @@ import os
 import json
 from urllib import request
 import aiohttp
-import asyncio
 import logging
 import math
 from urllib.request import Request, urlopen
@@ -347,6 +346,3 @@ async def main():
                     })
         
         await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
