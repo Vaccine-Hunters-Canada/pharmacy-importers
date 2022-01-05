@@ -1,4 +1,4 @@
-# import os
+import os
 import json
 from urllib import request
 import aiohttp
@@ -7,7 +7,7 @@ import logging
 import math
 from urllib.request import Request, urlopen
 from datetime import datetime, timedelta
-# from vhc import VHC
+from vhc import VHC
 
 
 class CostcoLocation:
@@ -22,13 +22,12 @@ class CostcoLocation:
         self.booking_url = booking_url
         self.retailer_id = -1
         self.covid_services = []
-    
-    @staticmethod
-    def get_external_key(location):
-        if location.retailer_id != -1:
-            return f"costco-{location.retailer_id}"
-        else:
-            return ""
+        self.is_available = False
+        self.num_available = 0
+        self.num_total = 0
+        self.vaccine_types = []
+        self.dose_numbers = []
+        self.ages = []
 
 HEADERS = {
     "Accept": "application/json",
@@ -85,6 +84,14 @@ async def getSlots(retailer_id, start_date, covid_service_id):
 
 async def main():
     async with aiohttp.ClientSession(headers=HEADERS) as session:
+
+        vhc = VHC(
+            base_url=os.environ.get('BASE_URL'),
+            api_key=os.environ.get('API_KEY'),
+            org_id=os.environ.get('VHC_ORG_WALMART'),
+            session=session
+        )
+
         # Get all Costco locations
         costco_location_url = "https://www.costcopharmacy.ca/assets/json/app.clinics.json"
         costco_location_request = Request(costco_location_url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -130,11 +137,10 @@ async def main():
                 )
                 return []
 
+        notifications = []
+
         for pharmacy in pharmacies:
-            # if pharmacy.name != 'Costco Barrie':
-            #     continue
             retailer_id = pharmacy.retailer_id
-            # retailer_id = 135
 
             appointments_url = "https://apipharmacy.telehippo.com/api/c/{}/graphql".format(retailer_id)
             query = ("""
@@ -218,11 +224,15 @@ async def main():
                             clinic_time_seconds = clinic_time.total_seconds() - 2 * vaccine_duration_seconds
 
                             total_appointments = math.floor(clinic_time_seconds/vaccine_duration_seconds)
+                            pharmacy.num_total += total_appointments
+
+                            free_appointments = 0
+
                             if len(events) == 0:
                                 # If the events list is empty and we are here, that means the entire chunk of time is bookable.
-                                num_available = total_appointments
+                                free_appointments = total_appointments
                             elif len(events) == 1:
-                                num_available = total_appointments-1
+                                free_appointments = total_appointments-1
                             else:
                                 current_event = events.pop(0)
 
@@ -288,8 +298,55 @@ async def main():
                             free_appointments = total_appointments-total_booked_appointments
                             
                             if free_appointments > 0:
-                                print(pharmacy.name + " - " + pharmacy.telehippo_id + " - " + "has appointments on " + bookable_day + " starting at " + current_start_time + " and ending at " + current_end_times + " for service " + service['name'] + " with " + str(free_appointments) + " appointments")
+                                if "pfizer" in service['name'].lower() and "Pfizer" not in pharmacy.vaccine_types:
+                                    pharmacy.vaccine_types.append("Pfizer")
+                                if "moderna" in service['name'].lower() and "Moderna" not in pharmacy.vaccine_types:
+                                    pharmacy.vaccine_types.append("Moderna")
+                                if "first" in service['name'].lower() and "1st Dose" not in pharmacy.dose_numbers:
+                                    pharmacy.dose_numbers.append("1st Dose")
+                                if "second" in service['name'].lower() and "2nd Dose" not in pharmacy.dose_numbers:
+                                    pharmacy.dose_numbers.append("2nd Dose")
+                                if ("third" in service['name'].lower()  or "booster" in service['name'].lower()) and "3rd Dose" not in pharmacy.dose_numbers:
+                                    pharmacy.dose_numbers.append("3rd Dose")
+                                if "pediatric" in service['name'].lower() and "5-11 Year Olds" not in pharmacy.ages:
+                                    pharmacy.ages.append("5-11 Year Olds")
+                                if "pediatric" not in service['name'].lower() and "12+ Year Olds" not in pharmacy.ages:
+                                    pharmacy.ages.append("12+ Year Olds")
+                                    
+                                pharmacy.is_available = True
+                                pharmacy.num_available += free_appointments
+            
+            pharmacy_tags = [] + pharmacy.vaccine_types + pharmacy.dose_numbers + pharmacy.ages
+            
+            location_data = {
+                'line1': pharmacy.address,
+                'city': pharmacy.city,
+                'province': pharmacy.province,
+                'postcode': pharmacy.postal,
+                'name': pharmacy.name,
+                'phone': pharmacy.phone,
+                'url': pharmacy.booking_url,
+                'available': pharmacy.is_available,
+                'type': 1,
+                'tags': pharmacy_tags
+            }
 
+            await vhc.add_availability(
+                num_available=pharmacy.num_available,
+                num_total=pharmacy.num_total,
+                vaccine_type=1,
+                location=location_data,
+                external_key=f"costco-{pharmacy.retailer_id}"
+            )
+            
+            if(pharmacy.is_available and pharmacy.province == "ON"):
+                name = pharmacy.name + " | " + ", ".join(pharmacy_tags) + " | (" + pharmacy.city + ", Ontario" + ")" 
+                notifications.append({
+                        'name': name,
+                        'url': pharmacy.booking_url
+                    })
+        
+        await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
