@@ -8,11 +8,10 @@ from vhc import VHC
 class MedMeAppInterface:
     URL = "https://gql.medscheck.medmeapp.com/graphql"
 
-    def __init__(self, tenant_id, enterprise_name, subdomain, org_id, vaccines):
+    def __init__(self, tenant_id, enterprise_name, subdomain, vaccines):
         self.tenant_id = tenant_id
         self.enterprise_name = enterprise_name
         self.subdomain = subdomain
-        self.org_id = org_id
         self.vaccines = vaccines
 
     def headers(self):
@@ -82,7 +81,7 @@ class MedMeAppInterface:
             vhc = VHC(
                 base_url=os.environ.get("BASE_URL"),
                 api_key=os.environ.get("API_KEY"),
-                org_id=self.org_id,
+                org_id=os.environ.get("ORG_ID_MEDMEAPP"),
                 session=session,
             )
 

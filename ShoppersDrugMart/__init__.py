@@ -4,7 +4,6 @@ from medmeapp import MedMeAppInterface
 TENANT_ID = "edfbb1a3-aca2-4ee4-bbbb-9237237736c4"
 ENTERPRISE_NAME = "SDM"
 SUBDOMAIN = "shoppersdrugmart"
-ORG_ID = os.environ.get("VHC_ORG_SHOPPERS_DRUG_MART")
 VACCINES = [
     {
         "type": 4,
@@ -49,4 +48,4 @@ VACCINES = [
 ]
 
 async def main():
-    await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, ORG_ID, VACCINES).update_availabilities()
+    await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, VACCINES).update_availabilities()
