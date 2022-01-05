@@ -87,7 +87,7 @@ async def main():
         vhc = VHC(
             base_url=os.environ.get('BASE_URL'),
             api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_WALMART'),
+            org_id=os.environ.get('VHC_ORG_COSTCO'),
             session=session
         )
 
@@ -345,4 +345,4 @@ async def main():
                         'url': pharmacy.booking_url
                     })
         
-        await vhc.notify_discord('Walmart Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
+        await vhc.notify_discord('Costco Pharmacies', notifications, os.environ.get('DISCORD_PHARMACY_ON'))
