@@ -48,5 +48,5 @@ VACCINES = [
     },
 ]
 
-async def main(dryrun = False):
+async def main(dryrun: bool = False) -> None:
     await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, VACCINES, dryrun).update_availabilities()

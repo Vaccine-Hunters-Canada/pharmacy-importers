@@ -1,3 +1,4 @@
+from _typeshed import SupportsRead
 import os
 import csv
 import json
@@ -11,7 +12,7 @@ from bs4 import BeautifulSoup
 import azure.functions as func
 
 
-async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     telus_csv = open('TelusHealth/telus-health-locations.csv')
     telus_locations = csv.DictReader(telus_csv)
 

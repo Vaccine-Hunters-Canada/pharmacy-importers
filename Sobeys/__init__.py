@@ -1,10 +1,10 @@
+from _typeshed import SupportsRead
 import os
 import re
 import csv
 import json
 import aiohttp
 import datetime
-import logging
 from vaccine_types import VaccineType
 from vhc import VHC
 from mockvhc import MockVHC
@@ -13,11 +13,9 @@ import azure.functions as func
 
 VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
-async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
-
-    p = re.compile(r'^(.+)\s-\s([A|P|M].+)$')
 
     headers = {
         'origin': 'https://www.pharmacyappointments.ca',
@@ -64,7 +62,7 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
                 json=data
             )
 
-            tags = []
+            tags: list[str] = []
             vaccine_type = VaccineType.UNKNOWN
             availability = False
             if availabilities.status == 200:
@@ -86,14 +84,8 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
                             tags.extend(['5-11 Year Olds', '1st Dose'])
                         else:
                             tags.extend(['12+ Year Olds', '2nd Dose', '3rd Dose'])
-            # else:
-            #     logging.info(availabilities.status)
-            #     logging.info(await availabilities.text())
             
             location_name = location['name'].strip()
-            # m = p.match(location_name)
-            # if m:
-            #     location_name = m.group(1)
 
             location_data = {
                 'line1': location['address'].strip(),

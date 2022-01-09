@@ -10,7 +10,7 @@ from vhc import VHC
 class MedMeAppInterface:
     URL = "https://gql.medscheck.medmeapp.com/graphql"
 
-    def __init__(self, tenant_id, enterprise_name, subdomain, vaccines, dryrun = False):
+    def __init__(self, tenant_id: str, enterprise_name: str, subdomain: str, vaccines, dryrun: bool = False):
         self.tenant_id = tenant_id
         self.enterprise_name = enterprise_name
         self.subdomain = subdomain

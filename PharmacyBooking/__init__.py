@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup as soup
 import azure.functions as func
 
 
-async def main(mytimer: func.TimerRequest, dryrun: bool = False) -> None:
+async def main(mytimer: func.TimerRequest | None, dryrun: bool = False) -> None:
     pb_csv = open('PharmacyBooking/pharmacy-booking-locations.csv')
     pb_locations = csv.DictReader(pb_csv)
 

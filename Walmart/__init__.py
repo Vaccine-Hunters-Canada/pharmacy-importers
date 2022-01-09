@@ -1,3 +1,4 @@
+from _typeshed import SupportsRead
 import os
 import re
 import json
@@ -18,7 +19,7 @@ vaccines = {
 
 location_availability = {}
 
-async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
 
     state = {}
     newstate = {}
