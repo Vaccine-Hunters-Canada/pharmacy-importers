@@ -2,17 +2,19 @@ import os
 import json
 import aiohttp
 import logging
+from mockvhc import MockVHC
 from vhc import VHC
 
 
 class MedMeAppInterface:
     URL = "https://gql.medscheck.medmeapp.com/graphql"
 
-    def __init__(self, tenant_id, enterprise_name, subdomain, vaccines):
+    def __init__(self, tenant_id, enterprise_name, subdomain, vaccines, dryrun = False):
         self.tenant_id = tenant_id
         self.enterprise_name = enterprise_name
         self.subdomain = subdomain
         self.vaccines = vaccines
+        self.dryrun = dryrun # Set to True for testing, False for production
 
     def headers(self):
         return {
@@ -78,12 +80,15 @@ class MedMeAppInterface:
 
     async def update_availabilities(self):
         async with aiohttp.ClientSession(headers=self.headers()) as session:
-            #vhc = VHC(
-            #    base_url=os.environ.get("BASE_URL"),
-            #    api_key=os.environ.get("API_KEY"),
-            #    org_id=os.environ.get("ORG_ID_MEDMEAPP"),
-            #    session=session,
-            #)
+            if self.dryrun == False:
+                vhc = VHC(
+                   base_url=os.environ.get("BASE_URL"),
+                   api_key=os.environ.get("API_KEY"),
+                   org_id=os.environ.get("ORG_ID_MEDMEAPP"),
+                   session=session,
+                )
+            else:
+                vhc = MockVHC()
 
             # Generate a lookup of external ID to pharmacy
             # As we see each pharmacy, add it to the lookup if it isn't yet there
@@ -107,14 +112,13 @@ class MedMeAppInterface:
                     pharmacy.vaccine_type = vaccine_data["type"]
 
             for external_key, pharmacy in pharmacies.items():
-                print(pharmacy)
-                #await vhc.add_availability(
-                #    num_available=pharmacy.num_available,
-                #    num_total=pharmacy.num_total,
-                #    vaccine_type=pharmacy.vaccine_type,
-                #    location=pharmacy.to_location(),
-                #    external_key=external_key,
-                #)
+                await vhc.add_availability(
+                    num_available=pharmacy.num_available,
+                    num_total=pharmacy.num_total,
+                    vaccine_type=pharmacy.vaccine_type,
+                    location=pharmacy.to_location(),
+                    external_key=external_key,
+                )
 
 class Pharmacy:
     """

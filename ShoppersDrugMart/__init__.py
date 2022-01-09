@@ -1,7 +1,4 @@
-import os
 from medmeapp import MedMeAppInterface
-import sys
-import asyncio
 
 TENANT_ID = "edfbb1a3-aca2-4ee4-bbbb-9237237736c4"
 ENTERPRISE_NAME = "SDM"
@@ -49,11 +46,5 @@ VACCINES = [
     },
 ]
 
-async def main():
-    await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, VACCINES).update_availabilities()
-
-if __name__ == '__main__':
-    if sys.version_info[0] == 3 and sys.version_info[1] >= 8 and sys.platform.startswith('win'):
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-    asyncio.run(main())
+async def main(dryrun = False):
+    await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, VACCINES, dryrun).update_availabilities()

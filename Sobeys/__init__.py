@@ -6,12 +6,13 @@ import aiohttp
 import datetime
 import logging
 from vhc import VHC
+from mockvhc import MockVHC
 
 import azure.functions as func
 
 VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
-async def main(mytimer: func.TimerRequest, stateblob) -> str:
+async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
 
@@ -30,12 +31,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
     async with aiohttp.ClientSession(headers=headers) as session:
 
-        vhc = VHC(
-            base_url=os.environ.get('BASE_URL'),
-            api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_SOBEYS'),
-            session=session
-        )
+        if dryrun == False:
+            vhc = VHC(
+                base_url=os.environ.get('BASE_URL'),
+                api_key=os.environ.get('API_KEY'),
+                org_id=os.environ.get('VHC_ORG_SOBEYS'),
+                session=session
+            )
+        else:
+            vhc = MockVHC()
 
         notifications = {
             'ON': [],
@@ -127,4 +131,3 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
         await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
 
         return json.dumps(newstate)
-            

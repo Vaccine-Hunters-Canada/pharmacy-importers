@@ -3,6 +3,7 @@ import re
 import json
 import aiohttp
 import logging
+from mockvhc import MockVHC
 from vhc import VHC
 
 import azure.functions as func
@@ -16,7 +17,7 @@ vaccines = {
 
 location_availability = {}
 
-async def main(mytimer: func.TimerRequest, stateblob) -> str:
+async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> str:
 
     state = {}
     newstate = {}
@@ -32,12 +33,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
     }
     async with aiohttp.ClientSession(headers=headers) as session:
 
-        vhc = VHC(
-            base_url=os.environ.get('BASE_URL'),
-            api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_WALMART'),
-            session=session
-        )
+        if dryrun == False:
+            vhc = VHC(
+                base_url=os.environ.get('BASE_URL'),
+                api_key=os.environ.get('API_KEY'),
+                org_id=os.environ.get('VHC_ORG_WALMART'),
+                session=session
+            )
+        else:
+            vhc = MockVHC()
 
         # Create the session and get the session cookie
         await session.get('https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc')
