@@ -1,5 +1,7 @@
 import os
 from medmeapp import MedMeAppInterface
+import sys
+import asyncio
 
 
 TENANT_ID = "f10d8ca0-ec52-4a28-aabd-9bd3388dab34"
@@ -50,3 +52,9 @@ VACCINES = [
 
 async def main():
     await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, VACCINES).update_availabilities()
+
+if __name__ == '__main__':
+    if sys.version_info[0] == 3 and sys.version_info[1] >= 8 and sys.platform.startswith('win'):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+    asyncio.run(main())
