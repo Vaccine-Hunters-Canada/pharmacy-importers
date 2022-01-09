@@ -3,6 +3,7 @@ import json
 import aiohttp
 import logging
 from mockvhc import MockVHC
+from vaccine_types import VaccineType
 from vhc import VHC
 
 
@@ -134,7 +135,7 @@ class Pharmacy:
     def __init__(self, subdomain, pharmacy):
         self.subdomain = subdomain
         self.pharmacy = pharmacy
-        self.vaccine_type = 3
+        self.vaccine_type = VaccineType.UNKNOWN # Unknown by default
         self.available = False
         self.tags = set()
 
@@ -192,6 +193,6 @@ class Pharmacy:
             "phone": self.phone,
             "url": self.website,
             "available": self.available,
-            "type": self.vaccine_type,
+            "type": self.vaccine_type.value,
             "tags": list(self.tags),
         }

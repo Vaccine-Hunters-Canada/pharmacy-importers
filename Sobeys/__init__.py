@@ -5,6 +5,7 @@ import json
 import aiohttp
 import datetime
 import logging
+from vaccine_types import VaccineType
 from vhc import VHC
 from mockvhc import MockVHC
 
@@ -64,7 +65,7 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
             )
 
             tags = []
-            vaccine_type = 1
+            vaccine_type = VaccineType.UNKNOWN
             availability = False
             if availabilities.status == 200:
                 body = await availabilities.json()
@@ -72,13 +73,13 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
                     if day['available'] == True:
                         availability = True
                         if "ZENECA" in location['name'].upper():
-                            vaccine_type = 5
+                            vaccine_type = VaccineType.ASTRAZENECA
                             tags.append('AstraZeneca')
                         elif "PFIZER" in location['name'].upper():
-                            vaccine_type = 4
+                            vaccine_type = VaccineType.PFIZER
                             tags.append('Pfizer')
                         elif "MODERNA" in location['name'].upper():
-                            vaccine_type = 3
+                            vaccine_type = VaccineType.MODERNA
                             tags.append('Moderna')
                         
                         if "PEDI" in location['name'].upper() and "5-11" in location['name'].upper():

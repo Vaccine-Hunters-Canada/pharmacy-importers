@@ -3,6 +3,7 @@ import csv
 import json
 import aiohttp
 import datetime
+from vaccine_types import VaccineType
 from vhc import VHC
 from mockvhc import MockVHC
 from bs4 import BeautifulSoup
@@ -58,7 +59,7 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
             await vhc.add_availability(
                 num_available=1 if available else 0,
                 num_total=1 if available else 0,
-                vaccine_type=1,
+                vaccine_type=VaccineType.UNKNOWN,
                 location=location_data,
                 external_key=location['id']
             )

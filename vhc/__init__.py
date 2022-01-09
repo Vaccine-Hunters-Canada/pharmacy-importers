@@ -26,7 +26,7 @@ class VHC:
         return f'https://{self.BASE_URL}/api/v1/{path}'
 
     async def add_availability(self, num_available, num_total, vaccine_type, location, external_key):
-        vaccine_name = self.VACCINES.get(vaccine_type, 'Unknown')
+        vaccine_name = self.VACCINES.get(vaccine_type.value, 'Unknown')
         va = {
                 'numberAvailable': num_available,
                 'numberTotal': num_total,

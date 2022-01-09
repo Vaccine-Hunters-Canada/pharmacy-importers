@@ -4,6 +4,7 @@ import json
 import aiohttp
 import logging
 from mockvhc import MockVHC
+from vaccine_types import VaccineType
 from vhc import VHC
 
 import azure.functions as func
@@ -61,7 +62,7 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
 
             tags = []
             available = False
-            vaccine_type = 1
+            vaccine_type = VaccineType.UNKNOWN
 
             for type in vaccines:
                 vaccine = vaccines[type]
@@ -104,7 +105,7 @@ async def main(mytimer: func.TimerRequest, stateblob, dryrun: bool = False) -> s
             await vhc.add_availability(
                 num_available=1 if loc.get('available', False) else 0,
                 num_total=1 if loc.get('available', False) else 0,
-                vaccine_type=loc.get('type', 4),
+                vaccine_type=VaccineType(loc.get('type', VaccineType.PFIZER.value)),
                 location=loc,
                 external_key=lid
             )

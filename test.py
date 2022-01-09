@@ -2,6 +2,7 @@ import asyncio
 import argparse
 import sys
 import Metro
+import PharmacyBooking
 import Rexall
 import SaveOnFoods
 import ShoppersDrugMart
@@ -19,6 +20,8 @@ if __name__ == '__main__':
 
     if args.mode == 'metro':
         asyncio.run(Metro.main(dryrun=True))
+    elif args.mode == 'pharmacybooking':
+        asyncio.run(PharmacyBooking.main(mytimer=None, dryrun=True))
     elif args.mode == 'rexall':
         asyncio.run(Rexall.main(dryrun=True))
     elif args.mode == 'saveonfoods':
