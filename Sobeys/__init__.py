@@ -1,3 +1,7 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from _typeshed import SupportsRead
 import os
 import csv
 import json
@@ -11,7 +15,7 @@ import azure.functions as func
 
 VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
-async def main(mytimer: func.TimerRequest | None, stateblob, dryrun: bool = False) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
 

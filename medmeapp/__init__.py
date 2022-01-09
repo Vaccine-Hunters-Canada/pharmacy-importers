@@ -1,7 +1,10 @@
 import os
 import json
+from typing import List
 import aiohttp
 import logging
+
+from aiohttp.client import ClientSession
 from mockvhc import MockVHC
 from vaccine_types import VaccineType
 from vhc import VHC
@@ -36,7 +39,7 @@ class MedMeAppInterface:
             "accept-language": "en-US,en;q=0.9",
         }
 
-    async def get_available_pharmacies(self, session, appointment_type_name):
+    async def get_available_pharmacies(self, session: ClientSession, appointment_type_name: str) -> List:
         query = """
         query publicGetEnterprisePharmacies($appointmentTypeName: String, $enterpriseName: String!, $storeNo: String) {
             publicGetEnterprisePharmacies(appointmentTypeName: $appointmentTypeName, enterpriseName: $enterpriseName, storeNo: $storeNo) {
