@@ -1,6 +1,9 @@
 import logging
+from typing import List
 import aiohttp
 import datetime
+
+from vaccine_types import VaccineType
 
 class VHC:
     BASE_URL = 'vax-availability-api-staging.azurewebsites.net'
@@ -12,7 +15,7 @@ class VHC:
         5: 'AstraZeneca'
     }
 
-    def __init__(self, base_url, api_key, org_id, session):
+    def __init__(self, base_url: str | None, api_key: str | None, org_id: str | None, session: aiohttp.ClientSession) -> None:
         self.BASE_URL = base_url
         self.API_KEY = f'Bearer {api_key}'
         self.VHC_ORG = org_id
@@ -22,11 +25,11 @@ class VHC:
             'VHC_ORG': self.VHC_ORG
         })
 
-    def request_path(self, path):
+    def request_path(self, path: str):
         return f'https://{self.BASE_URL}/api/v1/{path}'
 
-    async def add_availability(self, num_available, num_total, vaccine_type, location, external_key):
-        vaccine_name = self.VACCINES.get(vaccine_type, 'Unknown')
+    async def add_availability(self, num_available: int, num_total: int, vaccine_type: VaccineType, location: dict[str, str], external_key: str) -> None:
+        vaccine_name = self.VACCINES.get(vaccine_type.value, 'Unknown')
         va = {
                 'numberAvailable': num_available,
                 'numberTotal': num_total,
@@ -64,7 +67,7 @@ class VHC:
                 logging.info(f'Unavailable - {vaccine_name: <11} - {location["name"]}')
 
 
-    async def notify_discord(self, title, availabilities, discord_url):
+    async def notify_discord(self, title: str, availabilities, discord_url: str | None) -> None:
         if not discord_url or len(availabilities) == 0:
             return
 

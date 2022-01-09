@@ -4,11 +4,13 @@ from os import name
 import json
 import aiohttp
 import datetime
+from vaccine_types import VaccineType
 from vhc import VHC
+from mockvhc import MockVHC
 
 import azure.functions as func
 
-async def main(mytimer: func.TimerRequest, stateblob) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob, dryrun: bool = False) -> str:
     pharmacies_csv = open('Calendly/pharmacies.csv')
     pharmacies_locations = csv.DictReader(pharmacies_csv)
 
@@ -28,12 +30,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
     end_date_formatted = end_date.strftime('%Y-%m-%d')
 
     async with aiohttp.ClientSession(headers=headers) as session:
-        vhc = VHC(
-            base_url=os.environ.get('BASE_URL'),
-            api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_CALENDLY'),
-            session=session
-        )
+        if dryrun == False:
+            vhc = VHC(
+                base_url=os.environ.get('BASE_URL'),
+                api_key=os.environ.get('API_KEY'),
+                org_id=os.environ.get('VHC_ORG_CALENDLY'),
+                session=session
+            )
+        else:
+            vhc = MockVHC()
 
         for location in pharmacies_locations:
             address = location['address']
@@ -51,7 +56,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             if availabilities.status == 200:
                 body = await availabilities.json()
 
-                vaccine_type = 1 # Unknown vaccine type
+                vaccine_type = VaccineType.UNKNOWN # Unknown vaccine type
                 availability = False
 
                 days = body['days']
