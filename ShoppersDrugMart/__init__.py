@@ -4,6 +4,8 @@ import aiohttp
 import logging
 from vhc import VHC
 
+import azure.functions as func
+
 VACCINES = {
     "Pfizer 1st Dose": {
         "type": 4,
@@ -190,7 +192,7 @@ class SDMPharmacy:
         }
 
 
-async def main():
+async def main(mytimer: func.TimerRequest):
     async with aiohttp.ClientSession(headers=HEADERS) as session:
 
         vhc = VHC(
