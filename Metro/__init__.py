@@ -2,7 +2,7 @@ import os
 from medmeapp import MedMeAppInterface
 
 
-TENANT_ID = "edfbb1a3-aca2-4ee4-bbbb-9237237736c4"
+TENANT_ID = "c906edeb-2f2a-4867-b167-f882555e44bb"
 ENTERPRISE_NAME = "METRO"
 SUBDOMAIN = "metro"
 VACCINES = [
