@@ -78,12 +78,12 @@ class MedMeAppInterface:
 
     async def update_availabilities(self):
         async with aiohttp.ClientSession(headers=self.headers()) as session:
-            vhc = VHC(
-                base_url=os.environ.get("BASE_URL"),
-                api_key=os.environ.get("API_KEY"),
-                org_id=os.environ.get("ORG_ID_MEDMEAPP"),
-                session=session,
-            )
+            #vhc = VHC(
+            #    base_url=os.environ.get("BASE_URL"),
+            #    api_key=os.environ.get("API_KEY"),
+            #    org_id=os.environ.get("ORG_ID_MEDMEAPP"),
+            #    session=session,
+            #)
 
             # Generate a lookup of external ID to pharmacy
             # As we see each pharmacy, add it to the lookup if it isn't yet there
@@ -107,13 +107,14 @@ class MedMeAppInterface:
                     pharmacy.vaccine_type = vaccine_data["type"]
 
             for external_key, pharmacy in pharmacies.items():
-                await vhc.add_availability(
-                    num_available=pharmacy.num_available,
-                    num_total=pharmacy.num_total,
-                    vaccine_type=pharmacy.vaccine_type,
-                    location=pharmacy.to_location(),
-                    external_key=external_key,
-                )
+                print(pharmacy)
+                #await vhc.add_availability(
+                #    num_available=pharmacy.num_available,
+                #    num_total=pharmacy.num_total,
+                #    vaccine_type=pharmacy.vaccine_type,
+                #    location=pharmacy.to_location(),
+                #    external_key=external_key,
+                #)
 
 class Pharmacy:
     """
