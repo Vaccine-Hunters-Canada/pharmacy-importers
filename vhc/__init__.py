@@ -2,6 +2,8 @@ import logging
 import aiohttp
 import datetime
 
+from vaccine_types import VaccineType
+
 class VHC:
     BASE_URL = 'vax-availability-api-staging.azurewebsites.net'
     API_KEY = 'Bearer'
@@ -25,12 +27,12 @@ class VHC:
     def request_path(self, path):
         return f'https://{self.BASE_URL}/api/v1/{path}'
 
-    async def add_availability(self, num_available, num_total, vaccine_type, location, external_key):
+    async def add_availability(self, num_available: int, num_total: int, vaccine_type: VaccineType, location, external_key: str):
         vaccine_name = self.VACCINES.get(vaccine_type.value, 'Unknown')
         va = {
                 'numberAvailable': num_available,
                 'numberTotal': num_total,
-                'vaccine': vaccine_type,
+                'vaccine': vaccine_type.value,
                 'inputType': 1,
                 'tags': '',
                 'organization': self.VHC_ORG,

@@ -14,10 +14,10 @@ from vhc import VHC
 import azure.functions as func
 
 vaccines = {
-    'Pfizer 2nd Dose': { 'type': 4, 'form': 5394, 'tags': [ '12+ Year Olds', 'Pfizer', '2nd Dose', '3rd Dose' ] },
-    'Moderna 2nd Dose': { 'type': 3, 'form': 5396, 'tags': [ '12+ Year Olds', 'Moderna', '2nd Dose', '3rd Dose' ] },
-    'Pfizer 5-11 1st Dose': { 'type': 4, 'form': 6460, 'tags': [ '5-11 Year Olds', 'Pfizer', '1st Dose' ] },
-    'AstraZeneca 2nd Dose': { 'type': 5, 'form': 5398, 'tags': [ '12+ Year Olds', 'AstraZeneca', '2nd Dose', '3rd Dose' ] },
+    'Pfizer 2nd Dose': { 'type': VaccineType.PFIZER, 'form': 5394, 'tags': [ '12+ Year Olds', 'Pfizer', '2nd Dose', '3rd Dose' ] },
+    'Moderna 2nd Dose': { 'type': VaccineType.MODERNA, 'form': 5396, 'tags': [ '12+ Year Olds', 'Moderna', '2nd Dose', '3rd Dose' ] },
+    'Pfizer 5-11 1st Dose': { 'type': VaccineType.PFIZER, 'form': 6460, 'tags': [ '5-11 Year Olds', 'Pfizer', '1st Dose' ] },
+    'AstraZeneca 2nd Dose': { 'type': VaccineType.ASTRAZENECA, 'form': 5398, 'tags': [ '12+ Year Olds', 'AstraZeneca', '2nd Dose', '3rd Dose' ] },
 }
 
 location_availability = {}
@@ -63,7 +63,7 @@ async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | 
             if regex.search(location_name):
                 location_name = regex.sub(r'\1', location_name).strip()
 
-            tags = []
+            tags: list[str] = []
             available = False
             vaccine_type = VaccineType.UNKNOWN
 
@@ -108,7 +108,7 @@ async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | 
             await vhc.add_availability(
                 num_available=1 if loc.get('available', False) else 0,
                 num_total=1 if loc.get('available', False) else 0,
-                vaccine_type=VaccineType(loc.get('type', VaccineType.PFIZER.value)),
+                vaccine_type=loc.get('type', VaccineType.PFIZER)),
                 location=loc,
                 external_key=lid
             )
