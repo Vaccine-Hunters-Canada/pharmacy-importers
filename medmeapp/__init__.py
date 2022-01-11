@@ -8,7 +8,7 @@ from aiohttp.client import ClientSession
 from mockvhc import MockVHC
 from vaccine_types import VaccineType
 from vhc import VHC
-
+import datetime
 
 class MedMeAppInterface:
     URL = "https://gql.medscheck.medmeapp.com/graphql"
@@ -64,8 +64,11 @@ class MedMeAppInterface:
             appointmentTypes {
                 id
                 isWaitlisted
+                bookingStartDate
+                bookingEndDate
+                waitlistCount
             }
-            }
+        }
         }
         """
         variables = {
@@ -73,14 +76,57 @@ class MedMeAppInterface:
             "enterpriseName": self.enterprise_name,
         }
         response = await session.post(self.URL, json={"query": query, "variables": variables})
-        try:
-            body = await response.json()
-            return body["data"]["publicGetEnterprisePharmacies"]
-        except (json.decoder.JSONDecodeError, KeyError, IndexError):
-            logging.error(
-                f"Failed to fetch data for appointment type '{appointment_type_name}'"
-            )
+        if response.status == 200:
+            try:
+                body = await response.json()
+                return body["data"]["publicGetEnterprisePharmacies"]
+            except (json.decoder.JSONDecodeError, KeyError, IndexError, TypeError):
+                logging.error(
+                    f"Failed to fetch data for appointment type '{appointment_type_name}'"
+                )
+                return []
+        else:
             return []
+    
+    async def get_available_timeslots(self, session: ClientSession, pharmacyId: str, appointmentTypeId: int) -> List:
+        start_date = datetime.datetime.utcnow()
+        end_date = start_date + datetime.timedelta(days=60) # Use approximately 2 months
+
+        start_date_formatted = start_date.strftime('%Y-%m-%d')
+        end_date_formatted = end_date.strftime('%Y-%m-%d')
+        
+        query = """
+        query publicGetAvailableTimes($pharmacyId: String, $appointmentTypeId: Int!, $noOfPeople: Int!, $filter: AvailabilityFilter!) {
+        publicGetAvailableTimes(pharmacyId: $pharmacyId, appointmentTypeId: $appointmentTypeId, noOfPeople: $noOfPeople, filter: $filter) {
+            startDateTime
+            endDateTime
+            resourceId
+            __typename
+        }
+        }
+        """
+        variables = {
+            "appointmentTypeId": appointmentTypeId,
+            "noOfPeople": 1,
+            "pharmacyId": pharmacyId,
+            "filter": {
+                "endDate": end_date_formatted,
+                "startDate": start_date_formatted
+            }
+        }
+        response = await session.post(self.URL, json={"query": query, "variables": variables})
+        if response.status == 200:
+            body = await response.json()
+            try:
+                body = await response.json()
+                return body["data"]["publicGetAvailableTimes"]
+            except (json.decoder.JSONDecodeError, KeyError, IndexError, TypeError):
+                logging.error(
+                    f"Failed to fetch timeslots'"
+                )
+                return []
+        else:
+            return []          
 
     async def update_availabilities(self):
         async with aiohttp.ClientSession(headers=self.headers()) as session:
@@ -100,7 +146,20 @@ class MedMeAppInterface:
             pharmacies: dict[str, Pharmacy] = {}
 
             for vaccine_data in self.vaccines:
+                logging.info(f"Getting available pharmacies for {vaccine_data['appointment_type_name']}")
                 for pharmacy_data in await self.get_available_pharmacies(session, vaccine_data["appointment_type_name"]):
+                    id = pharmacy_data["id"]
+                    appointmentTypeId = pharmacy_data["appointmentTypes"][0]["id"]
+
+                    waitlisted = pharmacy_data["appointmentTypes"][0]["isWaitlisted"]
+                    timeslots = None
+                    if not waitlisted:
+                        logging.info(f"Getting timeslots for pharmacy {id}")
+                        timeslots = await self.get_available_timeslots(session, id, appointmentTypeId)
+                        logging.info(f"{len(timeslots)} found")
+                    else:
+                        logging.info(f"Pharmacy {id} is waitlisted")
+
                     pharmacy = Pharmacy(self.subdomain, pharmacy_data)
 
                     # If the pharmacy doesn't exist in the mapping yet, add it
@@ -110,12 +169,15 @@ class MedMeAppInterface:
                     else:
                         pharmacies[pharmacy.external_key] = pharmacy
 
-                    # Update it with values from this data
-                    pharmacy.available |= Pharmacy.is_available(pharmacy_data)
-                    pharmacy.tags.update(vaccine_data["tags"])
-                    pharmacy.vaccine_type = vaccine_data["type"]
+                    if timeslots is not None and len(timeslots) > 0:
+                        pharmacy.available = True
+                        pharmacy.num_available = len(timeslots)
+                        pharmacy.num_total = len(timeslots)
+                        pharmacy.tags.update(vaccine_data["tags"])
+                        pharmacy.vaccine_type = vaccine_data["type"]
 
             for external_key, pharmacy in pharmacies.items():
+                logging.info("Adding availability")
                 await vhc.add_availability(
                     num_available=pharmacy.num_available,
                     num_total=pharmacy.num_total,
@@ -130,16 +192,13 @@ class Pharmacy:
     Provides methods for accessing data within the GraphQL response that was received
     """
 
-    @staticmethod
-    def is_available(pharmacy):
-        """Is the pharmacy currently accepting appointments?"""
-        return not pharmacy["appointmentTypes"][0]["isWaitlisted"]
-
     def __init__(self, subdomain, pharmacy):
         self.subdomain = subdomain
         self.pharmacy = pharmacy
         self.vaccine_type = VaccineType.UNKNOWN # Unknown by default
         self.available = False
+        self.num_available = 0
+        self.num_total = 0
         self.tags = set()
 
     @property
@@ -177,14 +236,6 @@ class Pharmacy:
     @property
     def store_number(self):
         return self.pharmacy['storeNo']
-
-    @property
-    def num_available(self):
-        return 1 if self.available else 0
-
-    @property
-    def num_total(self):
-        return 1 if self.available else 0
 
     def to_location(self):
         return {

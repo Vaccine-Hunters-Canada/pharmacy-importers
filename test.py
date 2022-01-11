@@ -1,5 +1,6 @@
 import asyncio
 import argparse
+import logging
 import sys
 import Metro
 import PharmacyBooking
@@ -11,6 +12,7 @@ import TelusHealth
 import Walmart
 
 if __name__ == '__main__':
+    logging.getLogger().setLevel(logging.INFO)
     if sys.version_info[0] == 3 and sys.version_info[1] >= 8 and sys.platform.startswith('win'):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

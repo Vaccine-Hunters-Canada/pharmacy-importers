@@ -108,7 +108,7 @@ async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | 
             await vhc.add_availability(
                 num_available=1 if loc.get('available', False) else 0,
                 num_total=1 if loc.get('available', False) else 0,
-                vaccine_type=loc.get('type', VaccineType.PFIZER)),
+                vaccine_type=loc.get('type', VaccineType.PFIZER),
                 location=loc,
                 external_key=lid
             )
