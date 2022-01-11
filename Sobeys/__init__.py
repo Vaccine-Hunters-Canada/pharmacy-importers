@@ -6,6 +6,7 @@ import aiohttp
 import datetime
 import logging
 from vhc import VHC
+from vaccine_types import VaccineType
 
 import azure.functions as func
 
@@ -60,7 +61,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             )
 
             tags = []
-            vaccine_type = 1
+            vaccine_type = VaccineType.UNKNOWN
             availability = False
             if availabilities.status == 200:
                 body = await availabilities.json()
@@ -68,13 +69,13 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                     if day['available'] == True:
                         availability = True
                         if "ZENECA" in location['name'].upper():
-                            vaccine_type = 5
+                            vaccine_type = VaccineType.ASTRAZENECA
                             tags.append('AstraZeneca')
                         elif "PFIZER" in location['name'].upper():
-                            vaccine_type = 4
+                            vaccine_type = VaccineType.PFIZER
                             tags.append('Pfizer')
                         elif "MODERNA" in location['name'].upper():
-                            vaccine_type = 3
+                            vaccine_type = VaccineType.MODERNA
                             tags.append('Moderna')
                         
                         if "PEDI" in location['name'].upper() and "5-11" in location['name'].upper():
