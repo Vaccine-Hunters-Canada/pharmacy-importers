@@ -13,14 +13,14 @@ import datetime
 class MedMeAppInterface:
     URL = "https://gql.medscheck.medmeapp.com/graphql"
 
-    def __init__(self, tenant_id: str, enterprise_name: str, subdomain: str, vaccines, dryrun: bool = False):
+    def __init__(self, tenant_id: str, enterprise_name: str, subdomain: str, vaccines, dryrun: bool = False) -> None:
         self.tenant_id = tenant_id
         self.enterprise_name = enterprise_name
         self.subdomain = subdomain
         self.vaccines = vaccines
         self.dryrun = dryrun # Set to True for testing, False for production
 
-    def headers(self):
+    def headers(self) -> dict:
         return {
             "authority": "gql.medscheck.medmeapp.com",
             "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -192,7 +192,7 @@ class Pharmacy:
     Provides methods for accessing data within the GraphQL response that was received
     """
 
-    def __init__(self, subdomain, pharmacy):
+    def __init__(self, subdomain: str, pharmacy: dict) -> None:
         self.subdomain = subdomain
         self.pharmacy = pharmacy
         self.vaccine_type = VaccineType.UNKNOWN # Unknown by default
@@ -202,42 +202,42 @@ class Pharmacy:
         self.tags = set()
 
     @property
-    def external_key(self):
+    def external_key(self) -> str:
         return f"{self.subdomain}-{self.store_number}"
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.pharmacy["name"]
 
     @property
-    def address(self):
+    def address(self) -> str:
         return f"{self.pharmacy['pharmacyAddress']['streetNumber']} {self.pharmacy['pharmacyAddress']['streetName']}"
 
     @property
-    def city(self):
+    def city(self) -> str:
         return self.pharmacy["pharmacyAddress"]["city"]
 
     @property
-    def province(self):
+    def province(self) -> str:
         return self.pharmacy["pharmacyAddress"]["province"]
 
     @property
-    def postal_code(self):
+    def postal_code(self) -> str:
         return self.pharmacy["pharmacyAddress"]["postalCode"].replace(" ", "")
 
     @property
-    def phone(self):
+    def phone(self) -> str:
         return self.pharmacy["pharmacyContact"]["phone"]
 
     @property
-    def website(self):
+    def website(self) -> str:
         return f"https://{self.subdomain}.medmeapp.com/{self.store_number}/schedule/"
 
     @property
-    def store_number(self):
+    def store_number(self) -> str:
         return self.pharmacy['storeNo']
 
-    def to_location(self):
+    def to_location(self) -> dict:
         return {
             "line1": self.address,
             "city": self.city,
