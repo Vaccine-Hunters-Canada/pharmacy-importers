@@ -48,5 +48,8 @@ VACCINES = [
     },
 ]
 
-async def main(dryrun: bool = False) -> None:
+async def main() -> None:
+    await run_importer()
+
+async def run_importer(dryrun: bool = False) -> None:
     await MedMeAppInterface(TENANT_ID, ENTERPRISE_NAME, SUBDOMAIN, VACCINES, dryrun).update_availabilities()

@@ -15,7 +15,10 @@ import azure.functions as func
 
 VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
-async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None) -> str:
+    return await run_importer(mytimer, stateblob)
+
+async def run_importer(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
 

@@ -2,7 +2,7 @@ import os
 import re
 import csv
 import aiohttp
-import urllib
+import urllib.parse
 from vaccine_types import VaccineType
 from vhc import VHC
 from mockvhc import MockVHC
@@ -10,8 +10,10 @@ from bs4 import BeautifulSoup as soup
 
 import azure.functions as func
 
+async def main(mytimer: func.TimerRequest | None) -> None:
+    return await run_importer(mytimer)
 
-async def main(mytimer: func.TimerRequest | None, dryrun: bool = False) -> None:
+async def run_importer(mytimer: func.TimerRequest | None, dryrun: bool = False) -> None:
     pb_csv = open('PharmacyBooking/pharmacy-booking-locations.csv')
     pb_locations = csv.DictReader(pb_csv)
 

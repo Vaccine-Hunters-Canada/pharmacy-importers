@@ -13,7 +13,10 @@ from bs4 import BeautifulSoup
 
 import azure.functions as func
 
-async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None) -> str:
+    return await run_importer(mytimer, stateblob)
+
+async def run_importer(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     telus_csv = open('TelusHealth/telus-health-locations.csv')
     telus_locations = csv.DictReader(telus_csv)
 

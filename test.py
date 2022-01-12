@@ -21,20 +21,20 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.mode == 'metro':
-        asyncio.run(Metro.main(dryrun=True))
+        asyncio.run(Metro.run_importer(dryrun=True))
     elif args.mode == 'pharmacybooking':
-        asyncio.run(PharmacyBooking.main(mytimer=None, dryrun=True))
+        asyncio.run(PharmacyBooking.run_importer(mytimer=None, dryrun=True))
     elif args.mode == 'rexall':
-        asyncio.run(Rexall.main(dryrun=True))
+        asyncio.run(Rexall.run_importer(dryrun=True))
     elif args.mode == 'saveonfoods':
-        asyncio.run(SaveOnFoods.main(dryrun=True))
+        asyncio.run(SaveOnFoods.run_importer(dryrun=True))
     elif args.mode == "shoppersdrugmart":
-        asyncio.run(ShoppersDrugMart.main(dryrun=True))
+        asyncio.run(ShoppersDrugMart.run_importer(dryrun=True))
     elif args.mode == "sobeys":
-        asyncio.run(Sobeys.main(mytimer=None, stateblob=None, dryrun=True))
+        asyncio.run(Sobeys.run_importer(mytimer=None, stateblob=None, dryrun=True))
     elif args.mode == "telushealth":
-        asyncio.run(TelusHealth.main(mytimer=None, stateblob=None, dryrun=True))
+        asyncio.run(TelusHealth.run_importer(mytimer=None, stateblob=None, dryrun=True))
     elif args.mode == "walmart":
-        asyncio.run(Walmart.main(mytimer=None, stateblob=None, dryrun=True))
+        asyncio.run(Walmart.run_importer(mytimer=None, stateblob=None, dryrun=True))
     else:
         print("Invalid mode")
