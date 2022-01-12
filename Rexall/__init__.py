@@ -1,49 +1,50 @@
 from medmeapp import MedMeAppInterface
 from vaccine_types import VaccineType
 
-TENANT_ID = "edfbb1a3-aca2-4ee4-bbbb-9237237736c4"
-ENTERPRISE_NAME = "SDM"
-SUBDOMAIN = "shoppersdrugmart"
+
+TENANT_ID = "f10d8ca0-ec52-4a28-aabd-9bd3388dab34"
+ENTERPRISE_NAME = "REXALL"
+SUBDOMAIN = "rexall"
 VACCINES = [
     {
         "type": VaccineType.PFIZER,
-        "appointment_type_name": "COVID-19 Vaccine (Pfizer Dose 1)",
-        "tags": set(["12+ Year Olds", "Pfizer", "1st Dose"]),
-    },
-    {
-        "type": VaccineType.PFIZER,
-        "appointment_type_name": "COVID-19 Vaccine (Pfizer Dose 2)",
+        "appointment_type_name": "COVID-19 Vaccine (Dose 2 - Pfizer)",
         "tags": set(["12+ Year Olds", "Pfizer", "2nd Dose"]),
     },
     {
         "type": VaccineType.PFIZER,
-        "appointment_type_name": "COVID-19 Vaccine (Pfizer Dose 3 or Booster Dose)",
+        "appointment_type_name": "COVID-19 Vaccine (Dose 3 - Pfizer)",
         "tags": set(["12+ Year Olds", "Pfizer", "3rd Dose"]),
     },
     {
         "type": VaccineType.PFIZER,
-        "appointment_type_name": "COVID-19 Vaccine (Pfizer Pediatric Dose 1)",
+        "appointment_type_name": "Pediatric (5-11) COVID-19 Vaccine (Dose 1)",
         "tags": set(["5-11 Year Olds", "Pfizer", "1st Dose"]),
     },
     {
         "type": VaccineType.PFIZER,
-        "appointment_type_name": "COVID-19 Vaccine (Pfizer Pediatric Dose 2)",
+        "appointment_type_name": "Pediatric (5-11) COVID-19 Vaccine (Dose 2)",
         "tags": set(["5-11 Year Olds", "Pfizer", "2nd Dose"]),
     },
     {
         "type": VaccineType.MODERNA,
-        "appointment_type_name": "COVID-19 Vaccine (Moderna Dose 1)",
-        "tags": set(["12+ Year Olds", "Moderna", "1st Dose"]),
-    },
-    {
-        "type": VaccineType.MODERNA,
-        "appointment_type_name": "COVID-19 Vaccine (Moderna Dose 2)",
+        "appointment_type_name": "COVID-19 Vaccine (Dose 2 - Moderna)",
         "tags": set(["12+ Year Olds", "Moderna", "2nd Dose"]),
     },
     {
         "type": VaccineType.MODERNA,
-        "appointment_type_name": "COVID-19 Vaccine (Moderna Dose 3 or Booster Dose)",
+        "appointment_type_name": "COVID-19 Vaccine (Dose 3 - Moderna)",
         "tags": set(["12+ Year Olds", "Moderna", "3rd Dose"]),
+    },
+    {
+        "type": VaccineType.ASTRAZENECA,
+        "appointment_type_name": "COVID-19 Vaccine (Dose 2 - AstraZeneca/COVISHIELD)",
+        "tags": set(["12+ Year Olds", "AstraZeneca", "2nd Dose"]),
+    },
+    {
+        "type": VaccineType.ASTRAZENECA,
+        "appointment_type_name": "COVID-19 Vaccine (Dose 3 - AstraZeneca)",
+        "tags": set(["12+ Year Olds", "AstraZeneca", "3rd Dose"]),
     },
 ]
 

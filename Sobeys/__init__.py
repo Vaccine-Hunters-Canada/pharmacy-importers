@@ -1,21 +1,26 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from _typeshed import SupportsRead
 import os
-import re
 import csv
 import json
 import aiohttp
 import datetime
-import logging
+from vaccine_types import VaccineType
 from vhc import VHC
+from mockvhc import MockVHC
 
 import azure.functions as func
 
 VACCINE_DATA = 'WyJhM3A1bzAwMDAwMDAweTFBQUEiXQ=='
 
-async def main(mytimer: func.TimerRequest, stateblob) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None) -> str:
+    return await run_importer(mytimer, stateblob)
+
+async def run_importer(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     sobeys_csv = open('Sobeys/sobeys-locations.csv')
     sobeys_locations = csv.DictReader(sobeys_csv)
-
-    p = re.compile(r'^(.+)\s-\s([A|P|M].+)$')
 
     headers = {
         'origin': 'https://www.pharmacyappointments.ca',
@@ -30,12 +35,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
     async with aiohttp.ClientSession(headers=headers) as session:
 
-        vhc = VHC(
-            base_url=os.environ.get('BASE_URL'),
-            api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_SOBEYS'),
-            session=session
-        )
+        if dryrun == False:
+            vhc = VHC(
+                base_url=os.environ.get('BASE_URL'),
+                api_key=os.environ.get('API_KEY'),
+                org_id=os.environ.get('VHC_ORG_SOBEYS'),
+                session=session
+            )
+        else:
+            vhc = MockVHC()
 
         notifications = {
             'ON': [],
@@ -59,8 +67,8 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                 json=data
             )
 
-            tags = []
-            vaccine_type = 1
+            tags: list[str] = []
+            vaccine_type = VaccineType.UNKNOWN
             availability = False
             if availabilities.status == 200:
                 body = await availabilities.json()
@@ -68,27 +76,21 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
                     if day['available'] == True:
                         availability = True
                         if "ZENECA" in location['name'].upper():
-                            vaccine_type = 5
+                            vaccine_type = VaccineType.ASTRAZENECA
                             tags.append('AstraZeneca')
                         elif "PFIZER" in location['name'].upper():
-                            vaccine_type = 4
+                            vaccine_type = VaccineType.PFIZER
                             tags.append('Pfizer')
                         elif "MODERNA" in location['name'].upper():
-                            vaccine_type = 3
+                            vaccine_type = VaccineType.MODERNA
                             tags.append('Moderna')
                         
                         if "PEDI" in location['name'].upper() and "5-11" in location['name'].upper():
                             tags.extend(['5-11 Year Olds', '1st Dose'])
                         else:
                             tags.extend(['12+ Year Olds', '2nd Dose', '3rd Dose'])
-            # else:
-            #     logging.info(availabilities.status)
-            #     logging.info(await availabilities.text())
             
             location_name = location['name'].strip()
-            # m = p.match(location_name)
-            # if m:
-            #     location_name = m.group(1)
 
             location_data = {
                 'line1': location['address'].strip(),
@@ -127,4 +129,3 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
         await vhc.notify_discord('Sobeys Pharmacies', notifications['AB'], os.environ.get('DISCORD_PHARMACY_AB'))
 
         return json.dumps(newstate)
-            

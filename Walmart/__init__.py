@@ -1,23 +1,31 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from _typeshed import SupportsRead
 import os
 import re
 import json
 import aiohttp
 import logging
+from mockvhc import MockVHC
+from vaccine_types import VaccineType
 from vhc import VHC
 
 import azure.functions as func
 
 vaccines = {
-    'Pfizer 2nd Dose': { 'type': 4, 'form': 5394, 'tags': [ '12+ Year Olds', 'Pfizer', '2nd Dose', '3rd Dose' ] },
-    'Moderna 2nd Dose': { 'type': 3, 'form': 5396, 'tags': [ '12+ Year Olds', 'Moderna', '2nd Dose', '3rd Dose' ] },
-    'Pfizer 5-11 1st Dose': { 'type': 4, 'form': 6460, 'tags': [ '5-11 Year Olds', 'Pfizer', '1st Dose' ] },
-    'AstraZeneca 2nd Dose': { 'type': 5, 'form': 5398, 'tags': [ '12+ Year Olds', 'AstraZeneca', '2nd Dose', '3rd Dose' ] },
+    'Pfizer 2nd Dose': { 'type': VaccineType.PFIZER, 'form': 5394, 'tags': [ '12+ Year Olds', 'Pfizer', '2nd Dose', '3rd Dose' ] },
+    'Moderna 2nd Dose': { 'type': VaccineType.MODERNA, 'form': 5396, 'tags': [ '12+ Year Olds', 'Moderna', '2nd Dose', '3rd Dose' ] },
+    'Pfizer 5-11 1st Dose': { 'type': VaccineType.PFIZER, 'form': 6460, 'tags': [ '5-11 Year Olds', 'Pfizer', '1st Dose' ] },
+    'AstraZeneca 2nd Dose': { 'type': VaccineType.ASTRAZENECA, 'form': 5398, 'tags': [ '12+ Year Olds', 'AstraZeneca', '2nd Dose', '3rd Dose' ] },
 }
 
 location_availability = {}
 
-async def main(mytimer: func.TimerRequest, stateblob) -> str:
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None) -> str:
+    return await run_importer(mytimer, stateblob)
 
+async def run_importer(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     state = {}
     newstate = {}
     if stateblob:
@@ -32,12 +40,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
     }
     async with aiohttp.ClientSession(headers=headers) as session:
 
-        vhc = VHC(
-            base_url=os.environ.get('BASE_URL'),
-            api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_WALMART'),
-            session=session
-        )
+        if dryrun == False:
+            vhc = VHC(
+                base_url=os.environ.get('BASE_URL'),
+                api_key=os.environ.get('API_KEY'),
+                org_id=os.environ.get('VHC_ORG_WALMART'),
+                session=session
+            )
+        else:
+            vhc = MockVHC()
 
         # Create the session and get the session cookie
         await session.get('https://portal.healthmyself.net/walmarton/guest/booking/form/8498c628-533b-41e8-a385-ea2a8214d6dc')
@@ -55,9 +66,9 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             if regex.search(location_name):
                 location_name = regex.sub(r'\1', location_name).strip()
 
-            tags = []
+            tags: list[str] = []
             available = False
-            vaccine_type = 1
+            vaccine_type = VaccineType.UNKNOWN
 
             for type in vaccines:
                 vaccine = vaccines[type]
@@ -100,7 +111,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             await vhc.add_availability(
                 num_available=1 if loc.get('available', False) else 0,
                 num_total=1 if loc.get('available', False) else 0,
-                vaccine_type=loc.get('type', 4),
+                vaccine_type=loc.get('type', VaccineType.PFIZER),
                 location=loc,
                 external_key=lid
             )

@@ -1,15 +1,22 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from _typeshed import SupportsRead
 import os
 import csv
 import json
 import aiohttp
-import datetime
+from vaccine_types import VaccineType
 from vhc import VHC
+from mockvhc import MockVHC
 from bs4 import BeautifulSoup
 
 import azure.functions as func
 
+async def main(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None) -> str:
+    return await run_importer(mytimer, stateblob)
 
-async def main(mytimer: func.TimerRequest, stateblob) -> str:
+async def run_importer(mytimer: func.TimerRequest | None, stateblob: SupportsRead[str | bytes] | None, dryrun: bool = False) -> str:
     telus_csv = open('TelusHealth/telus-health-locations.csv')
     telus_locations = csv.DictReader(telus_csv)
 
@@ -20,12 +27,15 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
 
     async with aiohttp.ClientSession() as session:
 
-        vhc = VHC(
-            base_url=os.environ.get('BASE_URL'),
-            api_key=os.environ.get('API_KEY'),
-            org_id=os.environ.get('VHC_ORG_TELUS_HEALTH'),
-            session=session
-        )
+        if dryrun == False:
+            vhc = VHC(
+                base_url=os.environ.get('BASE_URL'),
+                api_key=os.environ.get('API_KEY'),
+                org_id=os.environ.get('VHC_ORG_TELUS_HEALTH'),
+                session=session
+            )
+        else:
+            vhc = MockVHC()
 
         notifications = {
             'ON': [],
@@ -54,7 +64,7 @@ async def main(mytimer: func.TimerRequest, stateblob) -> str:
             await vhc.add_availability(
                 num_available=1 if available else 0,
                 num_total=1 if available else 0,
-                vaccine_type=1,
+                vaccine_type=VaccineType.UNKNOWN,
                 location=location_data,
                 external_key=location['id']
             )
